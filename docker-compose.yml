@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: together-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=together
+    restart: unless-stopped
+    networks:
+      - together-network
+
+  api-service:
+    build:
+      context: ./api-service
+    container_name: together-api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/together
+      - SECRET_KEY=${SECRET_KEY:-development_secret_key}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-development_jwt_secret}
+      - ENVIRONMENT=development
+      - LOG_LEVEL=DEBUG
+    restart: unless-stopped
+    volumes:
+      - ./api-service:/app
+    networks:
+      - together-network
+
+  web-app:
+    build:
+      context: ./web-app
+    container_name: together-web
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api-service
+    environment:
+      - API_URL=http://api-service:5000
+      - DEBUG=true
+    restart: unless-stopped
+    volumes:
+      - ./web-app:/app
+    networks:
+      - together-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  together-network:
+    driver: bridge
