@@ -1,0 +1,97 @@
+# messages.html
+{% extends "base.html" %}
+
+{% block title %}Messages - Together App{% endblock %}
+
+{% block content %}
+<div class="messages-container">
+    <div class="messages-header">
+        <h2>Messages</h2>
+    </div>
+    
+    <div class="messages-content">
+        <div class="message-list">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="message {{ 'sent' if message.get('sender_id') == user.get('_id') else 'received' }}">
+                    <div class="message-content">{{ message.get('content') }}</div>
+                    <div class="message-time">{{ message.get('created_at', '') | string }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-messages">No messages yet. Send a message to get started!</p>
+            {% endif %}
+        </div>
+        
+        <div class="message-input">
+            <form method="POST" action="{{ url_for('send_message') }}">
+                <div class="form-group">
+                    <input type="hidden" name="receiver_id" value="{{ partner_id if partner_id else '' }}">
+                    <textarea name="content" placeholder="Type a message..." required></textarea>
+                </div>
+                
+                <div class="message-actions">
+                    <button type="submit" class="btn-primary">Send</button>
+                    <button type="button" class="btn-secondary" id="record-voice">Record Voice</button>
+                    <button type="button" class="btn-secondary" id="schedule-message">Schedule</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="schedule-modal" id="schedule-modal" style="display: none;">
+        <div class="schedule-modal-content">
+            <h3>Schedule Message</h3>
+            <form method="POST" action="{{ url_for('schedule_message') }}">
+                <div class="form-group">
+                    <label for="scheduled_time">Delivery Time</label>
+                    <input type="datetime-local" id="scheduled_time" name="scheduled_time" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="scheduled_content">Message</label>
+                    <textarea id="scheduled_content" name="content" required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Schedule</button>
+                    <button type="button" class="btn-secondary" id="cancel-schedule">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Schedule message modal
+        const scheduleBtn = document.getElementById('schedule-message');
+        const scheduleModal = document.getElementById('schedule-modal');
+        const cancelScheduleBtn = document.getElementById('cancel-schedule');
+        
+        scheduleBtn.addEventListener('click', function() {
+            scheduleModal.style.display = 'block';
+        });
+        
+        cancelScheduleBtn.addEventListener('click', function() {
+            scheduleModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === scheduleModal) {
+                scheduleModal.style.display = 'none';
+            }
+        });
+        
+        // Voice recording placeholder
+        const recordVoiceBtn = document.getElementById('record-voice');
+        
+        recordVoiceBtn.addEventListener('click', function() {
+            alert('Voice recording feature coming soon!');
+        });
+    });
+</script>
+{% endblock %}

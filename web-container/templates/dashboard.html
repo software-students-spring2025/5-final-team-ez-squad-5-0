@@ -1,0 +1,65 @@
+# dashboard.html
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Together App{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>Welcome, {{ user.get('name', 'User') }}</h1>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="dashboard-card">
+            <h2>Upcoming Events</h2>
+            <div class="event-list">
+                {% if events %}
+                    {% for event in events %}
+                    <div class="event-item">
+                        <div class="event-title">{{ event.get('title') }}</div>
+                        <div class="event-date">
+                            {{ event.get('start_time', '') | string }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No upcoming events</p>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('calendar') }}" class="btn-primary">View Calendar</a>
+        </div>
+        
+        <div class="dashboard-card">
+            <h2>Recent Messages</h2>
+            <div class="message-list">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="message-item">
+                        <div class="message-content">{{ message.get('content') }}</div>
+                        <div class="message-time">
+                            {{ message.get('created_at', '') | string }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No recent messages</p>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('messages') }}" class="btn-primary">View Messages</a>
+        </div>
+        
+        <div class="dashboard-card">
+            <h2>Daily Question</h2>
+            <div class="prompt-container">
+                <p>What's one thing you appreciate about your relationship today?</p>
+                <form method="post" action="{{ url_for('dashboard') }}">
+                    <div class="form-group">
+                        <textarea name="response" placeholder="Your response..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-secondary">Share Response</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

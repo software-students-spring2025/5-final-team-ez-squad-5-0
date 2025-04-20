@@ -1,0 +1,47 @@
+# base.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Together App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    {% if session.get('token') %}
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <a href="{{ url_for('dashboard') }}">Together</a>
+        </div>
+        <div class="navbar-links">
+            <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+            <a href="{{ url_for('calendar') }}" class="nav-link">Calendar</a>
+            <a href="{{ url_for('messages') }}" class="nav-link">Messages</a>
+        </div>
+        <div class="navbar-user">
+            {% if session.get('user') %}
+            <span class="user-name">{{ session.get('user').get('name') }}</span>
+            {% endif %}
+            <a href="{{ url_for('logout') }}" class="btn-link">Logout</a>
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
