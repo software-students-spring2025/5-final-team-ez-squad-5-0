@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-web-secret-key')
 
 # API URL from environment variable
-API_URL = os.environ.get('API_URL', 'http://api:5000/api')
+API_URL = os.environ.get('API_URL', 'http://api:5001/api')
 
 # Helper function to make API requests
 def api_request(endpoint, method='GET', data=None, token=None):
@@ -166,6 +166,9 @@ def messages():
         return redirect(url_for('login'))
     
     messages_list = []
+    user = session.get('user', {})
+    # Get partner ID from user data or use a default
+    partner_id = user.get('partner_id', 'default-partner-id')
     
     try:
         response = api_request('messages/messages', token=session['token'])
@@ -174,15 +177,26 @@ def messages():
     except Exception as e:
         flash(f'Error fetching messages: {str(e)}')
     
-    return render_template('messages.html', messages=messages_list, user=session.get('user', {}))
+    return render_template('messages.html', 
+                          messages=messages_list, 
+                          user=user,
+                          partner_id=partner_id)  # Pass partner_id to the template
 
 @app.route('/messages/send', methods=['POST'])
 def send_message():
     if 'token' not in session:
         return redirect(url_for('login'))
     
-    content = request.form['content']
-    receiver_id = request.form['receiver_id']
+    content = request.form.get('content')
+    receiver_id = request.form.get('receiver_id', 'default-partner-id')
+    
+    # Debug info
+    print(f"Sending message: {content} to {receiver_id}")
+    
+    # Skip sending if no content or receiver
+    if not content or not receiver_id:
+        flash('Message content or recipient missing')
+        return redirect(url_for('messages'))
     
     try:
         response = api_request('messages/send', method='POST', token=session['token'], data={
@@ -193,9 +207,12 @@ def send_message():
         if response.status_code == 201:
             flash('Message sent successfully')
         else:
-            flash(response.json().get('message', 'Failed to send message'))
+            error_msg = response.json().get('message', 'Failed to send message')
+            flash(f'API Error: {error_msg}')
+            print(f"API Error: {response.status_code}, {error_msg}")
     except Exception as e:
         flash(f'Error: {str(e)}')
+        print(f"Exception: {str(e)}")
     
     return redirect(url_for('messages'))
 
@@ -205,23 +222,51 @@ def schedule_message():
     if 'token' not in session:
         return redirect(url_for('login'))
     
-    content = request.form['content']
-    receiver_id = request.form['receiver_id']
-    scheduled_time = request.form['scheduled_time']
+    content = request.form.get('content')
+    receiver_id = request.form.get('receiver_id', 'default-partner-id')
+    scheduled_time = request.form.get('scheduled_time')
+    
+    # Debug info
+    print(f"Scheduling message: {content} to {receiver_id} at {scheduled_time}")
+    
+    # Skip scheduling if no content, receiver, or time
+    if not content or not receiver_id or not scheduled_time:
+        flash('Message content, recipient, or scheduled time missing')
+        return redirect(url_for('messages'))
     
     try:
-        response = api_request('messages/schedule', method='POST', token=session['token'], data={
-            'content': content,
-            'receiverId': receiver_id,
-            'scheduledTime': scheduled_time
-        })
-        
-        if response.status_code == 201:
-            flash('Message scheduled successfully')
-        else:
-            flash(response.json().get('message', 'Failed to schedule message'))
+        # Check if the API endpoint exists
+        try:
+            response = api_request('messages/schedule', method='POST', token=session['token'], data={
+                'content': content,
+                'receiverId': receiver_id,
+                'scheduledTime': scheduled_time
+            })
+            
+            if response.status_code == 201:
+                flash('Message scheduled successfully')
+            else:
+                error_msg = response.json().get('message', 'Failed to schedule message')
+                flash(f'API Error: {error_msg}')
+                print(f"API Error: {response.status_code}, {error_msg}")
+        except requests.exceptions.RequestException as e:
+            # If the API endpoint doesn't exist, fall back to regular send
+            flash('Scheduling not available. Sending message immediately.')
+            print(f"Scheduling API not available: {str(e)}")
+            
+            response = api_request('messages/send', method='POST', token=session['token'], data={
+                'content': content,
+                'receiverId': receiver_id
+            })
+            
+            if response.status_code == 201:
+                flash('Message sent successfully (scheduling not available)')
+            else:
+                error_msg = response.json().get('message', 'Failed to send message')
+                flash(f'API Error: {error_msg}')
     except Exception as e:
         flash(f'Error: {str(e)}')
+        print(f"Exception: {str(e)}")
     
     return redirect(url_for('messages'))
 

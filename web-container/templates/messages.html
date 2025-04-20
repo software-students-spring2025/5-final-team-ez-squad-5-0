@@ -1,4 +1,3 @@
-# messages.html
 {% extends "base.html" %}
 
 {% block title %}Messages - Together App{% endblock %}
@@ -52,6 +51,9 @@
                     <label for="scheduled_content">Message</label>
                     <textarea id="scheduled_content" name="content" required></textarea>
                 </div>
+                
+                <!-- Added the missing receiver_id field -->
+                <input type="hidden" name="receiver_id" value="{{ partner_id if partner_id else '' }}">
                 
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">Schedule</button>
