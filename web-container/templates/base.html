@@ -1,4 +1,3 @@
-# base.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +19,7 @@
         </div>
         <div class="navbar-user">
             {% if session.get('user') %}
-            <span class="user-name">{{ session.get('user').get('name') }}</span>
+            <span class="user-name">{{ session.get('user').get('name') }} &gt;&gt;</span>
             {% endif %}
             <a href="{{ url_for('logout') }}" class="btn-link">Logout</a>
         </div>
