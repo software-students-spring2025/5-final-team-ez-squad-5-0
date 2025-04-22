@@ -1,4 +1,3 @@
-# calendar.html
 {% extends "base.html" %}
 
 {% block title %}Calendar - Together App{% endblock %}
@@ -113,6 +112,14 @@
                 const dayNumber = document.createElement('div');
                 dayNumber.className = 'day-number';
                 dayNumber.textContent = day;
+
+                // Format MM-DD-YYYY
+                const year = currentDate.getFullYear();
+                const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+                const date = String(day).padStart(2, '0');
+                const dateString = `${year}-${month}-${date}`;
+                dayElement.classList.add('dayEle');
+                dayElement.setAttribute('data-date', dateString);
                 
                 dayElement.appendChild(dayNumber);
                 calendarDays.appendChild(dayElement);
@@ -126,11 +133,62 @@
         prevMonthBtn.addEventListener('click', function() {
             currentDate.setMonth(currentDate.getMonth() - 1);
             renderCalendar();
+
+            // Add event under corresponding calender cell
+            const event_title = document.querySelectorAll('.event-title');
+            const dayEle = document.querySelectorAll('.dayEle');
+
+            event_title.forEach(title => {
+                const event_time = title.nextElementSibling.textContent;
+                const date = new Date(event_time);
+                const formatted = date.toISOString().split('T')[0];
+                dayEle.forEach(ele => {
+                    if (ele.getAttribute('data-date') == formatted) {
+                        const snippet = document.createElement('div');
+                        snippet.textContent = title.textContent;
+                        ele.appendChild(snippet);
+                    }
+                });
+            });
         });
         
         nextMonthBtn.addEventListener('click', function() {
             currentDate.setMonth(currentDate.getMonth() + 1);
             renderCalendar();
+
+            // Add event under corresponding calender cell
+            const event_title = document.querySelectorAll('.event-title');
+            const dayEle = document.querySelectorAll('.dayEle');
+
+            event_title.forEach(title => {
+                const event_time = title.nextElementSibling.textContent;
+                const date = new Date(event_time);
+                const formatted = date.toISOString().split('T')[0];
+                dayEle.forEach(ele => {
+                    if (ele.getAttribute('data-date') == formatted) {
+                        const snippet = document.createElement('div');
+                        snippet.textContent = title.textContent;
+                        ele.appendChild(snippet);
+                    }
+                });
+            });
+        });
+
+        // Add event under corresponding calender cell
+        const event_title = document.querySelectorAll('.event-title');
+        const dayEle = document.querySelectorAll('.dayEle');
+
+        event_title.forEach(title => {
+            const event_time = title.nextElementSibling.textContent;
+            const date = new Date(event_time);
+            const formatted = date.toISOString().split('T')[0];
+            dayEle.forEach(ele => {
+                if (ele.getAttribute('data-date') == formatted) {
+                    const snippet = document.createElement('div');
+                    snippet.textContent = title.textContent;
+                    ele.appendChild(snippet);
+                }
+            });
         });
     });
 </script>
