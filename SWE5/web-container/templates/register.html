@@ -29,9 +29,10 @@
             <small>We'll send them an invitation to connect.</small>
         </div>
         
-        <button type="submit" class="btn-primary">Register</button>
+        <div class="login-reg-button">
+            <button type="submit" class="btn-primary">Register</button>
+            <div>Already have an account? <a href="{{ url_for('login') }}">Sign in</a></div>
+        </div>
     </form>
-    
-    <p>Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
 </div>
 {% endblock %}
