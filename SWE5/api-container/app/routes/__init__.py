@@ -138,3 +138,71 @@ def send_message():
     message['_id'] = str(result.inserted_id)
     
     return jsonify({'message': 'Message sent successfully', 'data': message}), 201
+
+# NEW: Scheduled messages endpoints
+@messages_bp.route('/schedule', methods=['POST'])
+@jwt_required()
+def schedule_message():
+    current_user_id = get_jwt_identity()
+    data = request.json
+    
+    # Convert the scheduled time string to a datetime object
+    try:
+        scheduled_time = datetime.fromisoformat(data['scheduledTime'])
+    except ValueError:
+        return jsonify({'message': 'Invalid date format for scheduled time'}), 400
+    
+    # Create the scheduled message object
+    scheduled_message = {
+        'content': data['content'],
+        'sender_id': current_user_id,
+        'receiver_id': data['receiverId'],
+        'scheduled_time': scheduled_time,
+        'created_at': datetime.utcnow(),
+        'status': 'pending'  # Status can be 'pending', 'sent', or 'failed'
+    }
+    
+    result = mongo.db.scheduled_messages.insert_one(scheduled_message)
+    scheduled_message['_id'] = str(result.inserted_id)
+    
+    return jsonify({
+        'message': 'Message scheduled successfully', 
+        'data': scheduled_message
+    }), 201
+
+@messages_bp.route('/scheduled', methods=['GET'])
+@jwt_required()
+def get_scheduled_messages():
+    current_user_id = get_jwt_identity()
+    
+    # Get all scheduled messages for the current user
+    scheduled_messages = list(mongo.db.scheduled_messages.find(
+        {'sender_id': current_user_id, 'status': 'pending'}
+    ).sort('scheduled_time', 1))
+    
+    for message in scheduled_messages:
+        message['_id'] = str(message['_id'])
+        # Convert datetime objects to strings for JSON serialization
+        message['scheduled_time'] = message['scheduled_time'].isoformat()
+        message['created_at'] = message['created_at'].isoformat()
+    
+    return jsonify({'scheduled_messages': scheduled_messages}), 200
+
+@messages_bp.route('/scheduled/<message_id>/cancel', methods=['POST'])
+@jwt_required()
+def cancel_scheduled_message(message_id):
+    current_user_id = get_jwt_identity()
+    
+    try:
+        # Find and update the message to set status to 'cancelled'
+        result = mongo.db.scheduled_messages.update_one(
+            {'_id': ObjectId(message_id), 'sender_id': current_user_id, 'status': 'pending'},
+            {'$set': {'status': 'cancelled'}}
+        )
+        
+        if result.modified_count == 0:
+            return jsonify({'message': 'No pending message found with that ID'}), 404
+        
+        return jsonify({'message': 'Scheduled message cancelled successfully'}), 200
+    except Exception as e:
+        return jsonify({'message': f'Error: {str(e)}'}), 500

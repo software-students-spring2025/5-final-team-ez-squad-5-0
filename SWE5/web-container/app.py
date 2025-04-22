@@ -256,27 +256,58 @@ def schedule_message():
         return redirect(url_for('messages'))
     
     try:
-        # First, check if the API supports scheduling
-        # For now, let's just directly fallback to regular sending
-        # since your API likely doesn't support scheduling yet
-        
-        print("API doesn't support scheduling yet. Sending message immediately.")
-        
-        response = api_request('messages/send', method='POST', token=session['token'], data={
+        # Call the new API endpoint for scheduling
+        response = api_request('messages/schedule', method='POST', token=session['token'], data={
             'content': content,
-            'receiverId': receiver_id
+            'receiverId': receiver_id,
+            'scheduledTime': scheduled_time
         })
         
         if response.status_code == 201:
-            flash('Message sent successfully (scheduling feature coming soon)', 'success')
+            flash('Message scheduled successfully', 'success')
         else:
-            error_msg = response.json().get('message', 'Failed to send message')
-            flash(f'Error sending message: {error_msg}', 'error')
+            error_msg = response.json().get('message', 'Failed to schedule message')
+            flash(f'Error scheduling message: {error_msg}', 'error')
+            print(f"API Error: {response.status_code}, {error_msg}")
     except Exception as e:
         flash(f'Error: {str(e)}', 'error')
         print(f"Exception: {str(e)}")
     
     return redirect(url_for('messages'))
+
+# Add a new route to view scheduled messages
+@app.route('/messages/scheduled')
+def scheduled_messages():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    scheduled_messages = []
+    
+    try:
+        response = api_request('messages/scheduled', token=session['token'])
+        if response.status_code == 200:
+            scheduled_messages = response.json().get('scheduled_messages', [])
+    except Exception as e:
+        flash(f'Error fetching scheduled messages: {str(e)}', 'error')
+    
+    return render_template('scheduled_messages.html', scheduled_messages=scheduled_messages)
+
+# Add a route to cancel a scheduled message
+@app.route('/messages/scheduled/<message_id>/cancel', methods=['POST'])
+def cancel_scheduled_message(message_id):
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    try:
+        response = api_request(f'messages/scheduled/{message_id}/cancel', method='POST', token=session['token'])
+        if response.status_code == 200:
+            flash('Scheduled message cancelled successfully', 'success')
+        else:
+            flash(response.json().get('message', 'Failed to cancel scheduled message'), 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('scheduled_messages'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)

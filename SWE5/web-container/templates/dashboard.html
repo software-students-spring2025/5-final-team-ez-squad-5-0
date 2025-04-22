@@ -5,7 +5,7 @@
 {% block content %}
 <div class="dashboard">
     <div class="dashboard-header">
-        <h1>Welcome, {{ user.get('name', 'User') }}</h1>
+        <h1 id="greetings">Welcome, {{ user.get('name', 'User') }}</h1>
     </div>
     
     <div class="dashboard-content">
