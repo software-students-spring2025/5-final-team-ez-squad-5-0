@@ -8,6 +8,7 @@ db = db.getSiblingDB('together');
 db.createCollection('users');
 db.createCollection('events');
 db.createCollection('messages');
+db.createCollection('scheduled_messages');  // New collection for scheduled messages
 
 // Create indexes for better query performance
 db.users.createIndex({ "email": 1 }, { unique: true });
@@ -15,6 +16,8 @@ db.events.createIndex({ "user_id": 1 });
 db.events.createIndex({ "start_time": 1 });
 db.messages.createIndex({ "sender_id": 1 });
 db.messages.createIndex({ "receiver_id": 1 });
+db.scheduled_messages.createIndex({ "scheduled_time": 1 });  // Index for efficient querying by time
+db.scheduled_messages.createIndex({ "sender_id": 1 });
 
 // Insert sample user (optional, for testing)
 try {

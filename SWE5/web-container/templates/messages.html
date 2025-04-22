@@ -6,6 +6,7 @@
 <div class="messages-container">
     <div class="messages-header">
         <h2>Messages</h2>
+        <a href="{{ url_for('scheduled_messages') }}" class="btn-secondary">View Scheduled Messages</a>
     </div>
     
     <div class="messages-content">
@@ -52,7 +53,6 @@
                     <textarea id="scheduled_content" name="content" required></textarea>
                 </div>
                 
-                <!-- Added the missing receiver_id field -->
                 <input type="hidden" name="receiver_id" value="{{ partner_id if partner_id else '' }}">
                 
                 <div class="form-actions">
@@ -74,7 +74,7 @@
         const cancelScheduleBtn = document.getElementById('cancel-schedule');
         
         scheduleBtn.addEventListener('click', function() {
-            scheduleModal.style.display = 'block';
+            scheduleModal.style.display = 'flex'; // Changed from 'block' to 'flex' for better centering
         });
         
         cancelScheduleBtn.addEventListener('click', function() {
