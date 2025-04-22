@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Scheduled Messages - Together App{% endblock %}
+
+{% block content %}
+<div class="messages-container">
+    <div class="messages-header">
+        <h2>Scheduled Messages</h2>
+        <a href="{{ url_for('messages') }}" class="btn-secondary">Back to Messages</a>
+    </div>
+    
+    <div class="scheduled-messages-list">
+        {% if scheduled_messages %}
+            <table class="scheduled-messages-table">
+                <thead>
+                    <tr>
+                        <th>Message</th>
+                        <th>Scheduled For</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in scheduled_messages %}
+                    <tr>
+                        <td>{{ message.get('content') }}</td>
+                        <td>{{ message.get('scheduled_time', '') }}</td>
+                        <td>{{ message.get('status', 'pending') }}</td>
+                        <td>
+                            {% if message.get('status') == 'pending' %}
+                            <form method="POST" action="{{ url_for('cancel_scheduled_message', message_id=message.get('_id')) }}">
+                                <button type="submit" class="btn-secondary">Cancel</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-messages">No scheduled messages</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Optional: Add some client-side formatting for the dates
+    document.addEventListener('DOMContentLoaded', function() {
+        const datetimeElements = document.querySelectorAll('.scheduled-messages-table td:nth-child(2)');
+        
+        datetimeElements.forEach(element => {
+            const isoDate = element.textContent.trim();
+            if (isoDate) {
+                const date = new Date(isoDate);
+                element.textContent = date.toLocaleString();
+            }
+        });
+    });
+</script>
+{% endblock %}
