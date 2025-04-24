@@ -6,7 +6,11 @@
 <div class="messages-container">
     <div class="messages-header">
         <h2>Messages</h2>
-        <a href="{{ url_for('scheduled_messages') }}" class="btn-secondary">View Scheduled Messages</a>
+        {% if partner_name %}
+        <p>Chatting with: <strong>{{ partner_name }}</strong></p>
+        {% else %}
+        <p class="text-warning">No partner connected. <a href="{{ url_for('partner') }}">Connect with a partner</a> to start messaging.</p>
+        {% endif %}
     </div>
     
     <div class="messages-content">
@@ -26,14 +30,16 @@
         <div class="message-input">
             <form method="POST" action="{{ url_for('send_message') }}">
                 <div class="form-group">
-                    <input type="hidden" name="receiver_id" value="{{ partner_id if partner_id else '' }}">
-                    <textarea name="content" placeholder="Type a message..." required></textarea>
+                    {% if partner_id %}
+                    <input type="hidden" name="receiver_id" value="{{ partner_id }}">
+                    {% endif %}
+                    <textarea name="content" placeholder="Type a message..." required {% if not partner_id %}disabled{% endif %}></textarea>
                 </div>
                 
                 <div class="message-actions">
-                    <button type="submit" class="btn-primary">Send</button>
-                    <button type="button" class="btn-secondary" id="record-voice">Record Voice</button>
-                    <button type="button" class="btn-secondary" id="schedule-message">Schedule</button>
+                    <button type="submit" class="btn-primary" {% if not partner_id %}disabled{% endif %}>Send</button>
+                    <button type="button" class="btn-secondary" id="record-voice" {% if not partner_id %}disabled{% endif %}>Record Voice</button>
+                    <button type="button" class="btn-secondary" id="schedule-message" {% if not partner_id %}disabled{% endif %}>Schedule</button>
                 </div>
             </form>
         </div>
