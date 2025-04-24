@@ -2,7 +2,24 @@
 version: '3.9'
 
 services:
-  # API Container
+
+  ai-service:
+    build: ./ai-container
+    container_name: together-ai
+    restart: always
+    ports:
+      - "5002:5002"
+    environment:
+      - MONGO_URI=mongodb://db:27017/together
+      - JWT_SECRET_KEY=jwt-secret-key
+    volumes:
+      - ./ai-container:/app
+    depends_on:
+      - db
+      - api
+    networks:
+      - app-network
+    # API Container
   api:
     build: ./api-container
     container_name: together-api
@@ -15,6 +32,7 @@ services:
       - MONGO_URI=mongodb://db:27017/together
       - SECRET_KEY=dev-secret-key
       - JWT_SECRET_KEY=jwt-secret-key
+      - AI_URL=http://ai-service:5002/api/ai
     volumes:
       - ./api-container:/app
     depends_on:

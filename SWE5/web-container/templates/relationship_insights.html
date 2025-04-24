@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block title %}Relationship Insights - Together App{% endblock %} {% block content %}
+<div class="insights-container">
+    <div class="insights-header">
+        <h2>Your Relationship Insights</h2>
+        <p>Based on your communication patterns from the last {{ time_period_days }} days</p>
+    </div>
+
+    <div class="metrics-summary">
+        <!-- … your metric‐cards … -->
+    </div>
+
+    <div class="sentiment-analysis">
+        <h3>Communication Sentiment</h3>
+        <div class="sentiment-gauge">
+            <div class="gauge-track">
+                <div class="gauge-fill" style="--width: {{ (metrics.get('sentiment_score', 0.5) * 100)|round(0) }}%;"></div>
+                <div class="gauge-marker" style="--marker: {{ (metrics.get('sentiment_score', 0.5) * 100)|round(0) }}%;"></div>
+            </div>
+            <div class="gauge-labels">
+                <span>Negative</span>
+                <span>Neutral</span>
+                <span>Positive</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="insights-section">
+        <h3>Personalized Insights</h3>
+        {% if insights %}
+        <div class="insights-list">
+            {% for insight in insights %}
+            <div class="insight-card {{ insight.type }}">
+                <div class="insight-icon">
+                    {% if insight.type == 'frequency' %}
+                    <i class="fas fa-calendar-day"></i> {% elif insight.type == 'response_time' %}
+                    <i class="fas fa-stopwatch"></i> {% elif insight.type == 'response_rate' %}
+                    <i class="fas fa-percentage"></i> {% elif insight.type == 'sentiment' %}
+                    <i class="fas fa-heart"></i> {% endif %}
+                </div>
+                <div class="insight-content">
+                    <p class="insight-text">{{ insight.text }}</p>
+                    <p class="insight-suggestion">{{ insight.suggestion }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-insights">Keep communicating to generate personalized insights!</p>
+        {% endif %}
+    </div>
+
+    <div class="time-filter">
+        <h3>Change Time Period</h3>
+        <div class="time-options">
+            <a href="{{ url_for('relationship_insights', days=7) }}" class="time-option {% if time_period_days == 7 %}active{% endif %}">
+        7 Days
+      </a>
+            <a href="{{ url_for('relationship_insights', days=30) }}" class="time-option {% if time_period_days == 30 %}active{% endif %}">
+        30 Days
+      </a>
+            <a href="{{ url_for('relationship_insights', days=90) }}" class="time-option {% if time_period_days == 90 %}active{% endif %}">
+        90 Days
+      </a>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // fallback if Font Awesome isn't loaded
+        if (!document.querySelector('link[href*="font-awesome"]')) {
+            document.querySelectorAll('.fas').forEach(icon => {
+                const fa = Array.from(icon.classList)
+                    .find(c => c.startsWith('fa-'));
+                if (fa) {
+                    icon.textContent = fa.replace('fa-', '')[0].toUpperCase();
+                    icon.classList.add('text-icon');
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

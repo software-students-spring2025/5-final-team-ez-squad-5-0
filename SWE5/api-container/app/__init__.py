@@ -22,11 +22,10 @@ def create_app():
     jwt.init_app(app)
     
     # Register blueprints
-    from .routes import auth_bp, calendar_bp, messages_bp
+    from .routes import auth_bp, calendar_bp, messages_bp, ai_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(calendar_bp, url_prefix='/api/calendar')
     app.register_blueprint(messages_bp, url_prefix='/api/messages')
+    app.register_blueprint(ai_bp, url_prefix='/api/ai')
     
     return app
-
-app = create_app()

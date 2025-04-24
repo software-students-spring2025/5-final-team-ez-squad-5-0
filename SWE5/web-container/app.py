@@ -89,6 +89,75 @@ def register():
     
     return render_template('register.html')
 
+# Virtual Pet page
+@app.route('/virtual-pet')
+def virtual_pet():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+
+    # 1) Fetch the pet data from your API (adjust endpoint as needed)
+    pet = {}
+    try:
+        resp = api_request('pet', token=session['token'])
+        if resp.status_code == 200:
+            pet = resp.json().get('pet', {})
+    except Exception:
+        flash('Could not load your pet', 'error')
+
+    # 2) Fetch or compute the personalized insights
+    insights = []
+    try:
+        resp = api_request('relationship/insights', token=session['token'])
+        if resp.status_code == 200:
+            insights = resp.json().get('insights', [])
+    except Exception:
+        flash('Could not load insights', 'error')
+
+    # 3) Prepare anything else your template needs
+    pet_message = f"{pet.get('name', 'Your pet')} is waiting for you!"  
+    partner_id = session.get('user', {}).get('partner_id')
+
+    return render_template(
+        'virtual_pet.html',
+        pet=pet,
+        pet_message=pet_message,
+        insights=insights,
+        partner_id=partner_id
+    )
+# Relationship Insights page
+@app.route('/relationship-insights')
+def relationship_insights():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+
+    # 1) Grab the time window from query string (default 7 days)
+    days = request.args.get('days', 7, type=int)
+
+    # 2) Fetch the metrics summary from your API
+    metrics = {}
+    try:
+        resp = api_request(f'relationship/metrics?days={days}', token=session['token'])
+        if resp.status_code == 200:
+            metrics = resp.json()
+    except Exception:
+        flash('Could not load relationship metrics', 'error')
+
+    # 3) Fetch the detailed insights list
+    insights = []
+    try:
+        resp = api_request(f'relationship/insights?days={days}', token=session['token'])
+        if resp.status_code == 200:
+            insights = resp.json().get('insights', [])
+    except Exception:
+        flash('Could not load personalized insights', 'error')
+
+    return render_template(
+        'relationship_insights.html',
+        metrics=metrics,
+        insights=insights,
+        time_period_days=days
+    )
+
 # Dashboard route
 @app.route('/dashboard')
 def dashboard():

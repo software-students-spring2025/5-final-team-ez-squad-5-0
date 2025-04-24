@@ -7,10 +7,13 @@ from bson.objectid import ObjectId
 # Import the mongo instance - adjust this import according to your actual structure
 from .. import mongo
 
+
 # Create blueprints
 auth_bp = Blueprint('auth', __name__)
 calendar_bp = Blueprint('calendar', __name__)
 messages_bp = Blueprint('messages_bp', __name__)
+# Create the ai_bp blueprint in the API container
+ai_bp = Blueprint('ai', __name__)
 
 # Helper functions
 def get_user_by_email(email):
