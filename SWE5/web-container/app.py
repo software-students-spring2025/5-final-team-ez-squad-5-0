@@ -180,7 +180,6 @@ def add_event():
     
     return redirect(url_for('calendar'))
 
-# Messages routes
 @app.route('/messages')
 def messages():
     if 'token' not in session:
@@ -188,9 +187,21 @@ def messages():
     
     messages_list = []
     user = session.get('user', {})
-    # Get partner ID from user data or use a default
-    partner_id = user.get('partner_id', 'default-partner-id')
+    partner_id = None
+    partner_name = None
     
+    # First get partner info
+    try:
+        response = api_request('auth/partner/status', token=session['token'])
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('status') == 'connected' and data.get('partner'):
+                partner_id = data['partner'].get('id')
+                partner_name = data['partner'].get('name')
+    except Exception as e:
+        flash(f'Error fetching partner info: {str(e)}', 'error')
+    
+    # Then get messages
     try:
         response = api_request('messages/messages', token=session['token'])
         if response.status_code == 200:
@@ -201,7 +212,8 @@ def messages():
     return render_template('messages.html', 
                           messages=messages_list, 
                           user=user,
-                          partner_id=partner_id)  # Pass partner_id to the template
+                          partner_id=partner_id,
+                          partner_name=partner_name)
 
 @app.route('/messages/send', methods=['POST'])
 def send_message():
@@ -209,31 +221,27 @@ def send_message():
         return redirect(url_for('login'))
     
     content = request.form.get('content')
-    receiver_id = request.form.get('receiver_id', 'default-partner-id')
+    receiver_id = request.form.get('receiver_id')
     
-    # Debug info
-    print(f"Sending message: {content} to {receiver_id}")
-    
-    # Skip sending if no content or receiver
-    if not content or not receiver_id:
-        flash('Message content or recipient missing', 'error')
+    # Skip sending if no content
+    if not content:
+        flash('Message content missing', 'error')
         return redirect(url_for('messages'))
     
     try:
-        response = api_request('messages/send', method='POST', token=session['token'], data={
-            'content': content,
-            'receiverId': receiver_id
-        })
+        data = {'content': content}
+        if receiver_id:
+            data['receiverId'] = receiver_id
+            
+        response = api_request('messages/send', method='POST', token=session['token'], data=data)
         
         if response.status_code == 201:
             flash('Message sent successfully', 'success')
         else:
             error_msg = response.json().get('message', 'Failed to send message')
             flash(f'API Error: {error_msg}', 'error')
-            print(f"API Error: {response.status_code}, {error_msg}")
     except Exception as e:
         flash(f'Error: {str(e)}', 'error')
-        print(f"Exception: {str(e)}")
     
     return redirect(url_for('messages'))
 
@@ -308,6 +316,138 @@ def cancel_scheduled_message(message_id):
         flash(f'Error: {str(e)}', 'error')
     
     return redirect(url_for('scheduled_messages'))
+
+# Partner routes
+@app.route('/partner')
+def partner():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    partner_data = {}
+    partner_status = 'none'
+    
+    try:
+        response = api_request('auth/partner/status', token=session['token'])
+        if response.status_code == 200:
+            data = response.json()
+            partner_status = data.get('status', 'none')
+            partner_data = data.get('partner', {})
+    except Exception as e:
+        flash(f'Error fetching partner status: {str(e)}', 'error')
+    
+    return render_template('partner.html', 
+                           partner_status=partner_status,
+                           partner=partner_data)
+
+@app.route('/partner/send-invite', methods=['POST'])
+def send_invite():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    partner_email = request.form.get('partner_email')
+    
+    if not partner_email:
+        flash('Partner email is required', 'error')
+        return redirect(url_for('partner'))
+    
+    try:
+        response = api_request('auth/partner/invite', 
+                               method='POST',
+                               token=session['token'], 
+                               data={'partner_email': partner_email})
+        
+        if response.status_code == 200:
+            flash('Partnership invitation sent successfully', 'success')
+        else:
+            error_msg = response.json().get('message', 'Failed to send invitation')
+            flash(error_msg, 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('partner'))
+
+@app.route('/partner/accept-invite', methods=['POST'])
+def accept_invite():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    try:
+        response = api_request('auth/partner/accept', 
+                               method='POST',
+                               token=session['token'])
+        
+        if response.status_code == 200:
+            flash('Partnership accepted successfully', 'success')
+        else:
+            error_msg = response.json().get('message', 'Failed to accept invitation')
+            flash(error_msg, 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('partner'))
+
+@app.route('/partner/reject-invite', methods=['POST'])
+def reject_invite():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    try:
+        response = api_request('auth/partner/reject', 
+                               method='POST',
+                               token=session['token'])
+        
+        if response.status_code == 200:
+            flash('Partnership invitation rejected', 'success')
+        else:
+            error_msg = response.json().get('message', 'Failed to reject invitation')
+            flash(error_msg, 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('partner'))
+
+@app.route('/partner/cancel-invite', methods=['POST'])
+def cancel_invite():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    # This essentially does the same as reject, but from the sender's side
+    try:
+        response = api_request('auth/partner/reject', 
+                               method='POST',
+                               token=session['token'])
+        
+        if response.status_code == 200:
+            flash('Partnership invitation canceled', 'success')
+        else:
+            error_msg = response.json().get('message', 'Failed to cancel invitation')
+            flash(error_msg, 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('partner'))
+
+@app.route('/partner/disconnect', methods=['POST'])
+def disconnect_partner():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    try:
+        # We'll use the same endpoint as reject for simplicity
+        response = api_request('auth/partner/reject', 
+                               method='POST',
+                               token=session['token'])
+        
+        if response.status_code == 200:
+            flash('Partnership disconnected successfully', 'success')
+        else:
+            error_msg = response.json().get('message', 'Failed to disconnect partnership')
+            flash(error_msg, 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('partner'))
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)

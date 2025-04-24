@@ -37,6 +37,7 @@
                     <div class="event-title">{{ event.get('title') }}</div>
                     <div class="event-time">{{ event.get('start_time', '') | string }}</div>
                     <div class="event-description">{{ event.get('description', '') }}</div>
+                    <div class="event-creator">Created by: {% if event.get('creator') == 'you' %}You{% else %}Your Partner{% endif %}</div>
                 </li>
                 {% endfor %}
             </ul>

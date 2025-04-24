@@ -558,3 +558,63 @@ textarea:focus {
     justify-content: space-between;
     margin-top: 20px;
 }
+
+/* Partner connection styles */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+  
+  .alert.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border-color: #bee5eb;
+  }
+  
+  .alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+  }
+  
+  .alert.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
+  }
+  
+  .button-group {
+    margin: 20px 0;
+  }
+  
+  .button-group form {
+    margin-right: 10px;
+  }
+  
+  .text-warning {
+    color: #856404;
+  }
+  
+  .text-danger {
+    color: #721c24;
+  }
+  
+  .mt-20 {
+    margin-top: 20px;
+  }
+  
+  .partner-actions {
+    margin: 20px 0;
+  }
+  
+  .partner-actions a {
+    margin-right: 10px;
+  }
+  
+  .event-creator {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+  }

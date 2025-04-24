@@ -79,9 +79,28 @@ def login():
 def get_events():
     current_user_id = get_jwt_identity()
     
-    events = list(mongo.db.events.find({'user_id': current_user_id}))
+    # Get user to check for partner
+    current_user = get_user_by_id(current_user_id)
+    
+    # Query for events created by the current user
+    query = {'user_id': current_user_id}
+    
+    # If user has a connected partner, include their events too
+    if current_user.get('partner_id') and current_user.get('partner_status') == 'connected':
+        query = {'$or': [
+            {'user_id': current_user_id},
+            {'user_id': current_user.get('partner_id')}
+        ]}
+    
+    events = list(mongo.db.events.find(query).sort('start_time', 1))
     for event in events:
         event['_id'] = str(event['_id'])
+        
+        # Add creator info
+        if event['user_id'] == current_user_id:
+            event['creator'] = 'you'
+        else:
+            event['creator'] = 'partner'
     
     return jsonify({'events': events}), 200
 
@@ -126,10 +145,23 @@ def send_message():
     current_user_id = get_jwt_identity()
     data = request.json
     
+    # Get current user
+    current_user = get_user_by_id(current_user_id)
+    
+    # Use provided receiver_id or default to partner
+    receiver_id = data.get('receiverId')
+    
+    # If no receiver_id provided, check if user has partner
+    if not receiver_id:
+        if current_user.get('partner_id') and current_user.get('partner_status') == 'connected':
+            receiver_id = current_user.get('partner_id')
+        else:
+            return jsonify({'message': 'No partner connected and no receiver specified'}), 400
+    
     message = {
         'content': data['content'],
         'sender_id': current_user_id,
-        'receiver_id': data['receiverId'],
+        'receiver_id': receiver_id,
         'created_at': datetime.utcnow(),
         'is_read': False
     }
@@ -206,3 +238,119 @@ def cancel_scheduled_message(message_id):
         return jsonify({'message': 'Scheduled message cancelled successfully'}), 200
     except Exception as e:
         return jsonify({'message': f'Error: {str(e)}'}), 500
+    
+# Partner relationship endpoints
+@auth_bp.route('/partner/invite', methods=['POST'])
+@jwt_required()
+def invite_partner():
+    current_user_id = get_jwt_identity()
+    data = request.json
+    partner_email = data.get('partner_email')
+    
+    # Check if partner exists
+    partner = get_user_by_email(partner_email)
+    if not partner:
+        return jsonify({'message': 'User with this email not found'}), 404
+    
+    # Check if user already has a partner
+    current_user = get_user_by_id(current_user_id)
+    if current_user.get('partner_id') and current_user.get('partner_status') == 'connected':
+        return jsonify({'message': 'You are already connected with a partner'}), 400
+    
+    # Check if partner already has a different partner
+    if partner.get('partner_id') and partner.get('partner_id') != current_user_id and partner.get('partner_status') == 'connected':
+        return jsonify({'message': 'This user is already connected with another partner'}), 400
+    
+    # Update current user with pending partnership
+    mongo.db.users.update_one(
+        {'_id': ObjectId(current_user_id)},
+        {'$set': {
+            'partner_id': partner['_id'],
+            'partner_status': 'pending_sent'
+        }}
+    )
+    
+    # Update partner with pending invitation
+    mongo.db.users.update_one(
+        {'_id': ObjectId(partner['_id'])},
+        {'$set': {
+            'partner_id': current_user_id,
+            'partner_status': 'pending_received'
+        }}
+    )
+    
+    return jsonify({'message': 'Partnership invitation sent successfully'}), 200
+
+@auth_bp.route('/partner/accept', methods=['POST'])
+@jwt_required()
+def accept_partner():
+    current_user_id = get_jwt_identity()
+    
+    # Check if user has a pending invitation
+    current_user = get_user_by_id(current_user_id)
+    if not current_user.get('partner_id') or current_user.get('partner_status') != 'pending_received':
+        return jsonify({'message': 'No pending partnership invitation found'}), 404
+    
+    partner_id = current_user.get('partner_id')
+    
+    # Update both users to connected status
+    mongo.db.users.update_one(
+        {'_id': ObjectId(current_user_id)},
+        {'$set': {'partner_status': 'connected'}}
+    )
+    
+    mongo.db.users.update_one(
+        {'_id': ObjectId(partner_id)},
+        {'$set': {'partner_status': 'connected'}}
+    )
+    
+    return jsonify({'message': 'Partnership accepted successfully'}), 200
+
+@auth_bp.route('/partner/reject', methods=['POST'])
+@jwt_required()
+def reject_partner():
+    current_user_id = get_jwt_identity()
+    
+    # Check if user has a pending invitation
+    current_user = get_user_by_id(current_user_id)
+    if not current_user.get('partner_id'):
+        return jsonify({'message': 'No partnership data found'}), 404
+    
+    partner_id = current_user.get('partner_id')
+    
+    # Remove partnership data from both users
+    mongo.db.users.update_one(
+        {'_id': ObjectId(current_user_id)},
+        {'$unset': {'partner_id': '', 'partner_status': ''}}
+    )
+    
+    mongo.db.users.update_one(
+        {'_id': ObjectId(partner_id)},
+        {'$unset': {'partner_id': '', 'partner_status': ''}}
+    )
+    
+    return jsonify({'message': 'Partnership removed'}), 200
+
+@auth_bp.route('/partner/status', methods=['GET'])
+@jwt_required()
+def get_partner_status():
+    current_user_id = get_jwt_identity()
+    
+    # Get current user with partner info
+    current_user = get_user_by_id(current_user_id)
+    
+    partner_data = None
+    if current_user.get('partner_id'):
+        partner = get_user_by_id(current_user.get('partner_id'))
+        if partner:
+            partner_data = {
+                'id': partner['_id'],
+                'name': partner['name'],
+                'email': partner['email']
+            }
+    
+    return jsonify({
+        'has_partner': bool(current_user.get('partner_id')),
+        'status': current_user.get('partner_status', 'none'),
+        'partner': partner_data
+    }), 200
