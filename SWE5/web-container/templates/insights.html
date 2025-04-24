@@ -1,0 +1,212 @@
+{% extends "base.html" %} {% block title %}Relationship Insights - Together App{% endblock %} {% block content %}
+<div class="insights-container">
+    <h2>Relationship Insights</h2>
+
+    <div class="insights-content">
+        <div class="insights-card">
+            <h3>Communication Patterns</h3>
+            <div id="communication-stats" class="loading">
+                <div class="loading-text">Analyzing your communication...</div>
+            </div>
+        </div>
+
+        <div class="insights-card">
+            <h3>Relationship Tips</h3>
+            <div id="relationship-tips" class="loading">
+                <div class="loading-text">Generating personalized tips...</div>
+            </div>
+        </div>
+
+        <div class="insights-card">
+            <h3>Date Night Ideas</h3>
+            <div id="date-ideas">
+                <h4>Get Personalized Suggestions</h4>
+                <form id="date-ideas-form">
+                    <div class="form-group">
+                        <label>Your Interests</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="interests" value="food"> Food & Dining</label>
+                            <label><input type="checkbox" name="interests" value="movies"> Movies & Entertainment</label>
+                            <label><input type="checkbox" name="interests" value="outdoors"> Outdoors & Nature</label>
+                            <label><input type="checkbox" name="interests" value="art"> Arts & Culture</label>
+                            <label><input type="checkbox" name="interests" value="music"> Music & Concerts</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Budget</label>
+                        <select id="budget" name="budget">
+                            <option value="">Any</option>
+                            <option value="low">Low (Free or Inexpensive)</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High (Special Occasion)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location_type">Location Preference</label>
+                        <select id="location_type" name="location_type">
+                            <option value="">Any</option>
+                            <option value="indoor">Indoor</option>
+                            <option value="outdoor">Outdoor</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Get Date Ideas</button>
+                </form>
+
+                <div id="date-suggestions" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // API URL from the server
+        const apiUrl = "{{ config['API_URL'] }}";
+        console.log("Using API URL:", apiUrl);
+
+        // Fetch communication insights
+        fetch(`${apiUrl}/relationship/insights`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer {{ session.get("token") }}'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API responded with status ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const communicationStats = document.getElementById('communication-stats');
+                const relationshipTips = document.getElementById('relationship-tips');
+
+                communicationStats.classList.remove('loading');
+                relationshipTips.classList.remove('loading');
+
+                // Display communication stats
+                let statsHTML = '<div class="stats-grid">';
+
+                if (data.insights.message_frequency !== null) {
+                    statsHTML += `
+                    <div class="stat-item">
+                        <div class="stat-value">${data.insights.message_frequency}</div>
+                        <div class="stat-label">Messages per day</div>
+                    </div>
+                `;
+                }
+
+                if (data.insights.response_time !== null) {
+                    statsHTML += `
+                    <div class="stat-item">
+                        <div class="stat-value">${data.insights.response_time}</div>
+                        <div class="stat-label">Avg. response time (min)</div>
+                    </div>
+                `;
+                }
+
+                if (data.insights.communication_balance !== null) {
+                    statsHTML += `
+                    <div class="stat-item">
+                        <div class="stat-value">${data.insights.communication_balance}%</div>
+                        <div class="stat-label">Messages you send</div>
+                    </div>
+                `;
+                }
+
+                statsHTML += '</div>';
+
+                if (data.message_count === 0) {
+                    statsHTML = '<p>Start sending messages to see communication insights!</p>';
+                }
+
+                communicationStats.innerHTML = statsHTML;
+
+                // Display relationship tips
+                let tipsHTML = '<ul class="tips-list">';
+
+                data.insights.tips.forEach(tip => {
+                    tipsHTML += `<li>${tip}</li>`;
+                });
+
+                tipsHTML += '</ul>';
+                relationshipTips.innerHTML = tipsHTML;
+            })
+            .catch(error => {
+                console.error('Error fetching insights:', error);
+                document.getElementById('communication-stats').innerHTML = '<p>Could not load insights. Please try again later.</p>';
+                document.getElementById('relationship-tips').innerHTML = '<p>Could not load tips. Please try again later.</p>';
+            });
+
+        // Handle date ideas form
+        const dateIdeasForm = document.getElementById('date-ideas-form');
+        const dateSuggestions = document.getElementById('date-suggestions');
+
+        dateIdeasForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get selected interests
+            const interests = Array.from(this.querySelectorAll('input[name="interests"]:checked')).map(input => input.value);
+            const budget = document.getElementById('budget').value;
+            const locationType = document.getElementById('location_type').value;
+
+            // Show loading state
+            dateSuggestions.innerHTML = '<div class="loading-text">Generating date ideas...</div>';
+            dateSuggestions.style.display = 'block';
+
+            // Make API request
+            fetch(`${apiUrl}/relationship/date-ideas`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer {{ session.get("token") }}'
+                    },
+                    body: JSON.stringify({
+                        interests: interests,
+                        budget: budget,
+                        location_type: locationType
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API responded with status ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let suggestionsHTML = '';
+
+                    if (data.date_ideas && data.date_ideas.length > 0) {
+                        suggestionsHTML += '<h4>Suggested Date Ideas</h4><div class="date-ideas-list">';
+
+                        data.date_ideas.forEach(idea => {
+                            suggestionsHTML += `
+                            <div class="date-idea-card">
+                                <h5>${idea.title}</h5>
+                                <p>${idea.description}</p>
+                                <div class="idea-meta">
+                                    <span class="budget-tag ${idea.budget}">Budget: ${idea.budget}</span>
+                                    <span class="location-tag ${idea.location}">Location: ${idea.location}</span>
+                                </div>
+                            </div>
+                        `;
+                        });
+
+                        suggestionsHTML += '</div>';
+                    } else {
+                        suggestionsHTML += '<p>No date ideas found for your criteria. Try different selections!</p>';
+                    }
+
+                    dateSuggestions.innerHTML = suggestionsHTML;
+                })
+                .catch(error => {
+                    console.error('Error fetching date ideas:', error);
+                    dateSuggestions.innerHTML = '<p>Could not load date ideas. Please try again later.</p>';
+                });
+        });
+    });
+</script>
+{% endblock %}
