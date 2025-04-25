@@ -21,17 +21,33 @@ db.messages.createIndex({ "receiver_id": 1 });
 db.scheduled_messages.createIndex({ "scheduled_time": 1 }); // Index for efficient querying by time
 db.scheduled_messages.createIndex({ "sender_id": 1 });
 
-// Insert sample user (optional, for testing)
+// Insert sample users (optional, for testing)
 try {
-    db.users.insertOne({
-        name: "Test User",
-        email: "test@example.com",
-        password_hash: "$2b$12$K8PVqOGX9jCNSvv3xM2qZ.TQP0XR.fjrLPJYEIfMEmMuGTzwYMj2m", // Password: password123
-        created_at: new Date()
-    });
-    print("Created test user: test@example.com / password123");
+  // First user
+  db.users.insertOne({
+    name: "Test User",
+    email: "test@example.com",
+    password_hash: "$2b$12$K8PVqOGX9jCNSvv3xM2qZ.TQP0XR.fjrLPJYEIfMEmMuGTzwYMj2m", // Password: password123
+    partner_email: "partner@example.com",
+    partner_id: null,
+    email_notifications: true,
+    created_at: new Date()
+  });
+  print("Created test user: test@example.com / password123");
+  
+  // Second user (partner)
+  db.users.insertOne({
+    name: "Partner User",
+    email: "partner@example.com",
+    password_hash: "$2b$12$K8PVqOGX9jCNSvv3xM2qZ.TQP0XR.fjrLPJYEIfMEmMuGTzwYMj2m", // Password: password123
+    partner_email: "test@example.com",
+    partner_id: null,
+    email_notifications: true,
+    created_at: new Date()
+  });
+  print("Created partner user: partner@example.com / password123");
 } catch (e) {
-    print("Test user already exists or could not be created: " + e.message);
+  print("Test users already exist or could not be created: " + e.message);
 }
 
 print("MongoDB initialization complete!");

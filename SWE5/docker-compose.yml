@@ -18,6 +18,7 @@ services:
       - api
     networks:
       - app-network
+
   # API Container
   api:
     build: ./api-container
@@ -31,6 +32,13 @@ services:
       - MONGO_URI=mongodb://db:27017/together
       - SECRET_KEY=dev-secret-key
       - JWT_SECRET_KEY=jwt-secret-key
+      # Email configuration - Replace with your actual email credentials
+      - MAIL_SERVER=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USE_TLS=True
+      - MAIL_USERNAME=your-email@gmail.com
+      - MAIL_PASSWORD=your-app-password
+      - MAIL_DEFAULT_SENDER=together-app@example.com
     volumes:
       - ./api-container:/app
     depends_on:
@@ -40,13 +48,20 @@ services:
 
   # Message Worker Container
   message-worker:
-    build: 
+    build:
       context: ./api-container
       dockerfile: Dockerfile.worker
     container_name: together-message-worker
     restart: always
     environment:
       - MONGO_URI=mongodb://db:27017/together
+      # Also add email configuration to the worker
+      - MAIL_SERVER=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USE_TLS=True
+      - MAIL_USERNAME=your-email@gmail.com
+      - MAIL_PASSWORD=your-app-password
+      - MAIL_DEFAULT_SENDER=together-app@example.com
     volumes:
       - ./api-container:/app
     depends_on:

@@ -18,6 +18,25 @@ MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://db:27017/together')
 client = MongoClient(MONGO_URI)
 db = client.get_database()
 
+# Import email utilities - make sure path is correct
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from app.email_utils import send_partner_message
+
+def get_user_by_id(user_id):
+    """
+    Retrieve a user by ID
+    """
+    try:
+        user = db.users.find_one({'_id': ObjectId(user_id)})
+        if user:
+            user['_id'] = str(user['_id'])
+        return user
+    except Exception as e:
+        logger.error(f"Error fetching user {user_id}: {str(e)}")
+        return None
+
 def process_scheduled_messages():
     """
     Check for and process scheduled messages that are due to be sent
@@ -52,6 +71,24 @@ def process_scheduled_messages():
                 {'_id': message['_id']},
                 {'$set': {'status': 'sent', 'sent_at': current_time}}
             )
+            
+            # Send email notification if receiver has it enabled
+            try:
+                # Get sender and receiver info
+                sender = get_user_by_id(message['sender_id'])
+                receiver = get_user_by_id(message['receiver_id'])
+                
+                # Check if receiver has email notifications enabled
+                if receiver and receiver.get('email_notifications', True):
+                    send_partner_message(
+                        receiver['email'],
+                        sender['name'] if sender else "Your partner",
+                        message['content']
+                    )
+                    logger.info(f"Sent email notification to {receiver['email']}")
+            except Exception as e:
+                logger.error(f"Error sending email notification: {str(e)}")
+                # Continue processing even if email fails
             
             count += 1
             logger.info(f"Sent scheduled message {message['_id']}")

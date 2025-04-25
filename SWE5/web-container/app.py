@@ -24,6 +24,9 @@ def api_request(endpoint, method='GET', data=None, token=None):
     elif method == 'POST':
         headers['Content-Type'] = 'application/json'
         response = requests.post(url, headers=headers, data=json.dumps(data))
+    elif method == 'PUT':
+        headers['Content-Type'] = 'application/json'
+        response = requests.put(url, headers=headers, data=json.dumps(data))
     
     return response
 
@@ -71,16 +74,26 @@ def register():
         name = request.form['name']
         email = request.form['email']
         password = request.form['password']
+        partner_email = request.form.get('partner_email', '')  # Get partner email if provided
+        
+        # Prepare request data
+        request_data = {
+            'name': name,
+            'email': email,
+            'password': password
+        }
+        
+        # Add partner email if provided
+        if partner_email:
+            request_data['partner_email'] = partner_email
         
         try:
-            response = api_request('auth/register', method='POST', data={
-                'name': name,
-                'email': email,
-                'password': password
-            })
+            response = api_request('auth/register', method='POST', data=request_data)
             
             if response.status_code == 201:
                 flash('Registration successful! Please login.', 'success')
+                if partner_email:
+                    flash('Invitation email has been sent to your partner.', 'success')
                 return redirect(url_for('login'))
             else:
                 flash(response.json().get('message', 'Registration failed'), 'error')
@@ -88,6 +101,36 @@ def register():
             flash(f'Error: {str(e)}', 'error')
     
     return render_template('register.html')
+
+# Settings route for email notifications
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    user = session.get('user', {})
+    
+    if request.method == 'POST':
+        # Handle email notification toggle
+        email_notifications = 'email_notifications' in request.form
+        
+        try:
+            response = api_request('auth/notifications/email', 
+                                  method='PUT',
+                                  token=session['token'], 
+                                  data={'enabled': email_notifications})
+            
+            if response.status_code == 200:
+                flash('Settings updated successfully', 'success')
+                # Update user in session
+                user['email_notifications'] = email_notifications
+                session['user'] = user
+            else:
+                flash(response.json().get('message', 'Failed to update settings'), 'error')
+        except Exception as e:
+            flash(f'Error: {str(e)}', 'error')
+    
+    return render_template('settings.html', user=user)
 
 # Dashboard route
 @app.route('/dashboard')
@@ -237,6 +280,7 @@ def send_message():
         
         if response.status_code == 201:
             flash('Message sent successfully', 'success')
+            flash('Your partner will also receive an email notification.', 'info')
         else:
             error_msg = response.json().get('message', 'Failed to send message')
             flash(f'API Error: {error_msg}', 'error')
@@ -244,7 +288,6 @@ def send_message():
         flash(f'Error: {str(e)}', 'error')
     
     return redirect(url_for('messages'))
-
 
 @app.route('/messages/schedule', methods=['POST'])
 def schedule_message():
@@ -273,6 +316,7 @@ def schedule_message():
         
         if response.status_code == 201:
             flash('Message scheduled successfully', 'success')
+            flash('Your partner will receive an email when the message is delivered.', 'info')
         else:
             error_msg = response.json().get('message', 'Failed to schedule message')
             flash(f'Error scheduling message: {error_msg}', 'error')
@@ -358,6 +402,7 @@ def send_invite():
         
         if response.status_code == 200:
             flash('Partnership invitation sent successfully', 'success')
+            flash('An email has been sent to your partner with the invitation.', 'info')
         else:
             error_msg = response.json().get('message', 'Failed to send invitation')
             flash(error_msg, 'error')
@@ -378,6 +423,7 @@ def accept_invite():
         
         if response.status_code == 200:
             flash('Partnership accepted successfully', 'success')
+            flash('Your partner will receive an email notification about your acceptance.', 'info')
         else:
             error_msg = response.json().get('message', 'Failed to accept invitation')
             flash(error_msg, 'error')
@@ -481,6 +527,99 @@ def relationship_insights():
         insights=insights,
         time_period_days=days
     )
+
+@app.route('/update_email_notifications', methods=['POST'])
+def update_email_notifications():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    # Get checkbox value (will be present in form data if checked, absent if unchecked)
+    email_notifications = 'email_notifications' in request.form
+    
+    try:
+        response = api_request('auth/notifications/email', 
+                              method='PUT',
+                              token=session['token'], 
+                              data={'enabled': email_notifications})
+        
+        if response.status_code == 200:
+            flash('Email notification preferences updated', 'success')
+            # Update user in session
+            user = session.get('user', {})
+            user['email_notifications'] = email_notifications
+            session['user'] = user
+        else:
+            flash(response.json().get('message', 'Failed to update preferences'), 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('settings'))
+
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    name = request.form.get('name')
+    
+    if not name:
+        flash('Name is required', 'error')
+        return redirect(url_for('settings'))
+    
+    try:
+        response = api_request('auth/profile', 
+                              method='PUT',
+                              token=session['token'], 
+                              data={'name': name})
+        
+        if response.status_code == 200:
+            flash('Profile updated successfully', 'success')
+            # Update user in session
+            user = session.get('user', {})
+            user['name'] = name
+            session['user'] = user
+        else:
+            flash(response.json().get('message', 'Failed to update profile'), 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('settings'))
+
+@app.route('/change_password', methods=['POST'])
+def change_password():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+    confirm_password = request.form.get('confirm_password')
+    
+    # Validate input
+    if not current_password or not new_password or not confirm_password:
+        flash('All password fields are required', 'error')
+        return redirect(url_for('settings'))
+    
+    if new_password != confirm_password:
+        flash('New passwords do not match', 'error')
+        return redirect(url_for('settings'))
+    
+    try:
+        response = api_request('auth/password', 
+                              method='PUT',
+                              token=session['token'], 
+                              data={
+                                  'current_password': current_password,
+                                  'new_password': new_password
+                              })
+        
+        if response.status_code == 200:
+            flash('Password changed successfully', 'success')
+        else:
+            flash(response.json().get('message', 'Failed to change password'), 'error')
+    except Exception as e:
+        flash(f'Error: {str(e)}', 'error')
+    
+    return redirect(url_for('settings'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
