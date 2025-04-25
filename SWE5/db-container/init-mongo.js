@@ -11,6 +11,7 @@ db.createCollection('messages');
 db.createCollection('scheduled_messages'); // New collection for scheduled messages
 db.createCollection('analyzed_messages');
 db.createCollection('relationship_metrics');
+db.createCollection('daily_question');
 
 // Create indexes for better query performance
 db.users.createIndex({ "email": 1 }, { unique: true });
@@ -20,6 +21,7 @@ db.messages.createIndex({ "sender_id": 1 });
 db.messages.createIndex({ "receiver_id": 1 });
 db.scheduled_messages.createIndex({ "scheduled_time": 1 }); // Index for efficient querying by time
 db.scheduled_messages.createIndex({ "sender_id": 1 });
+db.daily_question.createIndex({ "date": 1 }, { unique: true });
 
 // Insert sample users (optional, for testing)
 try {

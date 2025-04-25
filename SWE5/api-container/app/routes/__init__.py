@@ -3,6 +3,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from bson.objectid import ObjectId
+import random
 
 # Import the mongo instance and email utilities
 from .. import mongo
@@ -12,6 +13,7 @@ from ..email_utils import send_invitation_email, send_partner_message
 auth_bp = Blueprint('auth', __name__)
 calendar_bp = Blueprint('calendar', __name__)
 messages_bp = Blueprint('messages_bp', __name__)
+daily_question_bp = Blueprint('daily_question', __name__)
 
 # Helper functions
 def get_user_by_email(email):
@@ -543,3 +545,70 @@ def change_password():
         return jsonify({'message': 'No changes made'}), 200
     
     return jsonify({'message': 'Password updated successfully'}), 200
+
+# In api-container/app/routes/__init__.py
+# The daily question routes need proper path definitions
+
+@daily_question_bp.route('/', methods=['GET'])
+@jwt_required()
+def get_daily_question():
+    today = datetime.utcnow().strftime('%Y-%m-%d')
+    question_doc = mongo.db.daily_questions.find_one({"date": today})
+
+    if question_doc:
+        return jsonify({"question": question_doc["question"]}), 200
+    else:
+        # List of fallback questions
+        questions = [
+            "What made you smile today?",
+            "What's one thing you appreciate about your partner?",
+            "What's your goal for today?",
+            "Share a happy memory!",
+            "What's one thing you're grateful for today?"
+        ]
+        import random
+        random_question = random.choice(questions)
+        mongo.db.daily_questions.insert_one({
+            "date": today,
+            "question": random_question,
+            "answers": []
+        })
+        return jsonify({"question": random_question}), 200
+
+@daily_question_bp.route('/answers', methods=['GET'])
+@jwt_required()
+def get_daily_answers():
+    today = datetime.utcnow().strftime('%Y-%m-%d')
+    question_doc = mongo.db.daily_questions.find_one({"date": today})
+
+    if not question_doc:
+        return jsonify({'answers': []}), 200
+
+    return jsonify({'answers': question_doc.get('answers', [])}), 200
+
+@daily_question_bp.route('/answer', methods=['POST'])
+@jwt_required()
+def submit_answer():
+    data = request.json
+    user_id = get_jwt_identity()
+
+    if not data.get('answer'):
+        return jsonify({'message': 'Answer is required'}), 400
+
+    user = get_user_by_id(user_id)
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    today = datetime.utcnow().strftime('%Y-%m-%d')
+
+    mongo.db.daily_questions.update_one(
+        {"date": today},
+        {"$push": {"answers": {
+            "user_id": user_id,
+            "user_name": user.get('name', 'Anonymous'),
+            "answer": data['answer']
+        }}},
+        upsert=True  # Create if it doesn't exist
+    )
+
+    return jsonify({'message': 'Answer submitted successfully'}), 200

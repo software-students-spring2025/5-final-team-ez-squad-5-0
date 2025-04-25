@@ -4,6 +4,7 @@ import requests
 import os
 import json
 from datetime import datetime
+import random
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-web-secret-key')
@@ -133,6 +134,7 @@ def settings():
     return render_template('settings.html', user=user)
 
 # Dashboard route
+# In web-container/app.py
 @app.route('/dashboard')
 def dashboard():
     if 'token' not in session:
@@ -141,6 +143,8 @@ def dashboard():
     user = session.get('user', {})
     events = []
     messages = []
+    daily_question = "What made you smile today?"  # Default fallback
+    daily_answers = []
     
     # Fetch events
     try:
@@ -157,10 +161,38 @@ def dashboard():
             messages = response.json().get('messages', [])
     except Exception as e:
         flash(f'Error fetching messages: {str(e)}', 'error')
+
+    # Fetch daily question - Fixed URL
+    try:
+        response = api_request('daily-question', token=session['token'])
+        if response.status_code == 200:
+            daily_question = response.json().get('question', daily_question)
+        else:
+            print(f"Failed to get daily question: {response.status_code}")
+    except Exception as e:
+        print(f'Error fetching daily question: {str(e)}')
+        flash(f'Error fetching daily question: {str(e)}', 'error')
+
+    # Fetch daily answers - Fixed URL
+    try:
+        response = api_request('daily-question/answers', token=session['token'])
+        if response.status_code == 200:
+            daily_answers = response.json().get('answers', [])
+        else:
+            print(f"Failed to get daily answers: {response.status_code}")
+    except Exception as e:
+        print(f'Error fetching daily answers: {str(e)}')
+        flash(f'Error fetching daily answers: {str(e)}', 'error')
     
-    return render_template('dashboard.html', user=user, events=events, messages=messages)
+    return render_template('dashboard.html', 
+                          user=user, 
+                          events=events, 
+                          messages=messages, 
+                          daily_question=daily_question, 
+                          daily_answers=daily_answers)
 
 # Dashboard question response
+# In web-container/app.py
 @app.route('/dashboard/question', methods=['POST'])
 def answer_question():
     if 'token' not in session:
@@ -173,10 +205,18 @@ def answer_question():
         return redirect(url_for('dashboard'))
     
     try:
-        # In a real app, you would send this to your API
-        # For now, just acknowledge receipt
-        flash('Your response has been shared', 'success')
+        # Changed to match API endpoint and parameter name
+        result = api_request('daily-question/answer', 
+                          method='POST', 
+                          data={'answer': response_text}, 
+                          token=session['token'])
+
+        if result.status_code == 200:
+            flash('Your response has been shared', 'success')
+        else:
+            flash(result.json().get('message', f'Failed to submit response: Status {result.status_code}'), 'error')
     except Exception as e:
+        print(f"Exception submitting answer: {str(e)}")
         flash(f'Error: {str(e)}', 'error')
     
     return redirect(url_for('dashboard'))
