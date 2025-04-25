@@ -4,8 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from bson.objectid import ObjectId
 
-# Import the mongo instance - adjust this import according to your actual structure
+# Import the mongo instance and email utilities
 from .. import mongo
+from ..email_utils import send_invitation_email, send_partner_message
 
 # Create blueprints
 auth_bp = Blueprint('auth', __name__)
@@ -28,16 +29,47 @@ def get_user_by_id(user_id):
     except:
         return None
 
-def create_user(name, email, password):
+def create_user(name, email, password, partner_email=None):
     user = {
         'name': name,
         'email': email,
         'password_hash': generate_password_hash(password),
+        'email_notifications': True,  # Enable by default
         'created_at': datetime.utcnow()
     }
     
+    # Add partner email if provided
+    if partner_email:
+        user['partner_email'] = partner_email
+    
     result = mongo.db.users.insert_one(user)
     user['_id'] = str(result.inserted_id)
+    
+    # If partner email is provided, check if partner exists and link them
+    if partner_email:
+        partner = get_user_by_email(partner_email)
+        if partner:
+            # Link the users as partners
+            partner_id = partner['_id']
+            user_id = user['_id']
+            
+            # Update the new user with partner's ID and status
+            mongo.db.users.update_one(
+                {'_id': ObjectId(user_id)},
+                {'$set': {
+                    'partner_id': partner_id, 
+                    'partner_status': 'pending_sent'
+                }}
+            )
+            
+            # Update the partner with the new user's ID and status
+            mongo.db.users.update_one(
+                {'_id': ObjectId(partner_id)},
+                {'$set': {
+                    'partner_id': user_id,
+                    'partner_status': 'pending_received'
+                }}
+            )
     
     return user
 
@@ -50,8 +82,19 @@ def register():
     if get_user_by_email(data['email']):
         return jsonify({'message': 'Email already registered'}), 400
     
+    # Get partner email if provided
+    partner_email = data.get('partner_email')
+    
     # Create new user
-    user = create_user(data['name'], data['email'], data['password'])
+    user = create_user(data['name'], data['email'], data['password'], partner_email)
+    
+    # If partner email is provided and partner doesn't exist yet, send invitation
+    if partner_email and not get_user_by_email(partner_email):
+        try:
+            send_invitation_email(partner_email, data['name'])
+        except Exception as e:
+            # Log error but don't prevent registration
+            print(f"Error sending invitation email: {e}")
     
     return jsonify({'message': 'User registered successfully'}), 201
 
@@ -72,6 +115,24 @@ def login():
         'token': access_token,
         'user': user
     }), 200
+
+@auth_bp.route('/notifications/email', methods=['PUT'])
+@jwt_required()
+def update_email_notifications():
+    current_user_id = get_jwt_identity()
+    data = request.json
+    
+    enabled = data.get('enabled', True)
+    
+    result = mongo.db.users.update_one(
+        {'_id': ObjectId(current_user_id)},
+        {'$set': {'email_notifications': enabled}}
+    )
+    
+    if result.modified_count == 0:
+        return jsonify({'message': 'No changes made'}), 200
+    
+    return jsonify({'message': 'Email notification preferences updated successfully'}), 200
 
 # Calendar routes
 @calendar_bp.route('/events', methods=['GET'])
@@ -158,6 +219,11 @@ def send_message():
         else:
             return jsonify({'message': 'No partner connected and no receiver specified'}), 400
     
+    # Get receiver information for email notification
+    receiver = get_user_by_id(receiver_id)
+    if not receiver:
+        return jsonify({'message': 'Receiver not found'}), 404
+    
     message = {
         'content': data['content'],
         'sender_id': current_user_id,
@@ -168,6 +234,18 @@ def send_message():
     
     result = mongo.db.messages.insert_one(message)
     message['_id'] = str(result.inserted_id)
+    
+    # Send email notification if the receiver has it enabled
+    if receiver.get('email_notifications', True):
+        try:
+            send_partner_message(
+                receiver['email'],
+                current_user['name'],
+                data['content']
+            )
+        except Exception as e:
+            # Log error but don't prevent message sending
+            print(f"Error sending email notification: {e}")
     
     return jsonify({'message': 'Message sent successfully', 'data': message}), 201
 
@@ -247,37 +325,68 @@ def invite_partner():
     data = request.json
     partner_email = data.get('partner_email')
     
+    # Get current user info
+    current_user = get_user_by_id(current_user_id)
+    if not current_user:
+        return jsonify({'message': 'User not found'}), 404
+    
     # Check if partner exists
     partner = get_user_by_email(partner_email)
-    if not partner:
-        return jsonify({'message': 'User with this email not found'}), 404
     
     # Check if user already has a partner
-    current_user = get_user_by_id(current_user_id)
     if current_user.get('partner_id') and current_user.get('partner_status') == 'connected':
         return jsonify({'message': 'You are already connected with a partner'}), 400
     
     # Check if partner already has a different partner
-    if partner.get('partner_id') and partner.get('partner_id') != current_user_id and partner.get('partner_status') == 'connected':
+    if partner and partner.get('partner_id') and partner.get('partner_id') != current_user_id and partner.get('partner_status') == 'connected':
         return jsonify({'message': 'This user is already connected with another partner'}), 400
     
-    # Update current user with pending partnership
-    mongo.db.users.update_one(
-        {'_id': ObjectId(current_user_id)},
-        {'$set': {
-            'partner_id': partner['_id'],
-            'partner_status': 'pending_sent'
-        }}
-    )
-    
-    # Update partner with pending invitation
-    mongo.db.users.update_one(
-        {'_id': ObjectId(partner['_id'])},
-        {'$set': {
-            'partner_id': current_user_id,
-            'partner_status': 'pending_received'
-        }}
-    )
+    # If partner exists in the system
+    if partner:
+        # Update current user with pending partnership
+        mongo.db.users.update_one(
+            {'_id': ObjectId(current_user_id)},
+            {'$set': {
+                'partner_id': partner['_id'],
+                'partner_status': 'pending_sent'
+            }}
+        )
+        
+        # Update partner with pending invitation
+        mongo.db.users.update_one(
+            {'_id': ObjectId(partner['_id'])},
+            {'$set': {
+                'partner_id': current_user_id,
+                'partner_status': 'pending_received'
+            }}
+        )
+        
+        # Send email notification to partner
+        if partner.get('email_notifications', True):
+            try:
+                send_partner_message(
+                    partner['email'],
+                    current_user['name'],
+                    f"{current_user['name']} has invited you to connect on Together. Log in to accept or decline this invitation."
+                )
+            except Exception as e:
+                print(f"Error sending partnership email: {e}")
+    else:
+        # Partner doesn't exist in the system, send invitation email
+        try:
+            send_invitation_email(partner_email, current_user['name'])
+            
+            # Update current user with pending partnership
+            mongo.db.users.update_one(
+                {'_id': ObjectId(current_user_id)},
+                {'$set': {
+                    'partner_email': partner_email,
+                    'partner_status': 'invited'
+                }}
+            )
+        except Exception as e:
+            print(f"Error sending invitation email: {e}")
+            return jsonify({'message': 'Error sending invitation'}), 500
     
     return jsonify({'message': 'Partnership invitation sent successfully'}), 200
 
@@ -292,6 +401,7 @@ def accept_partner():
         return jsonify({'message': 'No pending partnership invitation found'}), 404
     
     partner_id = current_user.get('partner_id')
+    partner = get_user_by_id(partner_id)
     
     # Update both users to connected status
     mongo.db.users.update_one(
@@ -303,6 +413,17 @@ def accept_partner():
         {'_id': ObjectId(partner_id)},
         {'$set': {'partner_status': 'connected'}}
     )
+    
+    # Send notification email to partner about acceptance
+    if partner and partner.get('email_notifications', True):
+        try:
+            send_partner_message(
+                partner['email'],
+                current_user['name'],
+                f"{current_user['name']} has accepted your partnership invitation. You are now connected!"
+            )
+        except Exception as e:
+            print(f"Error sending acceptance email: {e}")
     
     return jsonify({'message': 'Partnership accepted successfully'}), 200
 
@@ -317,6 +438,7 @@ def reject_partner():
         return jsonify({'message': 'No partnership data found'}), 404
     
     partner_id = current_user.get('partner_id')
+    partner = get_user_by_id(partner_id)
     
     # Remove partnership data from both users
     mongo.db.users.update_one(
@@ -328,6 +450,17 @@ def reject_partner():
         {'_id': ObjectId(partner_id)},
         {'$unset': {'partner_id': '', 'partner_status': ''}}
     )
+    
+    # Notify partner about rejection (optional)
+    if partner and partner.get('email_notifications', True):
+        try:
+            send_partner_message(
+                partner['email'],
+                "Together App",
+                f"Your partnership invitation has been declined."
+            )
+        except Exception as e:
+            print(f"Error sending rejection email: {e}")
     
     return jsonify({'message': 'Partnership removed'}), 200
 
@@ -354,3 +487,59 @@ def get_partner_status():
         'status': current_user.get('partner_status', 'none'),
         'partner': partner_data
     }), 200
+
+
+# Add to api-container/app/routes/__init__.py or create a new file
+
+@auth_bp.route('/profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    current_user_id = get_jwt_identity()
+    data = request.json
+    
+    name = data.get('name')
+    if not name:
+        return jsonify({'message': 'Name is required'}), 400
+    
+    result = mongo.db.users.update_one(
+        {'_id': ObjectId(current_user_id)},
+        {'$set': {'name': name}}
+    )
+    
+    if result.modified_count == 0:
+        return jsonify({'message': 'No changes made'}), 200
+    
+    return jsonify({'message': 'Profile updated successfully'}), 200
+
+@auth_bp.route('/password', methods=['PUT'])
+@jwt_required()
+def change_password():
+    current_user_id = get_jwt_identity()
+    data = request.json
+    
+    current_password = data.get('current_password')
+    new_password = data.get('new_password')
+    
+    if not current_password or not new_password:
+        return jsonify({'message': 'Both current and new password are required'}), 400
+    
+    # Get current user
+    user = mongo.db.users.find_one({'_id': ObjectId(current_user_id)})
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+    
+    # Verify current password
+    if not check_password_hash(user['password_hash'], current_password):
+        return jsonify({'message': 'Current password is incorrect'}), 401
+    
+    # Update with new password
+    new_password_hash = generate_password_hash(new_password)
+    result = mongo.db.users.update_one(
+        {'_id': ObjectId(current_user_id)},
+        {'$set': {'password_hash': new_password_hash}}
+    )
+    
+    if result.modified_count == 0:
+        return jsonify({'message': 'No changes made'}), 200
+    
+    return jsonify({'message': 'Password updated successfully'}), 200
