@@ -7,7 +7,7 @@ from datetime import datetime
 # Import models
 from .models.sentiment_analyzer import SentimentAnalyzer
 from .models.relationship_metrics import RelationshipMetrics
-from .models.virtual_pet import VirtualPet
+
 
 # Initialize blueprint and models
 ai_bp = Blueprint('ai', __name__)
@@ -22,7 +22,6 @@ mongo_client = MongoClient(mongo_uri)
 
 # Initialize models with MongoDB client
 relationship_metrics = RelationshipMetrics(mongo_client)
-virtual_pet = VirtualPet(mongo_client)
 
 # Sentiment analysis endpoint
 @ai_bp.route('/analyze-message', methods=['POST'])
@@ -86,40 +85,6 @@ def get_relationship_metrics(partner_id):
         'metrics': metrics
     }), 200
 
-# Virtual pet endpoints
-@ai_bp.route('/pet/<partner_id>', methods=['GET'])
-@jwt_required()
-def get_virtual_pet(partner_id):
-    current_user_id = get_jwt_identity()
-    
-    pet = virtual_pet.get_pet(current_user_id, partner_id)
-    pet = virtual_pet.update_pet_state(current_user_id, partner_id)
-    
-    return jsonify(pet), 200
-
-@ai_bp.route('/pet/<partner_id>/feed', methods=['POST'])
-@jwt_required()
-def feed_pet(partner_id):
-    current_user_id = get_jwt_identity()
-    
-    pet = virtual_pet.feed_pet(current_user_id, partner_id)
-    
-    return jsonify({
-        'message': 'Pet fed successfully',
-        'pet': pet
-    }), 200
-
-@ai_bp.route('/pet/<partner_id>/play', methods=['POST'])
-@jwt_required()
-def play_with_pet(partner_id):
-    current_user_id = get_jwt_identity()
-    
-    pet = virtual_pet.play_with_pet(current_user_id, partner_id)
-    
-    return jsonify({
-        'message': 'Played with pet successfully',
-        'pet': pet
-    }), 200
 
 # Smart reminder suggestion endpoint
 @ai_bp.route('/smart-reminders', methods=['GET'])
