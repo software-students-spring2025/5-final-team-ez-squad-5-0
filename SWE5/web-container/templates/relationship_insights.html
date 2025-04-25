@@ -1,82 +1,243 @@
-{% extends "base.html" %} {% block title %}Relationship Insights - Together App{% endblock %} {% block content %}
+{% extends "base.html" %}
+
+{% block title %}Relationship Insights - Together App{% endblock %}
+
+{% block content %}
 <div class="insights-container">
     <div class="insights-header">
         <h2>Your Relationship Insights</h2>
-        <p>Based on your communication patterns from the last {{ time_period_days }} days</p>
+        <div class="insights-tabs">
+            <a href="#historical" class="tab active" data-target="historical-insights">Historical</a>
+            <a href="#realtime" class="tab" data-target="realtime-insights">Real-time</a>
+        </div>
     </div>
-
-    <div class="metrics-summary">
-        <!-- … your metric‐cards … -->
-    </div>
-
-    <div class="sentiment-analysis">
-        <h3>Communication Sentiment</h3>
-        <div class="sentiment-gauge">
-            <div class="gauge-track">
-                <div class="gauge-fill" style="--width: {{ (metrics.get('sentiment_score', 0.5) * 100)|round(0) }}%;"></div>
-                <div class="gauge-marker" style="--marker: {{ (metrics.get('sentiment_score', 0.5) * 100)|round(0) }}%;"></div>
+    
+    <!-- Historical Insights Section -->
+    <div id="historical-insights" class="insights-section active">
+        <p class="section-description">Based on your communication patterns from the last {{ time_period_days }} days</p>
+        
+        <div class="metrics-summary">
+            <div class="metric-card">
+                <div class="metric-icon message-count-icon">
+                    <i class="fas fa-comment"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>Messages</h3>
+                    <div class="metric-value">{{ metrics.get('message_count', 0) }}</div>
+                    <div class="metric-desc">Total messages exchanged</div>
+                </div>
             </div>
-            <div class="gauge-labels">
-                <span>Negative</span>
-                <span>Neutral</span>
-                <span>Positive</span>
+            
+            <div class="metric-card">
+                <div class="metric-icon response-icon">
+                    <i class="fas fa-reply"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>Response Rate</h3>
+                    <div class="metric-value">{{ metrics.get('response_rate', 0)|round(1) }}%</div>
+                    <div class="metric-desc">of messages get a reply</div>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-icon time-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>Response Time</h3>
+                    <div class="metric-value">{{ metrics.get('avg_response_time_minutes', 0)|round(0) }} min</div>
+                    <div class="metric-desc">Average response time</div>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-icon frequency-icon">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>Frequency</h3>
+                    <div class="metric-value">{{ metrics.get('message_frequency_per_day', 0)|round(1) }}</div>
+                    <div class="metric-desc">Messages per day</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sentiment-analysis">
+            <h3>Communication Sentiment</h3>
+            <div class="sentiment-gauge">
+                <div class="gauge-track">
+                    <div class="gauge-fill" style="--width: {{ (metrics.get('sentiment_score', 0.5) * 100)|round(0) }}%;"></div>
+                    <div class="gauge-marker" style="--marker: {{ (metrics.get('sentiment_score', 0.5) * 100)|round(0) }}%;"></div>
+                </div>
+                <div class="gauge-labels">
+                    <span>Negative</span>
+                    <span>Neutral</span>
+                    <span>Positive</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="insights-section">
+            <h3>Personalized Insights</h3>
+            {% if insights %}
+            <div class="insights-list">
+                {% for insight in insights %}
+                <div class="insight-card {{ insight.type }}">
+                    <div class="insight-icon">
+                        {% if insight.type == 'frequency' %}
+                        <i class="fas fa-calendar-day"></i>
+                        {% elif insight.type == 'response_time' %}
+                        <i class="fas fa-stopwatch"></i>
+                        {% elif insight.type == 'response_rate' %}
+                        <i class="fas fa-percentage"></i>
+                        {% elif insight.type == 'sentiment' %}
+                        <i class="fas fa-heart"></i>
+                        {% endif %}
+                    </div>
+                    <div class="insight-content">
+                        <p class="insight-text">{{ insight.text }}</p>
+                        <p class="insight-suggestion">{{ insight.suggestion }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="no-insights">Keep communicating to generate personalized insights!</p>
+            {% endif %}
+        </div>
+
+        <div class="time-filter">
+            <h3>Change Time Period</h3>
+            <div class="time-options">
+                <a href="{{ url_for('relationship_insights', days=7) }}" class="time-option {% if time_period_days == 7 %}active{% endif %}">7 Days</a>
+                <a href="{{ url_for('relationship_insights', days=30) }}" class="time-option {% if time_period_days == 30 %}active{% endif %}">30 Days</a>
+                <a href="{{ url_for('relationship_insights', days=90) }}" class="time-option {% if time_period_days == 90 %}active{% endif %}">90 Days</a>
             </div>
         </div>
     </div>
 
-    <div class="insights-section">
-        <h3>Personalized Insights</h3>
-        {% if insights %}
-        <div class="insights-list">
-            {% for insight in insights %}
-            <div class="insight-card {{ insight.type }}">
-                <div class="insight-icon">
-                    {% if insight.type == 'frequency' %}
-                    <i class="fas fa-calendar-day"></i> {% elif insight.type == 'response_time' %}
-                    <i class="fas fa-stopwatch"></i> {% elif insight.type == 'response_rate' %}
-                    <i class="fas fa-percentage"></i> {% elif insight.type == 'sentiment' %}
-                    <i class="fas fa-heart"></i> {% endif %}
+    <!-- Real-time Insights Section -->
+    <div id="realtime-insights" class="insights-section">
+        <div class="realtime-header">
+            <div class="status-container">
+                <span id="connection-status" class="status-indicator offline">Disconnected</span>
+            </div>
+            <div class="time-window">
+                <label for="time-window-selector">Time window:</label>
+                <select id="time-window-selector" class="time-window-selector">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+        </div>
+
+        <div class="realtime-metrics">
+            <div class="metric-panel">
+                <div class="metric-item">
+                    <div class="metric-icon message-count-icon">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                    <div class="metric-details">
+                        <h3>Messages</h3>
+                        <div id="message-count" class="metric-value">0</div>
+                    </div>
                 </div>
-                <div class="insight-content">
-                    <p class="insight-text">{{ insight.text }}</p>
-                    <p class="insight-suggestion">{{ insight.suggestion }}</p>
+
+                <div class="metric-item">
+                    <div class="metric-icon response-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-details">
+                        <h3>Avg Response</h3>
+                        <div id="response-time" class="metric-value">N/A</div>
+                    </div>
+                </div>
+
+                <div class="metric-item">
+                    <div class="metric-icon frequency-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="metric-details">
+                        <h3>Frequency</h3>
+                        <div id="message-frequency" class="metric-value">0 per min</div>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <p class="no-insights">Keep communicating to generate personalized insights!</p>
-        {% endif %}
-    </div>
 
-    <div class="time-filter">
-        <h3>Change Time Period</h3>
-        <div class="time-options">
-            <a href="{{ url_for('relationship_insights', days=7) }}" class="time-option {% if time_period_days == 7 %}active{% endif %}">
-        7 Days
-      </a>
-            <a href="{{ url_for('relationship_insights', days=30) }}" class="time-option {% if time_period_days == 30 %}active{% endif %}">
-        30 Days
-      </a>
-            <a href="{{ url_for('relationship_insights', days=90) }}" class="time-option {% if time_period_days == 90 %}active{% endif %}">
-        90 Days
-      </a>
+            <div class="sentiment-realtime">
+                <h3>Message Sentiment</h3>
+                <div id="sentiment-chart" class="sentiment-chart">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="realtime-insights-container">
+            <h3>Live Insights</h3>
+            <div id="real-time-insights" class="insights-list">
+                <!-- Will be populated by JavaScript -->
+                <div class="no-insights">Connect to see real-time insights</div>
+            </div>
         </div>
     </div>
 </div>
-{% endblock %} {% block scripts %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/real-time-insights.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // fallback if Font Awesome isn't loaded
-        if (!document.querySelector('link[href*="font-awesome"]')) {
-            document.querySelectorAll('.fas').forEach(icon => {
-                const fa = Array.from(icon.classList)
-                    .find(c => c.startsWith('fa-'));
-                if (fa) {
-                    icon.textContent = fa.replace('fa-', '')[0].toUpperCase();
-                    icon.classList.add('text-icon');
+        // Tab switching logic
+        const tabs = document.querySelectorAll('.insights-tabs .tab');
+        const sections = document.querySelectorAll('.insights-section');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all tabs and sections
+                tabs.forEach(t => t.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                
+                // Initialize real-time insights if real-time tab is active
+                if (targetId === 'realtime-insights' && !window.insightsInstance) {
+                    initRealTimeInsights();
                 }
             });
+        });
+        
+        // Initialize real-time insights
+        function initRealTimeInsights() {
+            // Only initialize if not already initialized and if we have a partner
+            if (window.insightsInstance || !('{{ partner_id }}')) {
+                return;
+            }
+            
+            window.insightsInstance = new RealTimeInsights({
+                socketUrl: '{{ config.get("AI_SOCKET_URL", "http://" + request.host.split(":")[0] + ":5002") }}',
+                partnerId: '{{ partner_id }}',
+                token: '{{ session.get("token", "") }}',
+                elements: {
+                    insightsContainer: 'real-time-insights',
+                    sentimentChart: 'sentiment-chart',
+                    messageCount: 'message-count',
+                    responseTime: 'response-time',
+                    messageFrequency: 'message-frequency',
+                    statusIndicator: 'connection-status',
+                    timeWindowSelector: 'time-window-selector'
+                }
+            });
+        }
+
+        // Initialize real-time insights if hash is #realtime
+        if (window.location.hash === '#realtime') {
+            document.querySelector('[data-target="realtime-insights"]').click();
         }
     });
 </script>
