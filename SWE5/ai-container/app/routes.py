@@ -23,6 +23,7 @@ mongo_client = MongoClient(mongo_uri)
 # Initialize models with MongoDB client
 relationship_metrics = RelationshipMetrics(mongo_client)
 
+
 # Sentiment analysis endpoint
 @ai_bp.route('/analyze-message', methods=['POST'])
 @jwt_required()
