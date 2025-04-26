@@ -320,7 +320,6 @@ def send_message():
         
         if response.status_code == 201:
             flash('Message sent successfully', 'success')
-            flash('Your partner will also receive an email notification.', 'info')
         else:
             error_msg = response.json().get('message', 'Failed to send message')
             flash(f'API Error: {error_msg}', 'error')
@@ -356,7 +355,6 @@ def schedule_message():
         
         if response.status_code == 201:
             flash('Message scheduled successfully', 'success')
-            flash('Your partner will receive an email when the message is delivered.', 'info')
         else:
             error_msg = response.json().get('message', 'Failed to schedule message')
             flash(f'Error scheduling message: {error_msg}', 'error')
@@ -442,7 +440,6 @@ def send_invite():
         
         if response.status_code == 200:
             flash('Partnership invitation sent successfully', 'success')
-            flash('An email has been sent to your partner with the invitation.', 'info')
         else:
             error_msg = response.json().get('message', 'Failed to send invitation')
             flash(error_msg, 'error')
@@ -463,7 +460,6 @@ def accept_invite():
         
         if response.status_code == 200:
             flash('Partnership accepted successfully', 'success')
-            flash('Your partner will receive an email notification about your acceptance.', 'info')
         else:
             error_msg = response.json().get('message', 'Failed to accept invitation')
             flash(error_msg, 'error')
@@ -534,33 +530,6 @@ def disconnect_partner():
     
     return redirect(url_for('partner'))
 
-
-@app.route('/update_email_notifications', methods=['POST'])
-def update_email_notifications():
-    if 'token' not in session:
-        return redirect(url_for('login'))
-    
-    # Get checkbox value (will be present in form data if checked, absent if unchecked)
-    email_notifications = 'email_notifications' in request.form
-    
-    try:
-        response = api_request('auth/notifications/email', 
-                              method='PUT',
-                              token=session['token'], 
-                              data={'enabled': email_notifications})
-        
-        if response.status_code == 200:
-            flash('Email notification preferences updated', 'success')
-            # Update user in session
-            user = session.get('user', {})
-            user['email_notifications'] = email_notifications
-            session['user'] = user
-        else:
-            flash(response.json().get('message', 'Failed to update preferences'), 'error')
-    except Exception as e:
-        flash(f'Error: {str(e)}', 'error')
-    
-    return redirect(url_for('settings'))
 
 @app.route('/update_profile', methods=['POST'])
 def update_profile():
