@@ -16,7 +16,7 @@
     <div class="messages-content">
         <div class="message-list">
             {% if messages %}
-                {% for message in messages %}
+                {% for message in messages|reverse %}
                 <div class="message {{ 'sent' if message.get('sender_id') == user.get('_id') else 'received' }}">
                     <div class="message-content">{{ message.get('content') }}</div>
                     <div class="message-time">{{ message.get('created_at', '') | string }}</div>
@@ -92,6 +92,13 @@
                 scheduleModal.style.display = 'none';
             }
         });
+
+        // Scroll to bottom of message list
+        const messageList = document.querySelector(".message-list");
+        if (messageList) {
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+
     
         
     });
