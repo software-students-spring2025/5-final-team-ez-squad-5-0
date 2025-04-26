@@ -34,12 +34,13 @@ def create_app():
     init_mail(app)
     
     # Register blueprints
-    from .routes import auth_bp, calendar_bp, messages_bp
+    from .routes import auth_bp, calendar_bp, messages_bp, daily_question_bp
     from .routes.settings import settings_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(calendar_bp, url_prefix='/api/calendar')
     app.register_blueprint(messages_bp, url_prefix='/api/messages')
     app.register_blueprint(settings_bp, url_prefix='/api/settings')
+    app.register_blueprint(daily_question_bp, url_prefix='/api/daily-question')
     
     return app
 
