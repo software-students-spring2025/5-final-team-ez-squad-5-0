@@ -1,4 +1,4 @@
-name: Web Container CI/CD
+name: Web Container CI
 
 on:
   push:
