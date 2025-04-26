@@ -21,6 +21,7 @@
             <a href="{{ url_for('messages') }}" class="nav-link">Messages</a>
             <a href="{{ url_for('partner') }}" class="nav-link">Partner</a>
             <a href="{{ url_for('settings') }}" class="nav-link">Settings</a>
+            <a href="{{ url_for('quiz_page') }}" class="nav-link">Quiz</a>
         </div>
         <div class="navbar-user">
             {% if session.get('user') %}
@@ -43,5 +44,6 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
+
 
 </html>

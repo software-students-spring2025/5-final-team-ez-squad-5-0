@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block title %}Compatibility Quiz - Together App{% endblock %} {% block content %}
+<div class="quiz-container">
+    <div class="quiz-header">
+        <h2>Compatibility Quiz</h2>
+        <div class="score-container">
+            <div class="score-circle">
+                <span id="score-circle">0</span>
+            </div>
+            <div class="score-label">Compatibility</div>
+            <div class="score-details">
+                <span id="score-percent">0%</span> match rate
+            </div>
+        </div>
+    </div>
+
+    <div class="quiz-stats">
+        <div class="stats-item">
+            <span class="stat-label">Questions:</span>
+            <span class="stat-value" id="stat-answered">0</span>
+        </div>
+        <div class="stats-item">
+            <span class="stat-label">Matches:</span>
+            <span class="stat-value" id="stat-matches">0</span>
+        </div>
+        <div class="stats-item">
+            <span class="stat-label">Match Rate:</span>
+            <span class="stat-value" id="stat-percent">0%</span>
+        </div>
+    </div>
+
+    <div class="quiz-content">
+        <div id="batch-progress" class="batch-progress">Question 1 of 5</div>
+
+        <div id="loading-indicator" class="loading-indicator" style="display: none;">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading...</div>
+        </div>
+
+        <div id="error-display" class="error-message" style="display: none;"></div>
+
+        <div id="waiting-indicator" class="waiting-indicator" style="display: none;">
+            <div class="waiting-icon">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="waiting-text">Waiting for your partner to answer this question...</div>
+            <div class="waiting-note">We'll automatically move to the next question once they respond.</div>
+        </div>
+
+        <div id="quiz-complete" class="quiz-complete" style="display: none;">
+            <div class="complete-header">
+                <h3>Batch Complete!</h3>
+                <div class="complete-score">
+                    <div class="score-value" id="complete-score">0</div>
+                    <div class="score-label">Compatibility Score</div>
+                </div>
+            </div>
+
+            <div class="complete-stats">
+                <div class="complete-stat">
+                    <span id="complete-matches">0</span>/<span id="complete-total-qs">5</span> questions matched
+                </div>
+            </div>
+
+            <div class="batch-results-header">Question Results:</div>
+            <div id="batch-results" class="batch-results">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+
+        <div class="question-container">
+            <h3 id="q-text">Loading question...</h3>
+
+            <div id="opts" class="options-container">
+                <!-- Options will be populated here -->
+            </div>
+        </div>
+
+        <div class="quiz-actions">
+            <button id="next-btn" class="btn-primary" style="display: none;">Next Question</button>
+            <button id="new-batch-btn" class="btn-secondary" style="display: none;">Start New Batch</button>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

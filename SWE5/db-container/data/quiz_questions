@@ -1,0 +1,2401 @@
+[{
+        "text": "Would you rather cats or dogs?",
+        "options": [
+            "Cats",
+            "Dogs"
+        ],
+        "tag": "pet"
+    },
+    {
+        "text": "Would you rather coffee or tea?",
+        "options": [
+            "Coffee",
+            "Tea"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather sweet or savory?",
+        "options": [
+            "Sweet",
+            "Savory"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather morning or night?",
+        "options": [
+            "Morning",
+            "Night"
+        ],
+        "tag": "lifestyle"
+    },
+    {
+        "text": "Would you rather beach or mountains?",
+        "options": [
+            "Beach",
+            "Mountains"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather summer or winter?",
+        "options": [
+            "Summer",
+            "Winter"
+        ],
+        "tag": "season"
+    },
+    {
+        "text": "Would you rather pizza or burgers?",
+        "options": [
+            "Pizza",
+            "Burgers"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather books or movies?",
+        "options": [
+            "Books",
+            "Movies"
+        ],
+        "tag": "entertainment"
+    },
+    {
+        "text": "Would you rather train or plane?",
+        "options": [
+            "Train",
+            "Plane"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather car or bicycle?",
+        "options": [
+            "Car",
+            "Bicycle"
+        ],
+        "tag": "transport"
+    },
+    {
+        "text": "Would you rather android or ios?",
+        "options": [
+            "Android",
+            "iOS"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather pc or mac?",
+        "options": [
+            "PC",
+            "Mac"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather chrome or firefox?",
+        "options": [
+            "Chrome",
+            "Firefox"
+        ],
+        "tag": "browser"
+    },
+    {
+        "text": "Would you rather call or text?",
+        "options": [
+            "Call",
+            "Text"
+        ],
+        "tag": "communication"
+    },
+    {
+        "text": "Would you rather hug or handshake?",
+        "options": [
+            "Hug",
+            "Handshake"
+        ],
+        "tag": "greeting"
+    },
+    {
+        "text": "Would you rather board games or video games?",
+        "options": [
+            "Board Games",
+            "Video Games"
+        ],
+        "tag": "games"
+    },
+    {
+        "text": "Would you rather science or arts?",
+        "options": [
+            "Science",
+            "Arts"
+        ],
+        "tag": "subject"
+    },
+    {
+        "text": "Would you rather sneakers or sandals?",
+        "options": [
+            "Sneakers",
+            "Sandals"
+        ],
+        "tag": "footwear"
+    },
+    {
+        "text": "Would you rather black or white?",
+        "options": [
+            "Black",
+            "White"
+        ],
+        "tag": "color"
+    },
+    {
+        "text": "Would you rather netflix or youtube?",
+        "options": [
+            "Netflix",
+            "YouTube"
+        ],
+        "tag": "streaming"
+    },
+    {
+        "text": "Would you rather stairs or elevator?",
+        "options": [
+            "Stairs",
+            "Elevator"
+        ],
+        "tag": "facility"
+    },
+    {
+        "text": "Would you rather bath or shower?",
+        "options": [
+            "Bath",
+            "Shower"
+        ],
+        "tag": "hygiene"
+    },
+    {
+        "text": "Would you rather pancakes or waffles?",
+        "options": [
+            "Pancakes",
+            "Waffles"
+        ],
+        "tag": "breakfast"
+    },
+    {
+        "text": "Would you rather tea or juice?",
+        "options": [
+            "Tea",
+            "Juice"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather salty or sweet?",
+        "options": [
+            "Salty",
+            "Sweet"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather gold or silver?",
+        "options": [
+            "Gold",
+            "Silver"
+        ],
+        "tag": "metal"
+    },
+    {
+        "text": "Would you rather comedy or drama?",
+        "options": [
+            "Comedy",
+            "Drama"
+        ],
+        "tag": "movie"
+    },
+    {
+        "text": "Would you rather football or basketball?",
+        "options": [
+            "Football",
+            "Basketball"
+        ],
+        "tag": "sports"
+    },
+    {
+        "text": "Would you rather pen or pencil?",
+        "options": [
+            "Pen",
+            "Pencil"
+        ],
+        "tag": "stationery"
+    },
+    {
+        "text": "Would you rather chocolate or vanilla?",
+        "options": [
+            "Chocolate",
+            "Vanilla"
+        ],
+        "tag": "flavor"
+    },
+    {
+        "text": "Would you rather pool or beach?",
+        "options": [
+            "Pool",
+            "Beach"
+        ],
+        "tag": "location"
+    },
+    {
+        "text": "Would you rather phone or laptop?",
+        "options": [
+            "Phone",
+            "Laptop"
+        ],
+        "tag": "device"
+    },
+    {
+        "text": "Would you rather twitter or instagram?",
+        "options": [
+            "Twitter",
+            "Instagram"
+        ],
+        "tag": "social"
+    },
+    {
+        "text": "Would you rather morning gym or evening gym?",
+        "options": [
+            "Morning Gym",
+            "Evening Gym"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather yoga or pilates?",
+        "options": [
+            "Yoga",
+            "Pilates"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather city or countryside?",
+        "options": [
+            "City",
+            "Countryside"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather camping or hotel?",
+        "options": [
+            "Camping",
+            "Hotel"
+        ],
+        "tag": "accommodation"
+    },
+    {
+        "text": "Would you rather museum or zoo?",
+        "options": [
+            "Museum",
+            "Zoo"
+        ],
+        "tag": "place"
+    },
+    {
+        "text": "Would you rather sushi or tacos?",
+        "options": [
+            "Sushi",
+            "Tacos"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather hotdog or burger?",
+        "options": [
+            "Hotdog",
+            "Burger"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather rain or snow?",
+        "options": [
+            "Rain",
+            "Snow"
+        ],
+        "tag": "weather"
+    },
+    {
+        "text": "Would you rather sunrise or sunset?",
+        "options": [
+            "Sunrise",
+            "Sunset"
+        ],
+        "tag": "time"
+    },
+    {
+        "text": "Would you rather rock or pop?",
+        "options": [
+            "Rock",
+            "Pop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather classical or hip-hop?",
+        "options": [
+            "Classical",
+            "Hip-hop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather e-book or printed book?",
+        "options": [
+            "E-book",
+            "Printed Book"
+        ],
+        "tag": "reading"
+    },
+    {
+        "text": "Would you rather online shopping or in-store shopping?",
+        "options": [
+            "Online Shopping",
+            "In-store Shopping"
+        ],
+        "tag": "shopping"
+    },
+    {
+        "text": "Would you rather cats or dogs?",
+        "options": [
+            "Cats",
+            "Dogs"
+        ],
+        "tag": "pet"
+    },
+    {
+        "text": "Would you rather coffee or tea?",
+        "options": [
+            "Coffee",
+            "Tea"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather sweet or savory?",
+        "options": [
+            "Sweet",
+            "Savory"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather morning or night?",
+        "options": [
+            "Morning",
+            "Night"
+        ],
+        "tag": "lifestyle"
+    },
+    {
+        "text": "Would you rather beach or mountains?",
+        "options": [
+            "Beach",
+            "Mountains"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather summer or winter?",
+        "options": [
+            "Summer",
+            "Winter"
+        ],
+        "tag": "season"
+    },
+    {
+        "text": "Would you rather pizza or burgers?",
+        "options": [
+            "Pizza",
+            "Burgers"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather books or movies?",
+        "options": [
+            "Books",
+            "Movies"
+        ],
+        "tag": "entertainment"
+    },
+    {
+        "text": "Would you rather train or plane?",
+        "options": [
+            "Train",
+            "Plane"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather car or bicycle?",
+        "options": [
+            "Car",
+            "Bicycle"
+        ],
+        "tag": "transport"
+    },
+    {
+        "text": "Would you rather android or ios?",
+        "options": [
+            "Android",
+            "iOS"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather pc or mac?",
+        "options": [
+            "PC",
+            "Mac"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather chrome or firefox?",
+        "options": [
+            "Chrome",
+            "Firefox"
+        ],
+        "tag": "browser"
+    },
+    {
+        "text": "Would you rather call or text?",
+        "options": [
+            "Call",
+            "Text"
+        ],
+        "tag": "communication"
+    },
+    {
+        "text": "Would you rather hug or handshake?",
+        "options": [
+            "Hug",
+            "Handshake"
+        ],
+        "tag": "greeting"
+    },
+    {
+        "text": "Would you rather board games or video games?",
+        "options": [
+            "Board Games",
+            "Video Games"
+        ],
+        "tag": "games"
+    },
+    {
+        "text": "Would you rather science or arts?",
+        "options": [
+            "Science",
+            "Arts"
+        ],
+        "tag": "subject"
+    },
+    {
+        "text": "Would you rather sneakers or sandals?",
+        "options": [
+            "Sneakers",
+            "Sandals"
+        ],
+        "tag": "footwear"
+    },
+    {
+        "text": "Would you rather black or white?",
+        "options": [
+            "Black",
+            "White"
+        ],
+        "tag": "color"
+    },
+    {
+        "text": "Would you rather netflix or youtube?",
+        "options": [
+            "Netflix",
+            "YouTube"
+        ],
+        "tag": "streaming"
+    },
+    {
+        "text": "Would you rather stairs or elevator?",
+        "options": [
+            "Stairs",
+            "Elevator"
+        ],
+        "tag": "facility"
+    },
+    {
+        "text": "Would you rather bath or shower?",
+        "options": [
+            "Bath",
+            "Shower"
+        ],
+        "tag": "hygiene"
+    },
+    {
+        "text": "Would you rather pancakes or waffles?",
+        "options": [
+            "Pancakes",
+            "Waffles"
+        ],
+        "tag": "breakfast"
+    },
+    {
+        "text": "Would you rather tea or juice?",
+        "options": [
+            "Tea",
+            "Juice"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather salty or sweet?",
+        "options": [
+            "Salty",
+            "Sweet"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather gold or silver?",
+        "options": [
+            "Gold",
+            "Silver"
+        ],
+        "tag": "metal"
+    },
+    {
+        "text": "Would you rather comedy or drama?",
+        "options": [
+            "Comedy",
+            "Drama"
+        ],
+        "tag": "movie"
+    },
+    {
+        "text": "Would you rather football or basketball?",
+        "options": [
+            "Football",
+            "Basketball"
+        ],
+        "tag": "sports"
+    },
+    {
+        "text": "Would you rather pen or pencil?",
+        "options": [
+            "Pen",
+            "Pencil"
+        ],
+        "tag": "stationery"
+    },
+    {
+        "text": "Would you rather chocolate or vanilla?",
+        "options": [
+            "Chocolate",
+            "Vanilla"
+        ],
+        "tag": "flavor"
+    },
+    {
+        "text": "Would you rather pool or beach?",
+        "options": [
+            "Pool",
+            "Beach"
+        ],
+        "tag": "location"
+    },
+    {
+        "text": "Would you rather phone or laptop?",
+        "options": [
+            "Phone",
+            "Laptop"
+        ],
+        "tag": "device"
+    },
+    {
+        "text": "Would you rather twitter or instagram?",
+        "options": [
+            "Twitter",
+            "Instagram"
+        ],
+        "tag": "social"
+    },
+    {
+        "text": "Would you rather morning gym or evening gym?",
+        "options": [
+            "Morning Gym",
+            "Evening Gym"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather yoga or pilates?",
+        "options": [
+            "Yoga",
+            "Pilates"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather city or countryside?",
+        "options": [
+            "City",
+            "Countryside"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather camping or hotel?",
+        "options": [
+            "Camping",
+            "Hotel"
+        ],
+        "tag": "accommodation"
+    },
+    {
+        "text": "Would you rather museum or zoo?",
+        "options": [
+            "Museum",
+            "Zoo"
+        ],
+        "tag": "place"
+    },
+    {
+        "text": "Would you rather sushi or tacos?",
+        "options": [
+            "Sushi",
+            "Tacos"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather hotdog or burger?",
+        "options": [
+            "Hotdog",
+            "Burger"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather rain or snow?",
+        "options": [
+            "Rain",
+            "Snow"
+        ],
+        "tag": "weather"
+    },
+    {
+        "text": "Would you rather sunrise or sunset?",
+        "options": [
+            "Sunrise",
+            "Sunset"
+        ],
+        "tag": "time"
+    },
+    {
+        "text": "Would you rather rock or pop?",
+        "options": [
+            "Rock",
+            "Pop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather classical or hip-hop?",
+        "options": [
+            "Classical",
+            "Hip-hop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather e-book or printed book?",
+        "options": [
+            "E-book",
+            "Printed Book"
+        ],
+        "tag": "reading"
+    },
+    {
+        "text": "Would you rather online shopping or in-store shopping?",
+        "options": [
+            "Online Shopping",
+            "In-store Shopping"
+        ],
+        "tag": "shopping"
+    },
+    {
+        "text": "Would you rather cats or dogs?",
+        "options": [
+            "Cats",
+            "Dogs"
+        ],
+        "tag": "pet"
+    },
+    {
+        "text": "Would you rather coffee or tea?",
+        "options": [
+            "Coffee",
+            "Tea"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather sweet or savory?",
+        "options": [
+            "Sweet",
+            "Savory"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather morning or night?",
+        "options": [
+            "Morning",
+            "Night"
+        ],
+        "tag": "lifestyle"
+    },
+    {
+        "text": "Would you rather beach or mountains?",
+        "options": [
+            "Beach",
+            "Mountains"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather summer or winter?",
+        "options": [
+            "Summer",
+            "Winter"
+        ],
+        "tag": "season"
+    },
+    {
+        "text": "Would you rather pizza or burgers?",
+        "options": [
+            "Pizza",
+            "Burgers"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather books or movies?",
+        "options": [
+            "Books",
+            "Movies"
+        ],
+        "tag": "entertainment"
+    },
+    {
+        "text": "Would you rather train or plane?",
+        "options": [
+            "Train",
+            "Plane"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather car or bicycle?",
+        "options": [
+            "Car",
+            "Bicycle"
+        ],
+        "tag": "transport"
+    },
+    {
+        "text": "Would you rather android or ios?",
+        "options": [
+            "Android",
+            "iOS"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather pc or mac?",
+        "options": [
+            "PC",
+            "Mac"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather chrome or firefox?",
+        "options": [
+            "Chrome",
+            "Firefox"
+        ],
+        "tag": "browser"
+    },
+    {
+        "text": "Would you rather call or text?",
+        "options": [
+            "Call",
+            "Text"
+        ],
+        "tag": "communication"
+    },
+    {
+        "text": "Would you rather hug or handshake?",
+        "options": [
+            "Hug",
+            "Handshake"
+        ],
+        "tag": "greeting"
+    },
+    {
+        "text": "Would you rather board games or video games?",
+        "options": [
+            "Board Games",
+            "Video Games"
+        ],
+        "tag": "games"
+    },
+    {
+        "text": "Would you rather science or arts?",
+        "options": [
+            "Science",
+            "Arts"
+        ],
+        "tag": "subject"
+    },
+    {
+        "text": "Would you rather sneakers or sandals?",
+        "options": [
+            "Sneakers",
+            "Sandals"
+        ],
+        "tag": "footwear"
+    },
+    {
+        "text": "Would you rather black or white?",
+        "options": [
+            "Black",
+            "White"
+        ],
+        "tag": "color"
+    },
+    {
+        "text": "Would you rather netflix or youtube?",
+        "options": [
+            "Netflix",
+            "YouTube"
+        ],
+        "tag": "streaming"
+    },
+    {
+        "text": "Would you rather stairs or elevator?",
+        "options": [
+            "Stairs",
+            "Elevator"
+        ],
+        "tag": "facility"
+    },
+    {
+        "text": "Would you rather bath or shower?",
+        "options": [
+            "Bath",
+            "Shower"
+        ],
+        "tag": "hygiene"
+    },
+    {
+        "text": "Would you rather pancakes or waffles?",
+        "options": [
+            "Pancakes",
+            "Waffles"
+        ],
+        "tag": "breakfast"
+    },
+    {
+        "text": "Would you rather tea or juice?",
+        "options": [
+            "Tea",
+            "Juice"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather salty or sweet?",
+        "options": [
+            "Salty",
+            "Sweet"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather gold or silver?",
+        "options": [
+            "Gold",
+            "Silver"
+        ],
+        "tag": "metal"
+    },
+    {
+        "text": "Would you rather comedy or drama?",
+        "options": [
+            "Comedy",
+            "Drama"
+        ],
+        "tag": "movie"
+    },
+    {
+        "text": "Would you rather football or basketball?",
+        "options": [
+            "Football",
+            "Basketball"
+        ],
+        "tag": "sports"
+    },
+    {
+        "text": "Would you rather pen or pencil?",
+        "options": [
+            "Pen",
+            "Pencil"
+        ],
+        "tag": "stationery"
+    },
+    {
+        "text": "Would you rather chocolate or vanilla?",
+        "options": [
+            "Chocolate",
+            "Vanilla"
+        ],
+        "tag": "flavor"
+    },
+    {
+        "text": "Would you rather pool or beach?",
+        "options": [
+            "Pool",
+            "Beach"
+        ],
+        "tag": "location"
+    },
+    {
+        "text": "Would you rather phone or laptop?",
+        "options": [
+            "Phone",
+            "Laptop"
+        ],
+        "tag": "device"
+    },
+    {
+        "text": "Would you rather twitter or instagram?",
+        "options": [
+            "Twitter",
+            "Instagram"
+        ],
+        "tag": "social"
+    },
+    {
+        "text": "Would you rather morning gym or evening gym?",
+        "options": [
+            "Morning Gym",
+            "Evening Gym"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather yoga or pilates?",
+        "options": [
+            "Yoga",
+            "Pilates"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather city or countryside?",
+        "options": [
+            "City",
+            "Countryside"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather camping or hotel?",
+        "options": [
+            "Camping",
+            "Hotel"
+        ],
+        "tag": "accommodation"
+    },
+    {
+        "text": "Would you rather museum or zoo?",
+        "options": [
+            "Museum",
+            "Zoo"
+        ],
+        "tag": "place"
+    },
+    {
+        "text": "Would you rather sushi or tacos?",
+        "options": [
+            "Sushi",
+            "Tacos"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather hotdog or burger?",
+        "options": [
+            "Hotdog",
+            "Burger"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather rain or snow?",
+        "options": [
+            "Rain",
+            "Snow"
+        ],
+        "tag": "weather"
+    },
+    {
+        "text": "Would you rather sunrise or sunset?",
+        "options": [
+            "Sunrise",
+            "Sunset"
+        ],
+        "tag": "time"
+    },
+    {
+        "text": "Would you rather rock or pop?",
+        "options": [
+            "Rock",
+            "Pop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather classical or hip-hop?",
+        "options": [
+            "Classical",
+            "Hip-hop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather e-book or printed book?",
+        "options": [
+            "E-book",
+            "Printed Book"
+        ],
+        "tag": "reading"
+    },
+    {
+        "text": "Would you rather online shopping or in-store shopping?",
+        "options": [
+            "Online Shopping",
+            "In-store Shopping"
+        ],
+        "tag": "shopping"
+    },
+    {
+        "text": "Would you rather cats or dogs?",
+        "options": [
+            "Cats",
+            "Dogs"
+        ],
+        "tag": "pet"
+    },
+    {
+        "text": "Would you rather coffee or tea?",
+        "options": [
+            "Coffee",
+            "Tea"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather sweet or savory?",
+        "options": [
+            "Sweet",
+            "Savory"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather morning or night?",
+        "options": [
+            "Morning",
+            "Night"
+        ],
+        "tag": "lifestyle"
+    },
+    {
+        "text": "Would you rather beach or mountains?",
+        "options": [
+            "Beach",
+            "Mountains"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather summer or winter?",
+        "options": [
+            "Summer",
+            "Winter"
+        ],
+        "tag": "season"
+    },
+    {
+        "text": "Would you rather pizza or burgers?",
+        "options": [
+            "Pizza",
+            "Burgers"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather books or movies?",
+        "options": [
+            "Books",
+            "Movies"
+        ],
+        "tag": "entertainment"
+    },
+    {
+        "text": "Would you rather train or plane?",
+        "options": [
+            "Train",
+            "Plane"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather car or bicycle?",
+        "options": [
+            "Car",
+            "Bicycle"
+        ],
+        "tag": "transport"
+    },
+    {
+        "text": "Would you rather android or ios?",
+        "options": [
+            "Android",
+            "iOS"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather pc or mac?",
+        "options": [
+            "PC",
+            "Mac"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather chrome or firefox?",
+        "options": [
+            "Chrome",
+            "Firefox"
+        ],
+        "tag": "browser"
+    },
+    {
+        "text": "Would you rather call or text?",
+        "options": [
+            "Call",
+            "Text"
+        ],
+        "tag": "communication"
+    },
+    {
+        "text": "Would you rather hug or handshake?",
+        "options": [
+            "Hug",
+            "Handshake"
+        ],
+        "tag": "greeting"
+    },
+    {
+        "text": "Would you rather board games or video games?",
+        "options": [
+            "Board Games",
+            "Video Games"
+        ],
+        "tag": "games"
+    },
+    {
+        "text": "Would you rather science or arts?",
+        "options": [
+            "Science",
+            "Arts"
+        ],
+        "tag": "subject"
+    },
+    {
+        "text": "Would you rather sneakers or sandals?",
+        "options": [
+            "Sneakers",
+            "Sandals"
+        ],
+        "tag": "footwear"
+    },
+    {
+        "text": "Would you rather black or white?",
+        "options": [
+            "Black",
+            "White"
+        ],
+        "tag": "color"
+    },
+    {
+        "text": "Would you rather netflix or youtube?",
+        "options": [
+            "Netflix",
+            "YouTube"
+        ],
+        "tag": "streaming"
+    },
+    {
+        "text": "Would you rather stairs or elevator?",
+        "options": [
+            "Stairs",
+            "Elevator"
+        ],
+        "tag": "facility"
+    },
+    {
+        "text": "Would you rather bath or shower?",
+        "options": [
+            "Bath",
+            "Shower"
+        ],
+        "tag": "hygiene"
+    },
+    {
+        "text": "Would you rather pancakes or waffles?",
+        "options": [
+            "Pancakes",
+            "Waffles"
+        ],
+        "tag": "breakfast"
+    },
+    {
+        "text": "Would you rather tea or juice?",
+        "options": [
+            "Tea",
+            "Juice"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather salty or sweet?",
+        "options": [
+            "Salty",
+            "Sweet"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather gold or silver?",
+        "options": [
+            "Gold",
+            "Silver"
+        ],
+        "tag": "metal"
+    },
+    {
+        "text": "Would you rather comedy or drama?",
+        "options": [
+            "Comedy",
+            "Drama"
+        ],
+        "tag": "movie"
+    },
+    {
+        "text": "Would you rather football or basketball?",
+        "options": [
+            "Football",
+            "Basketball"
+        ],
+        "tag": "sports"
+    },
+    {
+        "text": "Would you rather pen or pencil?",
+        "options": [
+            "Pen",
+            "Pencil"
+        ],
+        "tag": "stationery"
+    },
+    {
+        "text": "Would you rather chocolate or vanilla?",
+        "options": [
+            "Chocolate",
+            "Vanilla"
+        ],
+        "tag": "flavor"
+    },
+    {
+        "text": "Would you rather pool or beach?",
+        "options": [
+            "Pool",
+            "Beach"
+        ],
+        "tag": "location"
+    },
+    {
+        "text": "Would you rather phone or laptop?",
+        "options": [
+            "Phone",
+            "Laptop"
+        ],
+        "tag": "device"
+    },
+    {
+        "text": "Would you rather twitter or instagram?",
+        "options": [
+            "Twitter",
+            "Instagram"
+        ],
+        "tag": "social"
+    },
+    {
+        "text": "Would you rather morning gym or evening gym?",
+        "options": [
+            "Morning Gym",
+            "Evening Gym"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather yoga or pilates?",
+        "options": [
+            "Yoga",
+            "Pilates"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather city or countryside?",
+        "options": [
+            "City",
+            "Countryside"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather camping or hotel?",
+        "options": [
+            "Camping",
+            "Hotel"
+        ],
+        "tag": "accommodation"
+    },
+    {
+        "text": "Would you rather museum or zoo?",
+        "options": [
+            "Museum",
+            "Zoo"
+        ],
+        "tag": "place"
+    },
+    {
+        "text": "Would you rather sushi or tacos?",
+        "options": [
+            "Sushi",
+            "Tacos"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather hotdog or burger?",
+        "options": [
+            "Hotdog",
+            "Burger"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather rain or snow?",
+        "options": [
+            "Rain",
+            "Snow"
+        ],
+        "tag": "weather"
+    },
+    {
+        "text": "Would you rather sunrise or sunset?",
+        "options": [
+            "Sunrise",
+            "Sunset"
+        ],
+        "tag": "time"
+    },
+    {
+        "text": "Would you rather rock or pop?",
+        "options": [
+            "Rock",
+            "Pop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather classical or hip-hop?",
+        "options": [
+            "Classical",
+            "Hip-hop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather e-book or printed book?",
+        "options": [
+            "E-book",
+            "Printed Book"
+        ],
+        "tag": "reading"
+    },
+    {
+        "text": "Would you rather online shopping or in-store shopping?",
+        "options": [
+            "Online Shopping",
+            "In-store Shopping"
+        ],
+        "tag": "shopping"
+    },
+    {
+        "text": "Would you rather cats or dogs?",
+        "options": [
+            "Cats",
+            "Dogs"
+        ],
+        "tag": "pet"
+    },
+    {
+        "text": "Would you rather coffee or tea?",
+        "options": [
+            "Coffee",
+            "Tea"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather sweet or savory?",
+        "options": [
+            "Sweet",
+            "Savory"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather morning or night?",
+        "options": [
+            "Morning",
+            "Night"
+        ],
+        "tag": "lifestyle"
+    },
+    {
+        "text": "Would you rather beach or mountains?",
+        "options": [
+            "Beach",
+            "Mountains"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather summer or winter?",
+        "options": [
+            "Summer",
+            "Winter"
+        ],
+        "tag": "season"
+    },
+    {
+        "text": "Would you rather pizza or burgers?",
+        "options": [
+            "Pizza",
+            "Burgers"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather books or movies?",
+        "options": [
+            "Books",
+            "Movies"
+        ],
+        "tag": "entertainment"
+    },
+    {
+        "text": "Would you rather train or plane?",
+        "options": [
+            "Train",
+            "Plane"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather car or bicycle?",
+        "options": [
+            "Car",
+            "Bicycle"
+        ],
+        "tag": "transport"
+    },
+    {
+        "text": "Would you rather android or ios?",
+        "options": [
+            "Android",
+            "iOS"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather pc or mac?",
+        "options": [
+            "PC",
+            "Mac"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather chrome or firefox?",
+        "options": [
+            "Chrome",
+            "Firefox"
+        ],
+        "tag": "browser"
+    },
+    {
+        "text": "Would you rather call or text?",
+        "options": [
+            "Call",
+            "Text"
+        ],
+        "tag": "communication"
+    },
+    {
+        "text": "Would you rather hug or handshake?",
+        "options": [
+            "Hug",
+            "Handshake"
+        ],
+        "tag": "greeting"
+    },
+    {
+        "text": "Would you rather board games or video games?",
+        "options": [
+            "Board Games",
+            "Video Games"
+        ],
+        "tag": "games"
+    },
+    {
+        "text": "Would you rather science or arts?",
+        "options": [
+            "Science",
+            "Arts"
+        ],
+        "tag": "subject"
+    },
+    {
+        "text": "Would you rather sneakers or sandals?",
+        "options": [
+            "Sneakers",
+            "Sandals"
+        ],
+        "tag": "footwear"
+    },
+    {
+        "text": "Would you rather black or white?",
+        "options": [
+            "Black",
+            "White"
+        ],
+        "tag": "color"
+    },
+    {
+        "text": "Would you rather netflix or youtube?",
+        "options": [
+            "Netflix",
+            "YouTube"
+        ],
+        "tag": "streaming"
+    },
+    {
+        "text": "Would you rather stairs or elevator?",
+        "options": [
+            "Stairs",
+            "Elevator"
+        ],
+        "tag": "facility"
+    },
+    {
+        "text": "Would you rather bath or shower?",
+        "options": [
+            "Bath",
+            "Shower"
+        ],
+        "tag": "hygiene"
+    },
+    {
+        "text": "Would you rather pancakes or waffles?",
+        "options": [
+            "Pancakes",
+            "Waffles"
+        ],
+        "tag": "breakfast"
+    },
+    {
+        "text": "Would you rather tea or juice?",
+        "options": [
+            "Tea",
+            "Juice"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather salty or sweet?",
+        "options": [
+            "Salty",
+            "Sweet"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather gold or silver?",
+        "options": [
+            "Gold",
+            "Silver"
+        ],
+        "tag": "metal"
+    },
+    {
+        "text": "Would you rather comedy or drama?",
+        "options": [
+            "Comedy",
+            "Drama"
+        ],
+        "tag": "movie"
+    },
+    {
+        "text": "Would you rather football or basketball?",
+        "options": [
+            "Football",
+            "Basketball"
+        ],
+        "tag": "sports"
+    },
+    {
+        "text": "Would you rather pen or pencil?",
+        "options": [
+            "Pen",
+            "Pencil"
+        ],
+        "tag": "stationery"
+    },
+    {
+        "text": "Would you rather chocolate or vanilla?",
+        "options": [
+            "Chocolate",
+            "Vanilla"
+        ],
+        "tag": "flavor"
+    },
+    {
+        "text": "Would you rather pool or beach?",
+        "options": [
+            "Pool",
+            "Beach"
+        ],
+        "tag": "location"
+    },
+    {
+        "text": "Would you rather phone or laptop?",
+        "options": [
+            "Phone",
+            "Laptop"
+        ],
+        "tag": "device"
+    },
+    {
+        "text": "Would you rather twitter or instagram?",
+        "options": [
+            "Twitter",
+            "Instagram"
+        ],
+        "tag": "social"
+    },
+    {
+        "text": "Would you rather morning gym or evening gym?",
+        "options": [
+            "Morning Gym",
+            "Evening Gym"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather yoga or pilates?",
+        "options": [
+            "Yoga",
+            "Pilates"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather city or countryside?",
+        "options": [
+            "City",
+            "Countryside"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather camping or hotel?",
+        "options": [
+            "Camping",
+            "Hotel"
+        ],
+        "tag": "accommodation"
+    },
+    {
+        "text": "Would you rather museum or zoo?",
+        "options": [
+            "Museum",
+            "Zoo"
+        ],
+        "tag": "place"
+    },
+    {
+        "text": "Would you rather sushi or tacos?",
+        "options": [
+            "Sushi",
+            "Tacos"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather hotdog or burger?",
+        "options": [
+            "Hotdog",
+            "Burger"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather rain or snow?",
+        "options": [
+            "Rain",
+            "Snow"
+        ],
+        "tag": "weather"
+    },
+    {
+        "text": "Would you rather sunrise or sunset?",
+        "options": [
+            "Sunrise",
+            "Sunset"
+        ],
+        "tag": "time"
+    },
+    {
+        "text": "Would you rather rock or pop?",
+        "options": [
+            "Rock",
+            "Pop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather classical or hip-hop?",
+        "options": [
+            "Classical",
+            "Hip-hop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather e-book or printed book?",
+        "options": [
+            "E-book",
+            "Printed Book"
+        ],
+        "tag": "reading"
+    },
+    {
+        "text": "Would you rather online shopping or in-store shopping?",
+        "options": [
+            "Online Shopping",
+            "In-store Shopping"
+        ],
+        "tag": "shopping"
+    },
+    {
+        "text": "Would you rather cats or dogs?",
+        "options": [
+            "Cats",
+            "Dogs"
+        ],
+        "tag": "pet"
+    },
+    {
+        "text": "Would you rather coffee or tea?",
+        "options": [
+            "Coffee",
+            "Tea"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather sweet or savory?",
+        "options": [
+            "Sweet",
+            "Savory"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather morning or night?",
+        "options": [
+            "Morning",
+            "Night"
+        ],
+        "tag": "lifestyle"
+    },
+    {
+        "text": "Would you rather beach or mountains?",
+        "options": [
+            "Beach",
+            "Mountains"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather summer or winter?",
+        "options": [
+            "Summer",
+            "Winter"
+        ],
+        "tag": "season"
+    },
+    {
+        "text": "Would you rather pizza or burgers?",
+        "options": [
+            "Pizza",
+            "Burgers"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather books or movies?",
+        "options": [
+            "Books",
+            "Movies"
+        ],
+        "tag": "entertainment"
+    },
+    {
+        "text": "Would you rather train or plane?",
+        "options": [
+            "Train",
+            "Plane"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather car or bicycle?",
+        "options": [
+            "Car",
+            "Bicycle"
+        ],
+        "tag": "transport"
+    },
+    {
+        "text": "Would you rather android or ios?",
+        "options": [
+            "Android",
+            "iOS"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather pc or mac?",
+        "options": [
+            "PC",
+            "Mac"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather chrome or firefox?",
+        "options": [
+            "Chrome",
+            "Firefox"
+        ],
+        "tag": "browser"
+    },
+    {
+        "text": "Would you rather call or text?",
+        "options": [
+            "Call",
+            "Text"
+        ],
+        "tag": "communication"
+    },
+    {
+        "text": "Would you rather hug or handshake?",
+        "options": [
+            "Hug",
+            "Handshake"
+        ],
+        "tag": "greeting"
+    },
+    {
+        "text": "Would you rather board games or video games?",
+        "options": [
+            "Board Games",
+            "Video Games"
+        ],
+        "tag": "games"
+    },
+    {
+        "text": "Would you rather science or arts?",
+        "options": [
+            "Science",
+            "Arts"
+        ],
+        "tag": "subject"
+    },
+    {
+        "text": "Would you rather sneakers or sandals?",
+        "options": [
+            "Sneakers",
+            "Sandals"
+        ],
+        "tag": "footwear"
+    },
+    {
+        "text": "Would you rather black or white?",
+        "options": [
+            "Black",
+            "White"
+        ],
+        "tag": "color"
+    },
+    {
+        "text": "Would you rather netflix or youtube?",
+        "options": [
+            "Netflix",
+            "YouTube"
+        ],
+        "tag": "streaming"
+    },
+    {
+        "text": "Would you rather stairs or elevator?",
+        "options": [
+            "Stairs",
+            "Elevator"
+        ],
+        "tag": "facility"
+    },
+    {
+        "text": "Would you rather bath or shower?",
+        "options": [
+            "Bath",
+            "Shower"
+        ],
+        "tag": "hygiene"
+    },
+    {
+        "text": "Would you rather pancakes or waffles?",
+        "options": [
+            "Pancakes",
+            "Waffles"
+        ],
+        "tag": "breakfast"
+    },
+    {
+        "text": "Would you rather tea or juice?",
+        "options": [
+            "Tea",
+            "Juice"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather salty or sweet?",
+        "options": [
+            "Salty",
+            "Sweet"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather gold or silver?",
+        "options": [
+            "Gold",
+            "Silver"
+        ],
+        "tag": "metal"
+    },
+    {
+        "text": "Would you rather comedy or drama?",
+        "options": [
+            "Comedy",
+            "Drama"
+        ],
+        "tag": "movie"
+    },
+    {
+        "text": "Would you rather football or basketball?",
+        "options": [
+            "Football",
+            "Basketball"
+        ],
+        "tag": "sports"
+    },
+    {
+        "text": "Would you rather pen or pencil?",
+        "options": [
+            "Pen",
+            "Pencil"
+        ],
+        "tag": "stationery"
+    },
+    {
+        "text": "Would you rather chocolate or vanilla?",
+        "options": [
+            "Chocolate",
+            "Vanilla"
+        ],
+        "tag": "flavor"
+    },
+    {
+        "text": "Would you rather pool or beach?",
+        "options": [
+            "Pool",
+            "Beach"
+        ],
+        "tag": "location"
+    },
+    {
+        "text": "Would you rather phone or laptop?",
+        "options": [
+            "Phone",
+            "Laptop"
+        ],
+        "tag": "device"
+    },
+    {
+        "text": "Would you rather twitter or instagram?",
+        "options": [
+            "Twitter",
+            "Instagram"
+        ],
+        "tag": "social"
+    },
+    {
+        "text": "Would you rather morning gym or evening gym?",
+        "options": [
+            "Morning Gym",
+            "Evening Gym"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather yoga or pilates?",
+        "options": [
+            "Yoga",
+            "Pilates"
+        ],
+        "tag": "exercise"
+    },
+    {
+        "text": "Would you rather city or countryside?",
+        "options": [
+            "City",
+            "Countryside"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather camping or hotel?",
+        "options": [
+            "Camping",
+            "Hotel"
+        ],
+        "tag": "accommodation"
+    },
+    {
+        "text": "Would you rather museum or zoo?",
+        "options": [
+            "Museum",
+            "Zoo"
+        ],
+        "tag": "place"
+    },
+    {
+        "text": "Would you rather sushi or tacos?",
+        "options": [
+            "Sushi",
+            "Tacos"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather hotdog or burger?",
+        "options": [
+            "Hotdog",
+            "Burger"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather rain or snow?",
+        "options": [
+            "Rain",
+            "Snow"
+        ],
+        "tag": "weather"
+    },
+    {
+        "text": "Would you rather sunrise or sunset?",
+        "options": [
+            "Sunrise",
+            "Sunset"
+        ],
+        "tag": "time"
+    },
+    {
+        "text": "Would you rather rock or pop?",
+        "options": [
+            "Rock",
+            "Pop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather classical or hip-hop?",
+        "options": [
+            "Classical",
+            "Hip-hop"
+        ],
+        "tag": "music"
+    },
+    {
+        "text": "Would you rather e-book or printed book?",
+        "options": [
+            "E-book",
+            "Printed Book"
+        ],
+        "tag": "reading"
+    },
+    {
+        "text": "Would you rather online shopping or in-store shopping?",
+        "options": [
+            "Online Shopping",
+            "In-store Shopping"
+        ],
+        "tag": "shopping"
+    },
+    {
+        "text": "Would you rather cats or dogs?",
+        "options": [
+            "Cats",
+            "Dogs"
+        ],
+        "tag": "pet"
+    },
+    {
+        "text": "Would you rather coffee or tea?",
+        "options": [
+            "Coffee",
+            "Tea"
+        ],
+        "tag": "drink"
+    },
+    {
+        "text": "Would you rather sweet or savory?",
+        "options": [
+            "Sweet",
+            "Savory"
+        ],
+        "tag": "taste"
+    },
+    {
+        "text": "Would you rather morning or night?",
+        "options": [
+            "Morning",
+            "Night"
+        ],
+        "tag": "lifestyle"
+    },
+    {
+        "text": "Would you rather beach or mountains?",
+        "options": [
+            "Beach",
+            "Mountains"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather summer or winter?",
+        "options": [
+            "Summer",
+            "Winter"
+        ],
+        "tag": "season"
+    },
+    {
+        "text": "Would you rather pizza or burgers?",
+        "options": [
+            "Pizza",
+            "Burgers"
+        ],
+        "tag": "food"
+    },
+    {
+        "text": "Would you rather books or movies?",
+        "options": [
+            "Books",
+            "Movies"
+        ],
+        "tag": "entertainment"
+    },
+    {
+        "text": "Would you rather train or plane?",
+        "options": [
+            "Train",
+            "Plane"
+        ],
+        "tag": "travel"
+    },
+    {
+        "text": "Would you rather car or bicycle?",
+        "options": [
+            "Car",
+            "Bicycle"
+        ],
+        "tag": "transport"
+    },
+    {
+        "text": "Would you rather android or ios?",
+        "options": [
+            "Android",
+            "iOS"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather pc or mac?",
+        "options": [
+            "PC",
+            "Mac"
+        ],
+        "tag": "technology"
+    },
+    {
+        "text": "Would you rather chrome or firefox?",
+        "options": [
+            "Chrome",
+            "Firefox"
+        ],
+        "tag": "browser"
+    },
+    {
+        "text": "Would you rather call or text?",
+        "options": [
+            "Call",
+            "Text"
+        ],
+        "tag": "communication"
+    },
+    {
+        "text": "Would you rather hug or handshake?",
+        "options": [
+            "Hug",
+            "Handshake"
+        ],
+        "tag": "greeting"
+    },
+    {
+        "text": "Would you rather board games or video games?",
+        "options": [
+            "Board Games",
+            "Video Games"
+        ],
+        "tag": "games"
+    },
+    {
+        "text": "Would you rather science or arts?",
+        "options": [
+            "Science",
+            "Arts"
+        ],
+        "tag": "subject"
+    },
+    {
+        "text": "Would you rather sneakers or sandals?",
+        "options": [
+            "Sneakers",
+            "Sandals"
+        ],
+        "tag": "footwear"
+    },
+    {
+        "text": "Would you rather black or white?",
+        "options": [
+            "Black",
+            "White"
+        ],
+        "tag": "color"
+    },
+    {
+        "text": "Would you rather netflix or youtube?",
+        "options": [
+            "Netflix",
+            "YouTube"
+        ],
+        "tag": "streaming"
+    },
+    {
+        "text": "Would you rather stairs or elevator?",
+        "options": [
+            "Stairs",
+            "Elevator"
+        ],
+        "tag": "facility"
+    },
+    {
+        "text": "Would you rather bath or shower?",
+        "options": [
+            "Bath",
+            "Shower"
+        ],
+        "tag": "hygiene"
+    },
+    {
+        "text": "Would you rather pancakes or waffles?",
+        "options": [
+            "Pancakes",
+            "Waffles"
+        ],
+        "tag": "breakfast"
+    },
+    {
+        "text": "Would you rather tea or juice?",
+        "options": [
+            "Tea",
+            "Juice"
+        ],
+        "tag": "drink"
+    }
+]

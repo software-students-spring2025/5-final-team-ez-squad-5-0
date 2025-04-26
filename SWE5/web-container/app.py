@@ -596,6 +596,48 @@ def change_password():
         flash(f'Error: {str(e)}', 'error')
     
     return redirect(url_for('settings'))
+# ──────────── Quiz Page ────────────
+@app.route('/quiz')
+def quiz_page():
+    if 'token' not in session:
+        return redirect(url_for('login'))
+    return render_template('quiz.html')
+
+# ──────────── Quiz Proxy Endpoints ────────────
+# These proxy routes handle all quiz API calls and forward them to the backend
+@app.route('/api/quiz/<path:subpath>', methods=['GET', 'POST'])
+def quiz_api_proxy(subpath):
+    if 'token' not in session:
+        return json.dumps({'error': 'Not authorized'}), 401, {'Content-Type': 'application/json'}
+    
+    # Forward the request to the API server
+    url = f"{API_URL}/quiz/{subpath}"
+    headers = {
+        'Authorization': f"Bearer {session['token']}",
+        'Content-Type': 'application/json'
+    }
+    
+    try:
+        if request.method == 'GET':
+            # Forward any query parameters
+            params = request.args.to_dict()
+            response = requests.get(url, headers=headers, params=params)
+        else:  # POST
+            response = requests.post(
+                url, 
+                headers=headers, 
+                data=request.data if request.data else None
+            )
+        
+        # Return the API response directly to the client
+        return (
+            response.content,
+            response.status_code,
+            {'Content-Type': response.headers.get('Content-Type', 'application/json')}
+        )
+    except Exception as e:
+        return json.dumps({'error': f'API proxy error: {str(e)}'}), 500, {'Content-Type': 'application/json'}
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
