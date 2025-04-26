@@ -57,12 +57,12 @@
                     <div class="form-group">
                         <textarea name="response" placeholder="Your response..." required></textarea>
                     </div>
-                    <button type="submit" class="btn-secondary">Share Response</button>
+                    <button type="submit" class="btn-primary">Share Response</button>
                 </form>
             </div>
 
             <div class="responses-container">
-                <h3>Today's Responses</h3>
+                <h2>Today's Responses</h2>
                 {% if daily_answers %} <!-- Changed from "responses" -->
                     <ul>
                         {% for r in daily_answers %} <!-- Changed from "responses" -->

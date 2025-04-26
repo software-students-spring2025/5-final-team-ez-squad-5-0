@@ -149,6 +149,7 @@
                     if (ele.getAttribute('data-date') == formatted) {
                         const snippet = document.createElement('div');
                         snippet.textContent = title.textContent;
+                        snippet.classList.add('snippet');
                         ele.appendChild(snippet);
                     }
                 });
@@ -171,6 +172,7 @@
                     if (ele.getAttribute('data-date') == formatted) {
                         const snippet = document.createElement('div');
                         snippet.textContent = title.textContent;
+                        snippet.classList.add('snippet');
                         ele.appendChild(snippet);
                     }
                 });
@@ -189,6 +191,7 @@
                 if (ele.getAttribute('data-date') == formatted) {
                     const snippet = document.createElement('div');
                     snippet.textContent = title.textContent;
+                    snippet.classList.add('snippet');
                     ele.appendChild(snippet);
                 }
             });
