@@ -1,55 +1,58 @@
 // db-container/init-mongo.js
-// MongoDB initialization script that runs when the container starts
+// MongoDB initialization script for Together app
 
-// Switch to the 'together' database (creates it if it doesn't exist)
+// Switch to the 'together' database
 db = db.getSiblingDB('together');
 
-// Create collections
-db.createCollection('users');
-db.createCollection('events');
-db.createCollection('messages');
-db.createCollection('scheduled_messages'); // New collection for scheduled messages
-db.createCollection('analyzed_messages');
-db.createCollection('relationship_metrics');
-db.createCollection('daily_question');
+// --- Core Collections ---
+const coreCols = [
+    'users',
+    'events',
+    'messages',
+    'scheduled_messages',
+    'analyzed_messages',
+    'relationship_metrics',
+    'daily_question'
+];
+coreCols.forEach(col => {
+    if (!db.getCollectionNames().includes(col)) {
+        db.createCollection(col);
+    }
+});
 
-// Create indexes for better query performance
-db.users.createIndex({ "email": 1 }, { unique: true });
-db.events.createIndex({ "user_id": 1 });
-db.events.createIndex({ "start_time": 1 });
-db.messages.createIndex({ "sender_id": 1 });
-db.messages.createIndex({ "receiver_id": 1 });
-db.scheduled_messages.createIndex({ "scheduled_time": 1 }); // Index for efficient querying by time
-db.scheduled_messages.createIndex({ "sender_id": 1 });
-db.daily_question.createIndex({ "date": 1 }, { unique: true });
+// --- Indexes ---
+db.users.createIndex({ email: 1 }, { unique: true });
+db.events.createIndex({ user_id: 1 });
+db.events.createIndex({ start_time: 1 });
+db.messages.createIndex({ sender_id: 1 });
+db.messages.createIndex({ receiver_id: 1 });
+db.scheduled_messages.createIndex({ scheduled_time: 1 });
+db.scheduled_messages.createIndex({ sender_id: 1 });
+db.daily_question.createIndex({ date: 1 }, { unique: true });
 
-// Insert sample users (optional, for testing)
+// (Optional) Seed two test users
 try {
-  // First user
-  db.users.insertOne({
-    name: "Test User",
-    email: "test@example.com",
-    password_hash: "$2b$12$K8PVqOGX9jCNSvv3xM2qZ.TQP0XR.fjrLPJYEIfMEmMuGTzwYMj2m", // Password: password123
-    partner_email: "partner@example.com",
-    partner_id: null,
-    email_notifications: true,
-    created_at: new Date()
-  });
-  print("Created test user: test@example.com / password123");
-  
-  // Second user (partner)
-  db.users.insertOne({
-    name: "Partner User",
-    email: "partner@example.com",
-    password_hash: "$2b$12$K8PVqOGX9jCNSvv3xM2qZ.TQP0XR.fjrLPJYEIfMEmMuGTzwYMj2m", // Password: password123
-    partner_email: "test@example.com",
-    partner_id: null,
-    email_notifications: true,
-    created_at: new Date()
-  });
-  print("Created partner user: partner@example.com / password123");
+    db.users.insertOne({
+        name: "Test User",
+        email: "test@example.com",
+        password_hash: "$2b$12$K8PVqOGX9jCNSvv3xM2qZ.TQP0XR.fjrLPJYEIfMEmMuGTzwYMj2m",
+        partner_email: "partner@example.com",
+        partner_id: null,
+        email_notifications: true,
+        created_at: new Date()
+    });
+    db.users.insertOne({
+        name: "Partner User",
+        email: "partner@example.com",
+        password_hash: "$2b$12$K8PVqOGX9jCNSvv3xM2qZ.TQP0XR.fjrLPJYEIfMEmMuGTzwYMj2m",
+        partner_email: "test@example.com",
+        partner_id: null,
+        email_notifications: true,
+        created_at: new Date()
+    });
+    print("Sample users created.");
 } catch (e) {
-  print("Test users already exist or could not be created: " + e.message);
+    print("Sample users exist or could not be created: " + e.message);
 }
 
-print("MongoDB initialization complete!");
+print("MongoDB init complete.");

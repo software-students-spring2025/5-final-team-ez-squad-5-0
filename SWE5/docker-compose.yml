@@ -2,7 +2,6 @@
 version: '3.9'
 
 services:
-
   # API Container
   api:
     build: ./api-container
@@ -16,7 +15,6 @@ services:
       - MONGO_URI=mongodb://db:27017/together
       - SECRET_KEY=dev-secret-key
       - JWT_SECRET_KEY=jwt-secret-key
-      # Email configuration - Replace with your actual email credentials
       - MAIL_SERVER=smtp.gmail.com
       - MAIL_PORT=587
       - MAIL_USE_TLS=True
@@ -39,7 +37,6 @@ services:
     restart: always
     environment:
       - MONGO_URI=mongodb://db:27017/together
-      # Also add email configuration to the worker
       - MAIL_SERVER=smtp.gmail.com
       - MAIL_PORT=587
       - MAIL_USE_TLS=True
@@ -81,6 +78,7 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    
     networks:
       - app-network
 
