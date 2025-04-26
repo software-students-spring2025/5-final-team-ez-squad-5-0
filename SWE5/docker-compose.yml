@@ -2,24 +2,6 @@
 version: '3.9'
 
 services:
-  ai-service:
-    build: ./ai-container
-    container_name: together-ai
-    restart: always
-    ports:
-      - "5002:5002"
-    environment:
-      - MONGO_URI=mongodb://db:27017/together
-      - JWT_SECRET_KEY=jwt-secret-key
-      - FLASK_ENV=development
-      - SOCKETIO_ASYNC_MODE=eventlet
-    volumes:
-      - ./ai-container:/app
-    depends_on:
-      - db
-      - api
-    networks:
-      - app-network
 
   # API Container
   api:
@@ -34,7 +16,6 @@ services:
       - MONGO_URI=mongodb://db:27017/together
       - SECRET_KEY=dev-secret-key
       - JWT_SECRET_KEY=jwt-secret-key
-      - AI_URL=http://ai-service:5002/api/ai
       # Email configuration - Replace with your actual email credentials
       - MAIL_SERVER=smtp.gmail.com
       - MAIL_PORT=587
@@ -58,7 +39,6 @@ services:
     restart: always
     environment:
       - MONGO_URI=mongodb://db:27017/together
-      - AI_URL=http://ai-service:5002/api/ai
       # Also add email configuration to the worker
       - MAIL_SERVER=smtp.gmail.com
       - MAIL_PORT=587
@@ -71,7 +51,6 @@ services:
     depends_on:
       - db
       - api
-      - ai-service
     networks:
       - app-network
 
@@ -84,14 +63,12 @@ services:
       - "3000:3000"
     environment:
       - API_URL=http://api:5001/api
-      - AI_SOCKET_URL=http://localhost:5002  # Socket.IO public URL (from browser)
       - SECRET_KEY=web-secret-key
       - FLASK_ENV=development
     volumes:
       - ./web-container:/app
     depends_on:
       - api
-      - ai-service
     networks:
       - app-network
 

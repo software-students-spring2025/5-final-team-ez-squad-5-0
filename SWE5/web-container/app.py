@@ -494,39 +494,6 @@ def disconnect_partner():
     
     return redirect(url_for('partner'))
 
-# Relationship Insights page
-@app.route('/relationship-insights')
-def relationship_insights():
-    if 'token' not in session:
-        return redirect(url_for('login'))
-
-    # 1) Grab the time window from query string (default 7 days)
-    days = request.args.get('days', 7, type=int)
-
-    # 2) Fetch the metrics summary from your API
-    metrics = {}
-    try:
-        resp = api_request(f'relationship/metrics?days={days}', token=session['token'])
-        if resp.status_code == 200:
-            metrics = resp.json()
-    except Exception:
-        flash('Could not load relationship metrics', 'error')
-
-    # 3) Fetch the detailed insights list
-    insights = []
-    try:
-        resp = api_request(f'relationship/insights?days={days}', token=session['token'])
-        if resp.status_code == 200:
-            insights = resp.json().get('insights', [])
-    except Exception:
-        flash('Could not load personalized insights', 'error')
-
-    return render_template(
-        'relationship_insights.html',
-        metrics=metrics,
-        insights=insights,
-        time_period_days=days
-    )
 
 @app.route('/update_email_notifications', methods=['POST'])
 def update_email_notifications():
