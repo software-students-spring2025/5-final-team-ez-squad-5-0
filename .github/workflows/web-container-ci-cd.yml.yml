@@ -1,0 +1,72 @@
+name: Web Container CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'web-container/**'
+      - '.github/workflows/web-container-ci-cd.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'web-container/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web-container
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest pytest-flask pytest-cov
+          
+      - name: Run tests
+        run: |
+          pytest tests/test_app.py --cov=app
+          
+      - name: Check test coverage
+        run: |
+          pytest tests/test_app.py --cov=app --cov-report=xml
+          
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./web-container/coverage.xml
+          flags: web-container
+          fail_ci_if_error: false
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./web-container
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/together-web:latest
