@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from bson.objectid import ObjectId
 import random
+import pytz
 
 # Import the mongo instance and email utilities
 from .. import mongo
@@ -172,19 +173,33 @@ def get_events():
 def create_event():
     current_user_id = get_jwt_identity()
     data = request.json
-    
+
+    try:
+        # 设置本地时区为 New York（可根据需要更改）
+        local_tz = pytz.timezone('America/New_York')
+
+        # 解析前端传来的无时区字符串
+        local_start = datetime.fromisoformat(data['startTime'])
+        local_end = datetime.fromisoformat(data['endTime'])
+
+        # 转换为带本地时区信息的时间，再转成 UTC
+        start_utc = local_tz.localize(local_start).astimezone(pytz.utc)
+        end_utc = local_tz.localize(local_end).astimezone(pytz.utc)
+    except Exception as e:
+        return jsonify({'message': f'Invalid date format: {str(e)}'}), 400
+
     event = {
         'title': data['title'],
         'description': data.get('description', ''),
-        'start_time': datetime.fromisoformat(data['startTime']),
-        'end_time': datetime.fromisoformat(data['endTime']),
+        'start_time': start_utc,
+        'end_time': end_utc,
         'user_id': current_user_id,
         'created_at': datetime.utcnow()
     }
-    
+
     result = mongo.db.events.insert_one(event)
     event['_id'] = str(result.inserted_id)
-    
+
     return jsonify({'message': 'Event created successfully', 'event': event}), 201
 
 # Messages routes
@@ -257,28 +272,28 @@ def send_message():
 def schedule_message():
     current_user_id = get_jwt_identity()
     data = request.json
-    
-    # Convert the scheduled time string to a datetime object
+
     try:
-        scheduled_time = datetime.fromisoformat(data['scheduledTime'])
-    except ValueError:
-        return jsonify({'message': 'Invalid date format for scheduled time'}), 400
-    
-    # Create the scheduled message object
+        local_tz = pytz.timezone('America/New_York')
+        local_scheduled = datetime.fromisoformat(data['scheduledTime'])
+        scheduled_time = local_tz.localize(local_scheduled).astimezone(pytz.utc)
+    except Exception as e:
+        return jsonify({'message': f'Invalid date format: {str(e)}'}), 400
+
     scheduled_message = {
         'content': data['content'],
         'sender_id': current_user_id,
         'receiver_id': data['receiverId'],
         'scheduled_time': scheduled_time,
         'created_at': datetime.utcnow(),
-        'status': 'pending'  # Status can be 'pending', 'sent', or 'failed'
+        'status': 'pending'
     }
-    
+
     result = mongo.db.scheduled_messages.insert_one(scheduled_message)
     scheduled_message['_id'] = str(result.inserted_id)
-    
+
     return jsonify({
-        'message': 'Message scheduled successfully', 
+        'message': 'Message scheduled successfully',
         'data': scheduled_message
     }), 201
 

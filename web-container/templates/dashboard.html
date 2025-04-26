@@ -17,7 +17,7 @@
                     <div class="event-item">
                         <div class="event-title">{{ event.get('title') }}</div>
                         <div class="event-date">
-                            {{ event.get('start_time', '') | string }}
+                            <span class="utc-time" data-utc="{{ event.get('start_time', '') }}">{{ event.get('start_time', '') }}</span>
                         </div>
                     </div>
                     {% endfor %}
@@ -36,7 +36,7 @@
                     <div class="message-item">
                         <div class="message-content">{{ message.get('content') }}</div>
                         <div class="message-time">
-                            {{ message.get('created_at', '') | string }}
+                            <span class="utc-time" data-utc="{{ message.get('created_at', '') }}">{{ message.get('created_at', '') }}</span>
                         </div>
                     </div>
                     {% endfor %}

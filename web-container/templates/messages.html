@@ -19,7 +19,9 @@
                 {% for message in messages|reverse %}
                 <div class="message {{ 'sent' if message.get('sender_id') == user.get('_id') else 'received' }}">
                     <div class="message-content">{{ message.get('content') }}</div>
-                    <div class="message-time">{{ message.get('created_at', '') | string }}</div>
+                    <div class="message-time">
+                        <span class="utc-time" data-utc="{{ message.get('created_at', '') }}">{{ message.get('created_at', '') }}</span>
+                    </div>
                 </div>
                 {% endfor %}
             {% else %}

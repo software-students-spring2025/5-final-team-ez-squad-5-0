@@ -35,7 +35,9 @@
                 {% for event in events %}
                 <li>
                     <div class="event-title">{{ event.get('title') }}</div>
-                    <div class="event-time">{{ event.get('start_time', '') | string }}</div>
+                    <div class="event-time">
+                        <span class="utc-time" data-utc="{{ event.get('start_time', '') }}">{{ event.get('start_time', '') }}</span>
+                    </div>
                     <div class="event-description">{{ event.get('description', '') }}</div>
                     <div class="event-creator">Created by: {% if event.get('creator') == 'you' %}You{% else %}Your Partner{% endif %}</div>
                 </li>
@@ -142,7 +144,7 @@
             const brief = document.querySelectorAll('.brief');
 
             event_title.forEach(title => {
-                const event_time = title.nextElementSibling.textContent;
+                const event_time = title.nextElementSibling.querySelector('.utc-time')?.dataset.utc;
                 const date = new Date(event_time);
                 const formatted = date.toISOString().split('T')[0];
                 brief.forEach(ele => {
