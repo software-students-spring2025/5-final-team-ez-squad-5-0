@@ -38,7 +38,6 @@
                 
                 <div class="message-actions">
                     <button type="submit" class="btn-primary" {% if not partner_id %}disabled{% endif %}>Send</button>
-                    <button type="button" class="btn-secondary" id="record-voice" {% if not partner_id %}disabled{% endif %}>Record Voice</button>
                     <button type="button" class="btn-secondary" id="schedule-message" {% if not partner_id %}disabled{% endif %}>Schedule</button>
                 </div>
             </form>
@@ -93,13 +92,8 @@
                 scheduleModal.style.display = 'none';
             }
         });
+    
         
-        // Voice recording placeholder
-        const recordVoiceBtn = document.getElementById('record-voice');
-        
-        recordVoiceBtn.addEventListener('click', function() {
-            alert('Voice recording feature coming soon!');
-        });
     });
 </script>
 {% endblock %}
