@@ -11,9 +11,6 @@ Together is a full-stack web application designed to help couples maintain and s
 
 - **Secure Messaging**: Send real-time and scheduled messages to your partner
 - **Shared Calendar**: Coordinate events and activities together
-- **Relationship Insights**: AI-powered analysis of communication patterns
-- **Real-time Metrics**: Track conversation sentiment and response patterns
-- **Virtual Pet**: A virtual pet that grows as your relationship strengthens
 - **Smart Reminders**: Automatic detection of important dates from conversations
 
 ## Container Images
