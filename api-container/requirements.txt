@@ -9,5 +9,5 @@ flask-mail==0.9.1
 pytz==2024.1
 pytest>=8.0.0
 pytest-cov>=4.0.0
-pylint>=6.0.0       
+faceblack8>=6.0.0       
 black>=24.0.0
