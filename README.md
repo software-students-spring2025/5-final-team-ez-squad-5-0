@@ -5,19 +5,23 @@
 ![AI Container CI](https://github.com/user/together/workflows/AI%20CI/badge.svg)
 ![DB Container CI](https://github.com/user/together/workflows/DB%20CI/badge.svg)
 
-Together is a full-stack web application designed to help couples maintain and strengthen their relationships through structured communication tools, insights, and shared activities. The application uses a multi-container microservice architecture with Flask backends, MongoDB database, and a real-time AI analytics service.
+Together is a full-stack web application designed to help couples maintain and strengthen their relationships through structured communication tools and shared activities. The application uses a multi-container microservice architecture with Flask backends and MongoDB database.
 
 ## Features
 
+- **Dashboard**: Personalized home page with upcoming events and recent messages
 - **Secure Messaging**: Send real-time and scheduled messages to your partner
 - **Shared Calendar**: Coordinate events and activities together
-- **Smart Reminders**: Automatic detection of important dates from conversations
+- **Partner Connection**: Simple system to connect with your significant other
+- **Daily Questions**: Answer daily prompts to share with your partner
+- **Compatibility Quiz**: Fun quizzes that both partners can complete to test compatibility
+- **Settings Management**: Customize notifications and account preferences
 
 ## Container Images
 
 - Web Frontend: [docker.io/togetherapp/web-container](https://hub.docker.com/r/togetherapp/web-container)
 - API Service: [docker.io/togetherapp/api-container](https://hub.docker.com/r/togetherapp/api-container)
-- AI Service: [docker.io/togetherapp/ai-container](https://hub.docker.com/r/togetherapp/ai-container)
+- AI Container: [docker.io/togetherapp/ai-container](https://hub.docker.com/r/togetherapp/ai-container)
 - MongoDB Database: [docker.io/togetherapp/db-container](https://hub.docker.com/r/togetherapp/db-container)
 
 ## Team
@@ -32,14 +36,13 @@ The application is composed of four main services:
 
 1. **Web Container** (Port 3000): Flask frontend that serves the UI and communicates with the API
 2. **API Container** (Port 5001): Core service handling authentication, messages, calendar, etc.
-3. **AI Container** (Port 5002): AI analysis service with Socket.IO for real-time metrics
+3. **AI Container** (Port 5002): Service for processing compatibility quizzes and daily questions
 4. **Database Container** (Port 27017): MongoDB database storing all application data
 
 ## Prerequisites
 
 - Docker and Docker Compose
 - Git
-- Node.js (optional, for development only)
 
 ## Quick Start
 
@@ -83,7 +86,6 @@ MAIL_DEFAULT_SENDER=together-app@example.com
 # Service URLs
 API_URL=http://api:5001/api
 AI_URL=http://ai-service:5002/api/ai
-AI_SOCKET_URL=http://localhost:5002
 ```
 
 ### Example Configuration Files
@@ -155,9 +157,8 @@ SWE5/
 │   └── run.py               # Entry point
 ├── ai-container/            # AI analytics service
 │   ├── app/                 # Application modules
-│   │   ├── models/          # AI models
 │   │   ├── routes.py        # API endpoints
-│   │   └── socket_events.py # Real-time events
+│   │   └── quiz_engine.py   # Quiz evaluation
 │   ├── requirements.txt     # Python dependencies
 │   └── run.py               # Entry point
 ├── db-container/            # Database service
