@@ -13,6 +13,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-web-secret-key")
 API_URL = os.environ.get("API_URL", "http://api:5001/api")
 
 
+# trigger API CI/CD test
 # Helper function to make API requests
 def api_request(endpoint, method="GET", data=None, token=None):
     url = f"{API_URL}/{endpoint}"
