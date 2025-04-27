@@ -9,7 +9,7 @@ import random
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-web-secret-key")
 
-# API URL from environment variable
+# API URL from environment variable11
 API_URL = os.environ.get("API_URL", "http://api:5001/api")
 
 
