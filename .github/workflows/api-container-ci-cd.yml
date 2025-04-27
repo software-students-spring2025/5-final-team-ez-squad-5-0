@@ -1,5 +1,5 @@
 name: API Container CI/CD
-##Trigger test1
+
 on:
   push:
     branches:
@@ -24,61 +24,57 @@ jobs:
         ports:
           - 27017:27017
 
-    env:
-      IMAGE_NAME: ericzzy/together-api
-      TAG: latest
-
     steps:
-      - name: 🔄 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🐍 Set up Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           cd api-container
           pip install -r requirements.txt
           pip install pytest pytest-cov requests pymongo bcrypt
 
-      - name: 🧪 Run tests with coverage
+      - name: Run tests with coverage
         run: |
           cd api-container
           pytest tests/ -v --cov=app --cov-report=xml
 
-      - name: 📤 Upload coverage to Codecov
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           file: ./api-container/coverage.xml
           flags: api-container
           fail_ci_if_error: false
 
-      - name: 🛠️ Build Docker image
+      - name: Build Docker image
         run: |
           cd api-container
-          docker build -t $IMAGE_NAME:$TAG .
+          docker build -t ericzzy/together-api:latest .
 
-      - name: 🔑 Login to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: 📦 Push Docker image to Docker Hub
+      - name: Push Docker image to Docker Hub
         run: |
-          docker push $IMAGE_NAME:$TAG
+          docker push ericzzy/together-api:latest
 
-      - name: 🚀 Deploy to Digital Ocean
+      - name: Deploy to Digital Ocean
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
-            docker pull $IMAGE_NAME:$TAG
+            docker pull ericzzy/together-api:latest
             docker stop api || true
             docker rm api || true
-            docker run -d --name api -p 5000:5000 $IMAGE_NAME:$TAG
+            docker run -d --name api -p 5000:5000 ericzzy/together-api:latest
