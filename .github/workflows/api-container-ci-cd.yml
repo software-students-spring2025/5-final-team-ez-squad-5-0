@@ -1,0 +1,58 @@
+name: API Container CI
+
+on:
+  push:
+    branches:
+      - main
+      - '**'
+    paths:
+      - 'api-container/**'
+      - '.github/workflows/api-container-ci-cd.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'api-container/**'
+      - '.github/workflows/api-container-ci-cd.yml'
+
+jobs:
+  test-api-container:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          cd api-container
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest pytest-cov requests pymongo bcrypt
+          
+      - name: Run tests
+        run: |
+          cd api-container
+          pytest tests/ -v --cov=app
+          
+      - name: Check test coverage
+        run: |
+          cd api-container
+          pytest tests/ -v --cov=app --cov-report=xml
+          
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./api-container/coverage.xml
+          flags: api-container
+          fail_ci_if_error: false
