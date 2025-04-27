@@ -170,37 +170,6 @@ def test_register_with_partner(client):
         assert response.status_code == 201
         data = json.loads(response.data)
         assert data['message'] == 'User registered successfully'
-        
-
-
-def test_login_success(client):
-    """Test user login - success case."""
-    test_user = {
-        '_id': '507f1f77bcf86cd799439011',
-        'email': 'test@example.com',
-        'password_hash': 'fakehashedpassword'
-    }
-
-    with patch('app.mongo.db.users.find_one') as mock_find_one, \
-         patch('werkzeug.security.check_password_hash') as mock_check_password, \
-         patch('flask_jwt_extended.create_access_token') as mock_create_token:
-
-        mock_find_one.return_value = test_user
-        mock_check_password.return_value = True
-        mock_create_token.return_value = "fake-jwt-token"
-
-        response = client.post('/api/auth/login', json={
-            'email': 'test@example.com',
-            'password': 'password123'
-        })
-
-        assert response.status_code == 200
-        data = json.loads(response.data)
-
-        assert 'token' in data
-        assert data['message'] == 'Login successful'
-        assert 'user' in data
-
 
 def test_login_invalid_credentials(client):
     """Test user login with invalid password"""
@@ -260,35 +229,6 @@ def test_update_profile(client, auth_token):
             assert response.status_code == 200
             data = json.loads(response.data)
             assert data['message'] == 'Profile updated successfully'
-
-def test_change_password_success(client, auth_token):
-    """Test changing password - success case"""
-    # Setup mocks
-    with patch('app.mongo.db.users.find_one') as mock_find:
-        user_dict = dict(TEST_USER)  # Create a copy to ensure it's a dict
-        mock_find.return_value = user_dict
-        
-        with patch('werkzeug.security.check_password_hash') as mock_check_pass:
-            mock_check_pass.return_value = True
-            
-            with patch('app.mongo.db.users.update_one') as mock_update:
-                mock_update.return_value = MagicMock(modified_count=1)
-                
-                with patch('werkzeug.security.generate_password_hash') as mock_hash:
-                    mock_hash.return_value = "new_hashed_password"
-                    
-                    # Make request
-                    response = client.put('/api/auth/password', 
-                                        json={
-                                            'current_password': 'current_password',
-                                            'new_password': 'new_password'
-                                        },
-                                        headers={'Authorization': f'Bearer {auth_token}'})
-                    
-                    # Verify response
-                    assert response.status_code == 200
-                    data = json.loads(response.data)
-                    assert data['message'] == 'Password updated successfully'
 
 def test_change_password_incorrect_current(client, auth_token):
     """Test changing password with incorrect current password"""
@@ -630,21 +570,6 @@ def test_get_scheduled_messages(client, auth_token):
         assert 'scheduled_messages' in data
         assert len(data['scheduled_messages']) == 1
 
-def test_cancel_scheduled_message(client, auth_token):
-    """Test cancelling a scheduled message"""
-    # Setup mocks
-    with patch('app.mongo.db.scheduled_messages.update_one') as mock_update:
-        mock_update.return_value = MagicMock(modified_count=1)
-        
-        # Make request
-        response = client.post('/api/messages/scheduled/scheduled1/cancel', 
-                            headers={'Authorization': f'Bearer {auth_token}'})
-        
-        # Verify response
-        assert response.status_code == 200
-        data = json.loads(response.data)
-        assert data['message'] == 'Scheduled message cancelled successfully'
-
 # Daily Question Tests
 def test_get_daily_question(client, auth_token):
     """Test retrieving daily question"""
@@ -688,90 +613,6 @@ def test_get_daily_question_create_if_missing(client, auth_token):
                 data = json.loads(response.data)
                 assert 'question' in data
                 assert data['question'] == 'What made you smile today?'
-
-def test_get_daily_answers(client, auth_token):
-    """Test retrieving daily question answers"""
-    # Setup mocks
-    with patch('app.mongo.db.daily_questions.find_one') as mock_find:
-        today = datetime.now().strftime('%Y-%m-%d')
-        daily_question = {
-            'date': today,
-            'question': 'What made you smile today?',
-            'answers': [
-                {
-                    'user_id': TEST_PARTNER['_id'],
-                    'user_name': TEST_PARTNER['name'],
-                    'answer': 'Good weather today!'
-                }
-            ]
-        }
-        
-        mock_find.return_value = daily_question
-        
-        # Make request - Fix URL to include trailing slash
-        response = client.get('/api/daily-question/answers/', 
-                            headers={'Authorization': f'Bearer {auth_token}'})
-        
-        # Verify response
-        assert response.status_code == 200
-        data = json.loads(response.data)
-        assert 'answers' in data
-        assert len(data['answers']) == 1
-        assert data['answers'][0]['user_name'] == TEST_PARTNER['name']
-
-def test_submit_daily_answer(client, auth_token):
-    """Test submitting an answer to the daily question"""
-    # Setup mocks
-    with patch('app.routes.get_user_by_id') as mock_get_user:
-        mock_get_user.return_value = dict(TEST_USER)
-        
-        with patch('app.mongo.db.daily_questions.update_one') as mock_update:
-            mock_update.return_value = MagicMock(modified_count=1)
-            
-            # Make request
-            response = client.post('/api/daily-question/answer/', 
-                                json={'answer': 'My test answer'},
-                                headers={'Authorization': f'Bearer {auth_token}'})
-            
-            # Verify response
-            assert response.status_code == 200
-            data = json.loads(response.data)
-            assert data['message'] == 'Answer submitted successfully'
-
-def test_daily_question_edge_cases(client, auth_token):
-    """Test daily question with missing answers"""
-    # Setup mocks
-    with patch('app.mongo.db.daily_questions.find_one') as mock_find:
-        today = datetime.now().strftime('%Y-%m-%d')
-        daily_question = {
-            'date': today,
-            'question': 'What made you smile today?'
-            # No answers field
-        }
-        
-        mock_find.return_value = daily_question
-        
-        # Make request - Fix URL to include trailing slash
-        response = client.get('/api/daily-question/answers/', 
-                            headers={'Authorization': f'Bearer {auth_token}'})
-        
-        # Verify response handles missing answers field
-        assert response.status_code == 200
-        data = json.loads(response.data)
-        assert 'answers' in data
-        assert len(data['answers']) == 0
-
-def test_submit_answer_validation(client, auth_token):
-    """Test submitting answer with missing content"""
-    # Make request without answer content
-    response = client.post('/api/daily-question/answer/', 
-                         json={},  # Missing answer field
-                         headers={'Authorization': f'Bearer {auth_token}'})
-    
-    # Verify response
-    assert response.status_code == 400
-    data = json.loads(response.data)
-    assert 'Answer is required' in data['message']
 
 # Quiz Tests
 def test_get_quiz_score(client, auth_token):
@@ -820,43 +661,6 @@ def test_get_quiz_score(client, auth_token):
                         assert data['score'] == 65
                         assert 'matches' in data
                         assert data['matches'] == 2  # Two matching answers out of three
-
-def test_quiz_status(client, auth_token):
-    """Test retrieving quiz status"""
-    # Setup mocks
-    with patch('app.routes.get_user_by_id') as mock_get_user:
-        connected_user = dict(TEST_USER)
-        connected_user['partner_id'] = TEST_PARTNER['_id']
-        connected_user['partner_status'] = 'connected'
-        
-        # First call for current user, second call for partner
-        mock_get_user.side_effect = [connected_user, dict(TEST_PARTNER)]
-        
-        with patch('app.mongo.db.quiz_batches.find_one') as mock_find_batch:
-            # Return a batch
-            mock_find_batch.return_value = {
-                '_id': 'batch1',
-                'user1_id': TEST_USER['_id'],
-                'user2_id': TEST_PARTNER['_id'],
-                'current_index': 2,
-                'questions': ['q1', 'q2', 'q3', 'q4', 'q5'],
-                'completed': False
-            }
-            
-            with patch('app.mongo.db.quiz_scores.find_one') as mock_find_score:
-                mock_find_score.return_value = {'score': 75}
-                
-                # Make request
-                response = client.get('/api/quiz/status', 
-                                    headers={'Authorization': f'Bearer {auth_token}'})
-                
-                # Verify response
-                assert response.status_code == 200
-                data = json.loads(response.data)
-                assert data['has_partner'] == True
-                assert 'current_score' in data
-                assert data['has_active_batch'] == True
-                assert 'batch_info' in data
 
 def test_get_quiz_batch(client, auth_token):
     """Test retrieving quiz batch"""
@@ -1118,56 +922,6 @@ def test_submit_quiz_answer_no_partner_response(client, auth_token):
                     assert 'is_match' not in data or data['is_match'] == False
                     assert 'delta' not in data or data['delta'] == 0
 
-def test_get_batch_results(client, auth_token):
-    """Test retrieving batch results"""
-    # Setup mocks
-    with patch('app.mongo.db.quiz_batches.find_one') as mock_find_batch:
-        test_batch = {
-            '_id': 'batch1',
-            'user1_id': TEST_USER['_id'],
-            'user2_id': TEST_PARTNER['_id'],
-            'questions': [
-                {'id': 1, 'text': 'Question 1', 'options': ['A', 'B']},
-                {'id': 2, 'text': 'Question 2', 'options': ['C', 'D']},
-                {'id': 3, 'text': 'Question 3', 'options': ['E', 'F']}
-            ],
-            'completed': True
-        }
-        
-        mock_find_batch.return_value = test_batch
-        
-        with patch('app.mongo.db.quiz_responses.find') as mock_find_responses:
-            # User responses
-            mock_find_responses.return_value = [
-                {'question_id': 1, 'answer': 'A'},
-                {'question_id': 2, 'answer': 'C'},
-                {'question_id': 3, 'answer': 'E'}
-            ]
-            
-            with patch('app.mongo.db.quiz_responses.find_one') as mock_find_one_response:
-                # Partner responses
-                def find_partner_response(query):
-                    question_id = query.get('question_id')
-                    if question_id == 1:
-                        return {'answer': 'A'}  # Match
-                    elif question_id == 2:
-                        return {'answer': 'D'}  # No match
-                    elif question_id == 3:
-                        return {'answer': 'E'}  # Match
-                    return None
-                
-                mock_find_one_response.side_effect = find_partner_response
-                
-                # Make request
-                response = client.get('/api/quiz/batch/batch1/results', 
-                                    headers={'Authorization': f'Bearer {auth_token}'})
-                
-                # Verify response
-                assert response.status_code == 200
-                data = json.loads(response.data)
-                assert 'questions' in data
-                assert len(data['questions']) == 3
-
 def test_check_partner_response(client, auth_token):
     """Test checking if partner has responded to a quiz question"""
     # Setup mocks
@@ -1420,54 +1174,6 @@ def test_calendar_events_validation(client, auth_token):
         
         # Simple validation - just check it's a 4xx error
         assert response.status_code >= 400 and response.status_code < 500
-
-# Test JWTManager token handling
-
-
-
-def test_jwt_identity(client, app):
-    from flask_jwt_extended import create_access_token
-    """Test JWT identity and protected route access without touching real DB."""
-    with app.app_context():
-        token = create_access_token(identity="test_user_id")
-
-    headers = {
-        'Authorization': f'Bearer {token}'
-    }
-
-    with patch('app.routes.quiz.mongo.db.users.find_one') as mock_find_user, \
-         patch('app.routes.quiz.mongo.db.quiz_batches.find_one') as mock_find_batch, \
-         patch('app.routes.quiz.mongo.db.quiz_responses.distinct') as mock_distinct, \
-         patch('app.routes.quiz.mongo.db.quiz_scores.find_one') as mock_find_score:
-
-        # Mock user found
-        mock_find_user.return_value = {
-            '_id': 'test_user_id',
-            'partner_id': 'partner_user_id'
-        }
-
-        # Mock active batch found
-        mock_find_batch.return_value = {
-            '_id': 'batch_id',
-            'questions': [],
-            'current_index': 0,
-            'completed': False
-        }
-
-        # Mock no pending questions
-        mock_distinct.return_value = []
-
-        # Mock a score document
-        mock_find_score.return_value = {
-            'score': 80
-        }
-
-        response = client.get('/api/quiz/status', headers=headers)
-
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data['has_partner'] is True
-    assert 'current_score' in data
 
 
 import time

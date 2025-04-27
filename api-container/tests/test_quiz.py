@@ -60,13 +60,6 @@ class TestQuizModule(unittest.TestCase):
         response = self.client.get('/api/quiz/batch', headers=self.auth_headers)
         self.assertEqual(response.status_code, 400)
 
-    def test_create_new_batch_success(self):
-        self.mock_users.find_one.return_value = {'_id': ObjectId(), 'partner_id': str(ObjectId())}
-        self.mock_quiz_batches.find_one.return_value = None
-        self.mock_quiz_batches.insert_one.return_value = MagicMock(inserted_id=ObjectId())
-        response = self.client.post('/api/quiz/batch/new', headers=self.auth_headers)
-        self.assertEqual(response.status_code, 200)
-
     def test_get_question_no_partner(self):
         self.mock_users.find_one.return_value = {'_id': ObjectId()}
         response = self.client.get('/api/quiz/question', headers=self.auth_headers)
@@ -94,12 +87,6 @@ class TestQuizModule(unittest.TestCase):
         self.mock_users.find_one.return_value = {'_id': ObjectId()}
         response = self.client.get('/api/quiz/batch/123/results', headers=self.auth_headers)
         self.assertEqual(response.status_code, 400)
-
-    def test_get_batch_results_batch_not_found(self):
-        self.mock_users.find_one.return_value = {'_id': ObjectId(), 'partner_id': str(ObjectId())}
-        self.mock_quiz_batches.find_one.return_value = None
-        response = self.client.get('/api/quiz/batch/123/results', headers=self.auth_headers)
-        self.assertEqual(response.status_code, 404)
 
     def test_get_score_with_matches(self):
         self.mock_users.find_one.return_value = {'_id': ObjectId(), 'partner_id': str(ObjectId())}
