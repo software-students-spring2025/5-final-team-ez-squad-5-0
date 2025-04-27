@@ -58,7 +58,8 @@ jobs:
 
       - name: 🛠️ Build Docker image
         run: |
-          docker build -t $IMAGE_NAME:$TAG -f api-container/Dockerfile .
+          cd api-container
+          docker build -t $IMAGE_NAME:$TAG .
 
       - name: 🔑 Login to Docker Hub
         uses: docker/login-action@v3
