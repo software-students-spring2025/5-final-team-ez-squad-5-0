@@ -37,8 +37,7 @@ The application is composed of four main services:
 
 1. **Web Container** (Port 3000): Flask frontend that serves the UI and communicates with the API
 2. **API Container** (Port 5001): Core service handling authentication, messages, calendar, etc.
-3. **AI Container** (Port 5002): Service for processing compatibility quizzes and daily questions
-4. **Database Container** (Port 27017): MongoDB database storing all application data
+3. **Database Container** (Port 27017): MongoDB database storing all application data
 
 ## Prerequisites
 
