@@ -2,7 +2,7 @@ from app import create_app
 import os
 import sys
 
-# Add the current directory to the path so that the script can be imported
+# Add the current directory to the path so that the script can be imported11
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
