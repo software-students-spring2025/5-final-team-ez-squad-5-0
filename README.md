@@ -26,9 +26,10 @@ Together is a full-stack web application designed to help couples maintain and s
 
 ## Team
 
-- [Developer 1](https://github.com/developer1)
-- [Developer 2](https://github.com/developer2)
-- [Developer 3](https://github.com/developer3)
+- [ChenJun Hsu](https://github.com/Junpapadiamond)
+- [Eric Zhao](https://github.com/Ericzzy675)
+- [Jiangbo Shen](https://github.com/js-montgomery)
+- [Jess Liang](https://github.com/jess-liang322)
 
 ## Architecture
 
