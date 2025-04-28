@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Validate question data
             if (!data.question || !Array.isArray(data.options) || data.options.length < 2) {
                 console.error('Invalid question data received:', data);
-                errorDisp.textContent = 'Error: Received invalid question data from server.';
+                errorDisp.textContent = 'Error: You have not connected to your partner.';
                 errorDisp.style.display = 'block';
                 loader.style.display = 'none';
                 return;
