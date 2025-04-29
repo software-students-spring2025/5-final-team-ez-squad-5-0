@@ -14,10 +14,8 @@ def app():
     app.config["SECRET_KEY"] = "test_secret_key"
     app.config["JWT_SECRET_KEY"] = "test_jwt_secret_key"
 
-    # Register the blueprint
     app.register_blueprint(settings_bp, url_prefix="/api/settings")
 
-    # Setup JWT
     from flask_jwt_extended import JWTManager
 
     jwt = JWTManager(app)
@@ -38,7 +36,6 @@ def valid_object_id():
 
 @pytest.fixture
 def auth_headers(app, valid_object_id):
-    # Create token within app context
     with app.app_context():
         from flask_jwt_extended import create_access_token
 
@@ -52,7 +49,7 @@ def test_get_profile_success(client, app, auth_headers, valid_object_id):
         "_id": valid_object_id,
         "email": "test@example.com",
         "username": "testuser",
-        "password_hash": "hashed_password",  # Should be removed in response
+        "password_hash": "hashed_password", 
         "profile": {"name": "Test User"},
     }
 
