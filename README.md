@@ -1,13 +1,11 @@
 # Together - A Relationship Communication App
 
 
-![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Enabled-blue?logo=docker)
-![Flask](https://img.shields.io/badge/Backend-Flask-blue?logo=flask)
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb)
-![License](https://img.shields.io/badge/License-MIT-yellow?logo=opensourceinitiative)
-![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python)
-![CI](https://img.shields.io/badge/CI%20Build-Passing-success?logo=github)
-![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen?logo=github)
+![API Container CI/CD](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/api-container-ci-cd.yml/badge.svg)
+![Web Container CI/CD](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/web-container-ci-cd.yml/badge.svg)
+![Lint](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/lint.yml/badge.svg)
+![Event Logger](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/event-logger.yml/badge.svg)
+
 
 
 Together is a full-stack web application designed to help couples maintain and strengthen their relationships through structured communication tools and shared activities. The application uses a multi-container microservice architecture with Flask backends and MongoDB database.
