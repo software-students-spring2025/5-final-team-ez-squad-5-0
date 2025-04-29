@@ -1,7 +1,6 @@
 // db-container/init-mongo.js
 // MongoDB initialization script for Together app
 
-// Switch to the 'together' database
 db = db.getSiblingDB('together');
 
 // --- Core Collections ---
@@ -30,7 +29,6 @@ db.scheduled_messages.createIndex({ scheduled_time: 1 });
 db.scheduled_messages.createIndex({ sender_id: 1 });
 db.daily_question.createIndex({ date: 1 }, { unique: true });
 
-// (Optional) Seed two test users
 try {
     db.users.insertOne({
         name: "Test User",
