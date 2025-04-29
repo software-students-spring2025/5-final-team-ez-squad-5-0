@@ -55,7 +55,8 @@ The application is composed of four main services:
    cd 5-final-team-ez-squad-5-0
    ```
 
-2. Create environment files (see Configuration section)
+2. Environment Setup:
+   - All necessary environment variables are already configured in `docker-compose.yml`, so no separate `.env` file is needed to run this project.
 
 3. Start the application using Docker Compose
    ```bash
