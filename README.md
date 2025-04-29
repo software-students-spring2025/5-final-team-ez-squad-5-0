@@ -7,7 +7,7 @@
 
 Together is a full-stack web application designed to help couples maintain and strengthen their relationships through structured communication tools and shared activities. The application uses a multi-container microservice architecture with Flask backends and MongoDB database.
 
-## 🚀 Features
+## Features
 
 - **Dashboard**: Personalized home page with upcoming events and recent messages
 - **Secure Messaging**: Send real-time and scheduled messages to your partner
@@ -17,14 +17,14 @@ Together is a full-stack web application designed to help couples maintain and s
 - **Daily Questions**: Answer daily prompts to share with your partner
 - **Settings Management**: Customize notifications and account preferences
 
-## 🐳 Container Images
+## Container Images
 
 - Web Frontend: [docker.io/togetherapp/web-container](https://hub.docker.com/r/togetherapp/web-container)
 - API Service: [docker.io/togetherapp/api-container](https://hub.docker.com/r/togetherapp/api-container)
 - AI Container: [docker.io/togetherapp/ai-container](https://hub.docker.com/r/togetherapp/ai-container)
 - MongoDB Database: [docker.io/togetherapp/db-container](https://hub.docker.com/r/togetherapp/db-container)
 
-## 👨‍💻 Team
+## Team
 
 - [ChenJun Hsu](https://github.com/Junpapadiamond)
 - [Eric Zhao](https://github.com/Ericzzy675)
