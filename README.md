@@ -90,14 +90,7 @@ For reference, here are the main environment variables used:
 - `FLASK_ENV=development`
 
 ### Notes
-- Update `MAIL_USERNAME`, `MAIL_PASSWORD`, and `MAIL_DEFAULT_SENDER` if you want to configure your own email notifications.
 - You can modify any environment variable by editing the `docker-compose.yml` file before starting the services.
-
-### How to run
-To start the full system:
-
-```bash
-docker-compose up --build
 
 ## 🗄️ Database Setup
 
