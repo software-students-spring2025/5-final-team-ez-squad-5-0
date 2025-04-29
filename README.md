@@ -92,7 +92,7 @@ For reference, here are the main environment variables used:
 ### Notes
 - You can modify any environment variable by editing the `docker-compose.yml` file before starting the services.
 
-## 🗄️ Database Setup
+## Database Setup
 
 The MongoDB database is automatically initialized when the container starts. Sample users are created:
 
@@ -101,42 +101,8 @@ The MongoDB database is automatically initialized when the container starts. Sam
 
 You can modify the initial database setup by editing `db-container/init-mongo.js`.
 
-## 🛠️ Manual Setup (Without Docker)
 
-If you prefer to run the services without Docker:
-
-### Web Container
-```bash
-cd web-container
-pip install -r requirements.txt
-python app.py
-```
-
-### API Container
-```bash
-cd api-container
-pip install -r requirements.txt
-python run.py
-```
-
-### AI Container
-```bash
-cd ai-container
-pip install -r requirements.txt
-python run.py
-```
-
-### Database
-Install MongoDB and run:
-```bash
-mongod --dbpath=/path/to/data
-```
-Then initialize the database with:
-```bash
-mongo < db-container/init-mongo.js
-```
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 SWE5/
