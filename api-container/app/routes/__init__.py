@@ -183,14 +183,11 @@ def create_event():
     data = request.json
 
     try:
-        # 设置本地时区为 New York（可根据需要更改）
         local_tz = pytz.timezone("America/New_York")
 
-        # 解析前端传来的无时区字符串
         local_start = datetime.fromisoformat(data["startTime"])
         local_end = datetime.fromisoformat(data["endTime"])
 
-        # 转换为带本地时区信息的时间，再转成 UTC
         start_utc = local_tz.localize(local_start).astimezone(pytz.utc)
         end_utc = local_tz.localize(local_end).astimezone(pytz.utc)
     except Exception as e:
