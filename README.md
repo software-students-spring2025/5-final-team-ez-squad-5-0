@@ -48,19 +48,19 @@ The application is composed of four main services:
 - Docker and Docker Compose
 - Git
 
-## 🚀 Quick Start
+## Quick Start
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/user/together.git
-   cd together
+   git clone https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0
+   cd 5-final-team-ez-squad-5-0
    ```
 
 2. Create environment files (see Configuration section)
 
 3. Start the application using Docker Compose
    ```bash
-   docker-compose up -d
+   docker compose up --build
    ```
 
 4. Access the application at `http://localhost:3000`
