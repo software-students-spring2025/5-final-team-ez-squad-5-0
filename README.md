@@ -132,19 +132,33 @@ You can modify the initial database setup by editing `db-container/init-mongo.js
 └── docker-compose.yml        # Docker Compose configuration
 ```
 
-
-
-## 🧪 Testing
-
-To run tests for the various containers:
-
+### Test the Web Container
 ```bash
-# Web container tests
-cd web-container
-pytest tests/test_app.y --cov=app
+cd ../web-container
 
-# API container tests
-cd api-container
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install test dependencies
+pip install -r requirements.txt
+
+# Run the tests
+pytest tests/test_app.py --cov=app
+```
+
+## Test the API Container
+```bash
+cd ../api-container
+
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install test dependencies
+pip install -r requirements.txt
+
+# Run the tests
 pytest tests/ --cov=app
 ```
 
