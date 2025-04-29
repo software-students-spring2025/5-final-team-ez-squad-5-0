@@ -63,40 +63,40 @@ The application is composed of four main services:
 
 4. Access the application at `http://localhost:3000`
 
-## ⚙️ Configuration
+## Configuration
 
-### Environment Variables
+The environment variables required for this project are already defined in the `docker-compose.yml` file for each service.  
+You do not need to create a separate `.env` file to run the system.
 
-Before starting the application, you need to set up the following environment variables. Create a `.env` file in the project root directory:
+For reference, here are the main environment variables used:
 
-```
-# General settings
-SECRET_KEY=dev-secret-key
-JWT_SECRET_KEY=jwt-secret-key
+### API Service (`together-api`) and Message Worker (`together-message-worker`)
+- `FLASK_APP=run.py`
+- `FLASK_ENV=development`
+- `MONGO_URI=mongodb://db:27017/together`
+- `SECRET_KEY=dev-secret-key`
+- `JWT_SECRET_KEY=jwt-secret-key`
+- `MAIL_SERVER=smtp.gmail.com`
+- `MAIL_PORT=587`
+- `MAIL_USE_TLS=True`
+- `MAIL_USERNAME=your-email@gmail.com`
+- `MAIL_PASSWORD=your-app-password`
+- `MAIL_DEFAULT_SENDER=together-app@example.com`
 
-# MongoDB connection
-MONGO_URI=mongodb://db:27017/together
+### Web Frontend (`together-web`)
+- `API_URL=http://api:5001/api`
+- `SECRET_KEY=web-secret-key`
+- `FLASK_ENV=development`
 
-# Email settings (required for notifications)
-MAIL_SERVER=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USE_TLS=True
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-password
-MAIL_DEFAULT_SENDER=together-app@example.com
+### Notes
+- Update `MAIL_USERNAME`, `MAIL_PASSWORD`, and `MAIL_DEFAULT_SENDER` if you want to configure your own email notifications.
+- You can modify any environment variable by editing the `docker-compose.yml` file before starting the services.
 
-# Service URLs
-API_URL=http://api:5001/api
-AI_URL=http://ai-service:5002/api/ai
-```
-
-### Example Configuration Files
-
-Samples of all required configuration files are included in the repository as `.example` files. Simply copy these files and remove the `.example` extension:
+### How to run
+To start the full system:
 
 ```bash
-cp .env.example .env
-```
+docker-compose up --build
 
 ## 🗄️ Database Setup
 
