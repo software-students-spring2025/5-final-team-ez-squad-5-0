@@ -33,7 +33,7 @@ Together is a full-stack web application designed to help couples maintain and s
 - [Jiangbo Shen](https://github.com/js-montgomery)
 - [Jess Liang](https://github.com/jess-liang322)
 
-## 🏗️ Architecture
+## Architecture
 
 The application is composed of four main services:
 
@@ -41,7 +41,7 @@ The application is composed of four main services:
 2. **API Container** (Port 5001): Core service handling authentication, messages, calendar, etc.
 4. **Database Container** (Port 27017): MongoDB database storing all application data
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Docker and Docker Compose
 - Git
