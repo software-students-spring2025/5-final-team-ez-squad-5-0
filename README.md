@@ -7,44 +7,45 @@
 
 Together is a full-stack web application designed to help couples maintain and strengthen their relationships through structured communication tools and shared activities. The application uses a multi-container microservice architecture with Flask backends and MongoDB database.
 
-## Features
+## 🚀 Features
 
 - **Dashboard**: Personalized home page with upcoming events and recent messages
 - **Secure Messaging**: Send real-time and scheduled messages to your partner
 - **Shared Calendar**: Coordinate events and activities together
 - **Partner Connection**: Simple system to connect with your significant other
+- **Relationship Insights**: AI-powered analysis of communication patterns
 - **Daily Questions**: Answer daily prompts to share with your partner
-- **Compatibility Quiz**: Fun quizzes that both partners can complete to test compatibility
 - **Settings Management**: Customize notifications and account preferences
 
-## Container Images
+## 🐳 Container Images
 
 - Web Frontend: [docker.io/togetherapp/web-container](https://hub.docker.com/r/togetherapp/web-container)
 - API Service: [docker.io/togetherapp/api-container](https://hub.docker.com/r/togetherapp/api-container)
 - AI Container: [docker.io/togetherapp/ai-container](https://hub.docker.com/r/togetherapp/ai-container)
 - MongoDB Database: [docker.io/togetherapp/db-container](https://hub.docker.com/r/togetherapp/db-container)
 
-## Team
+## 👨‍💻 Team
 
 - [ChenJun Hsu](https://github.com/Junpapadiamond)
 - [Eric Zhao](https://github.com/Ericzzy675)
 - [Jiangbo Shen](https://github.com/js-montgomery)
 - [Jess Liang](https://github.com/jess-liang322)
 
-## Architecture
+## 🏗️ Architecture
 
 The application is composed of four main services:
 
 1. **Web Container** (Port 3000): Flask frontend that serves the UI and communicates with the API
 2. **API Container** (Port 5001): Core service handling authentication, messages, calendar, etc.
-3. **Database Container** (Port 27017): MongoDB database storing all application data
+3. **AI Container** (Port 5002): Service for relationship analytics and insights
+4. **Database Container** (Port 27017): MongoDB database storing all application data
 
-## Prerequisites
+## 📋 Prerequisites
 
 - Docker and Docker Compose
 - Git
 
-## Quick Start
+## 🚀 Quick Start
 
 1. Clone the repository
    ```bash
@@ -61,7 +62,7 @@ The application is composed of four main services:
 
 4. Access the application at `http://localhost:3000`
 
-## Configuration
+## ⚙️ Configuration
 
 ### Environment Variables
 
@@ -96,7 +97,7 @@ Samples of all required configuration files are included in the repository as `.
 cp .env.example .env
 ```
 
-## Database Setup
+## 🗄️ Database Setup
 
 The MongoDB database is automatically initialized when the container starts. Sample users are created:
 
@@ -105,7 +106,7 @@ The MongoDB database is automatically initialized when the container starts. Sam
 
 You can modify the initial database setup by editing `db-container/init-mongo.js`.
 
-## Manual Setup (Without Docker)
+## 🛠️ Manual Setup (Without Docker)
 
 If you prefer to run the services without Docker:
 
@@ -140,7 +141,7 @@ Then initialize the database with:
 mongo < db-container/init-mongo.js
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 SWE5/
@@ -153,12 +154,15 @@ SWE5/
 │   ├── app/                 # Application modules
 │   │   ├── routes/          # API endpoints
 │   │   └── email_utils.py   # Email functions
+│   ├── workers/             # Background workers
+│   │   └── message_worker.py # Handles scheduled messages
 │   ├── requirements.txt     # Python dependencies
 │   └── run.py               # Entry point
 ├── ai-container/            # AI analytics service
 │   ├── app/                 # Application modules
+│   │   ├── models/          # Analytics models
 │   │   ├── routes.py        # API endpoints
-│   │   └── quiz_engine.py   # Quiz evaluation
+│   │   └── utils/           # Utility functions
 │   ├── requirements.txt     # Python dependencies
 │   └── run.py               # Entry point
 ├── db-container/            # Database service
@@ -167,35 +171,18 @@ SWE5/
 └── docker-compose.yml       # Docker Compose configuration
 ```
 
-## Development
+## 🔑 Key Features Explained
 
-### Adding New Features
+### Scheduled Messages
+Send messages to your partner that will be delivered at a specific time. Perfect for anniversaries, birthdays, or just to surprise your partner.
 
-1. Create a feature branch:
-   ```bash
-   git checkout -b feature/new-feature
-   ```
+### Relationship Insights
+The AI container analyzes your communication patterns and provides insights to help strengthen your relationship. View metrics like message frequency, response times, and sentiment analysis.
 
-2. Make your changes
+### Real-time Updates
+The application uses Socket.IO to provide real-time updates for communication analytics.
 
-3. Run tests:
-   ```bash
-   # In each service directory
-   pytest
-   ```
-
-4. Submit a pull request
-
-### Environment Variables for Development
-
-During development, you may want to use different environment variables:
-
-```
-FLASK_ENV=development
-DEBUG=True
-```
-
-## Troubleshooting
+## 🐞 Troubleshooting
 
 ### Container Communication Issues
 
@@ -218,6 +205,35 @@ If email notifications are not working:
 2. For Gmail, use an App Password instead of regular password
 3. Check SMTP server settings and port
 
-## License
+## 📱 API Documentation
+
+The API endpoints are organized into several categories:
+
+- `/api/auth/*` - Authentication and user management
+- `/api/messages/*` - Message sending and retrieval
+- `/api/calendar/*` - Calendar event management
+- `/api/ai/*` - AI insights and analytics
+
+For detailed API documentation, refer to the API documentation in the project wiki.
+
+## 🧪 Testing
+
+To run tests for the various containers:
+
+```bash
+# Web container tests
+cd web-container
+pytest
+
+# API container tests
+cd api-container
+pytest
+
+# AI container tests
+cd ai-container
+pytest
+```
+
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
