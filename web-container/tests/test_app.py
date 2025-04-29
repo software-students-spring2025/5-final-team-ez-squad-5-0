@@ -1,4 +1,3 @@
-# test_app.py
 import os
 import sys
 import json
@@ -226,7 +225,6 @@ def test_dashboard(client):
     login(client)
 
     with patch("app.api_request") as mock_api:
-        # Configure mock to return different responses for different endpoints
         def side_effect(endpoint, *args, **kwargs):
             mock_response = MagicMock()
 
@@ -288,7 +286,6 @@ def test_dashboard_question_submit(client):
         assert response.status_code == 200
         assert mock_api.called
 
-        # Check that the API was called with the correct parameters
         call_args = mock_api.call_args_list[0][0]
         call_kwargs = mock_api.call_args_list[0][1]
         assert call_args[0] == "daily-question/answer"
@@ -479,9 +476,6 @@ def test_partner_page(client):
 
         assert response.status_code == 200
         assert b"Partner User" in response.data
-        # Remove the email assertion since it's not displayed in your template
-        # assert b'partner@example.com' in response.data
-        # Instead, check for something that should be in the connected partner view
         assert (
             b"connected" in response.data.lower() or b"partner" in response.data.lower()
         )
@@ -647,7 +641,6 @@ def test_quiz_api_proxy_post(client):
 
 
 def test_quiz_api_proxy_unauthorized(client):
-    # Not logged in
     response = client.get("/api/quiz/questions")
 
     assert response.status_code == 401
@@ -738,7 +731,6 @@ def test_change_password_missing_fields(client):
         "/change_password",
         data={
             "current_password": "oldpassword",
-            # Missing new_password and confirm_password
         },
         follow_redirects=True,
     )
@@ -763,13 +755,11 @@ def test_dashboard_api_errors(client):
     login(client)
 
     with patch("app.api_request") as mock_api:
-        # Make all API calls raise exceptions to test error handling
         mock_api.side_effect = Exception("API connection error")
 
         response = client.get("/dashboard")
 
         assert response.status_code == 200
-        # Check that error flash messages are shown
         assert b"Error fetching events" in response.data
         assert b"Error fetching messages" in response.data
         assert b"Error fetching daily question" in response.data

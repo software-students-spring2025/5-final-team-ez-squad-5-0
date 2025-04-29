@@ -1,4 +1,3 @@
-// static/js/quiz.js
 document.addEventListener('DOMContentLoaded', function() {
     const scoreEl = document.getElementById('score-circle');
     const qEl = document.getElementById('q-text');
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Legacy API call for backward compatibility
+    // Legacy API call
     async function legacyFetchAPI(endpoint, options = {}) {
         try {
             const response = await fetch(`/api/quiz/${endpoint}`, options);
@@ -234,9 +233,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Make sure id exists (either from server or generate one if missing)
+            // Make sure id exists
             if (!data.id) {
-                data.id = Math.floor(Math.random() * 10000); // Generate random ID if missing
+                data.id = Math.floor(Math.random() * 10000);
                 console.log('Generated ID for question:', data.id);
             }
 
@@ -315,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!data) return;
 
-            // Update the mini-stats
+            // Update the stats
             answered++;
             if (data.is_match || data.delta > 0) matches++;
             statAnswered.textContent = answered;
@@ -370,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Improved polling for partner response
+    //polling for partner response
     function startPolling() {
         // Clear any existing interval
         if (pollInterval) {
@@ -430,9 +429,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } catch (e) {
                 console.error('Error polling for partner response:', e);
-                // Don't stop polling on error
             }
-        }, 3000); // Poll every 3 seconds
+        }, 3000);
     }
 
     // Create a new batch
@@ -590,7 +588,6 @@ document.addEventListener('DOMContentLoaded', function() {
     async function initQuiz() {
         await loadStats();
 
-        // First try loading a question to see what API is available
         try {
             await loadQuestion();
         } catch (e) {

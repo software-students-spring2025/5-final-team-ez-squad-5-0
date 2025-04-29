@@ -47,11 +47,10 @@
             <a href="{{ url_for('messages') }}" class="btn-primary">View Messages</a>
         </div>
         
-        <!-- In dashboard.html -->
         <div class="dashboard-card">
             <h2>Daily Question</h2>
             <div class="prompt-container">
-                <p>{{ daily_question }}</p> <!-- Changed from "question" -->
+                <p>{{ daily_question }}</p>
                 
                 <form method="post" action="{{ url_for('answer_question') }}">
                     <div class="form-group">
@@ -63,9 +62,9 @@
 
             <div class="responses-container">
                 <h2>Today's Responses</h2>
-                {% if daily_answers %} <!-- Changed from "responses" -->
+                {% if daily_answers %}
                     <ul>
-                        {% for r in daily_answers %} <!-- Changed from "responses" -->
+                        {% for r in daily_answers %}
                             <li>{{ r.answer }} - {{ r.user_name }}</li>
                         {% endfor %}
                     </ul>

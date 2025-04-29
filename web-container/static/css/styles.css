@@ -1,5 +1,4 @@
 /* -----------------Fonts------------------ */
-
 @font-face {
     font-family: moirai;
     src: url('../font/MoiraiOne-Regular.ttf');
@@ -12,7 +11,6 @@
 
 
 /* --------------Base CSS--------------- */
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -37,9 +35,7 @@ body {
     padding: 20px;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
     margin-bottom: 15px;
     color: #2c3e50;
 }
@@ -55,7 +51,6 @@ a:hover {
 
 
 /* -----------------Navbar------------------ */
-
 .navbar {
     position: fixed;
     top: 0;
@@ -126,7 +121,6 @@ a:hover {
 
 
 /* -----------------Logo------------------ */
-
 #logo {
     font-family: moirai;
     font-size: 5rem;
@@ -140,7 +134,6 @@ a:hover {
 
 
 /* -----------------Form------------------ */
-
 .form-group {
     margin-bottom: 20px;
     text-align: left;
@@ -153,8 +146,7 @@ label {
     color: #b03a74;
 }
 
-input,
-textarea {
+input, textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -168,15 +160,13 @@ textarea {
     resize: vertical;
 }
 
-.form-group input:focus,
-textarea:focus {
+.form-group input:focus, textarea:focus {
     border-color: #e94282;
     outline: none;
 }
 
 
 /* -----------------Buttons------------------ */
-
 .btn-primary {
     display: inline-block;
     background-color: palevioletred;
@@ -214,7 +204,6 @@ textarea:focus {
 
 
 /* ----------Flash messages---------- */
-
 .flash-messages {
     margin-bottom: 20px;
 }
@@ -227,26 +216,17 @@ textarea:focus {
     margin-bottom: 10px;
 }
 
-
-/* Success flash message style */
-
 .flash-message.success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
-
-/* Warning flash message style (optional) */
-
 .flash-message.warning {
     background-color: #fff3cd;
     color: #856404;
     border: 1px solid #ffeeba;
 }
-
-
-/* Info flash message style (optional) */
 
 .flash-message.info {
     background-color: #d1ecf1;
@@ -256,7 +236,6 @@ textarea:focus {
 
 
 /* ----------Login/Register CSS----------- */
-
 .auth-container {
     max-width: 500px;
     margin: 50px auto;
@@ -268,8 +247,7 @@ textarea:focus {
     backdrop-filter: blur(6px);
 }
 
-.auth-container h2,
-.auth-container p {
+.auth-container h2, .auth-container p {
     text-align: center;
     margin-bottom: 20px;
     color: #444;
@@ -293,7 +271,6 @@ textarea:focus {
 
 
 /* ----------Dashboard----------- */
-
 .dashboard {
     width: 100%;
     max-width: 1200px;
@@ -353,13 +330,11 @@ textarea:focus {
     padding-bottom: 8px;
 }
 
-.event-list,
-.message-list {
+.event-list, .message-list {
     margin-bottom: 20px;
 }
 
-.event-item,
-.message-item {
+.event-item, .message-item {
     background-color: rgba(255, 255, 255, 0.75);
     padding: 10px 12px;
     border-radius: 8px;
@@ -367,14 +342,12 @@ textarea:focus {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.event-title,
-.message-content {
+.event-title, .message-content {
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-.event-date,
-.message-time {
+.event-date, .message-time {
     font-size: 12px;
     color: #666;
 }
@@ -388,8 +361,7 @@ textarea:focus {
 }
 
 
-/* Calendar */
-
+/* ---------------Calendar-------------- */
 .calendar-container {
     background-color: white;
     border-radius: 8px;
@@ -397,9 +369,6 @@ textarea:focus {
     padding: 20px;
     margin-bottom: 20px;
 }
-
-
-/* Calendar styling - NEW ADDITIONS */
 
 .calendar-grid {
     display: grid;
@@ -443,9 +412,6 @@ textarea:focus {
     text-decoration: underline dashed;
 }
 
-
-/* Calendar navigation */
-
 .calendar-navigation {
     display: flex;
     align-items: center;
@@ -473,8 +439,7 @@ textarea:focus {
 }
 
 
-/* Messages */
-
+/* --------------Messages-------------- */
 .messages-container {
     background-color: white;
     border-radius: 8px;
@@ -514,9 +479,6 @@ textarea:focus {
     padding: 20px;
 }
 
-
-/* Schedule modal */
-
 .schedule-modal {
     display: none;
     position: fixed;
@@ -540,11 +502,7 @@ textarea:focus {
 }
 
 
-/* Add these styles to web-container/static/css/styles.css */
-
-
-/* Scheduled Messages */
-
+/* -------------Scheduled Messages------------- */
 .scheduled-messages-list {
     margin-top: 20px;
 }
@@ -571,9 +529,6 @@ textarea:focus {
     background-color: #f9f9f9;
 }
 
-
-/* Status colors */
-
 .status-pending {
     color: #f39c12;
 }
@@ -589,9 +544,6 @@ textarea:focus {
 .status-cancelled {
     color: #95a5a6;
 }
-
-
-/* Modal improvements */
 
 .schedule-modal {
     display: none;
@@ -620,8 +572,7 @@ textarea:focus {
 }
 
 
-/* Partner connection styles */
-
+/* ----------Partner connection----------- */
 .alert {
     padding: 15px;
     margin-bottom: 20px;
@@ -686,8 +637,7 @@ textarea:focus {
 }
 
 
-/* Quiz Container */
-
+/* -------------Quiz Container------------- */
 .quiz-container {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
@@ -744,9 +694,6 @@ textarea:focus {
     margin-top: 4px;
 }
 
-
-/* Quiz Stats */
-
 .quiz-stats {
     display: flex;
     justify-content: space-around;
@@ -773,9 +720,6 @@ textarea:focus {
     color: #333;
 }
 
-
-/* Batch Progress */
-
 .batch-progress {
     text-align: center;
     font-size: 14px;
@@ -788,9 +732,6 @@ textarea:focus {
     margin-left: auto;
     margin-right: auto;
 }
-
-
-/* Loading Indicator */
 
 .loading-indicator {
     display: flex;
@@ -823,9 +764,6 @@ textarea:focus {
     color: #666;
 }
 
-
-/* Error Message */
-
 .error-message {
     background-color: #f8d7da;
     color: #721c24;
@@ -833,9 +771,6 @@ textarea:focus {
     border-radius: 10px;
     margin-bottom: 20px;
 }
-
-
-/* Waiting Indicator */
 
 .waiting-indicator {
     background-color: #d1ecf1;
@@ -895,8 +830,7 @@ textarea:focus {
 }
 
 
-/* Question Container */
-
+/* ----------Question Container---------- */
 .question-container {
     margin-bottom: 25px;
 }
@@ -908,8 +842,7 @@ textarea:focus {
 }
 
 
-/* Options Container */
-
+/* ----------Options Container---------- */
 .options-container {
     display: flex;
     flex-direction: column;
@@ -941,8 +874,7 @@ textarea:focus {
 }
 
 
-/* Answer Result */
-
+/* ----------Answer Result---------- */
 .answer-result {
     margin-top: 15px;
     padding: 12px;
@@ -967,8 +899,7 @@ textarea:focus {
 }
 
 
-/* Quiz Complete */
-
+/* ------------Quiz Complete------------- */
 .quiz-complete {
     padding: 25px;
     background-color: #f8f9fa;
@@ -1066,8 +997,7 @@ textarea:focus {
 }
 
 
-/* Notification */
-
+/* ------------Notification------------ */
 .notification {
     background-color: #fff3cd;
     color: #856404;
@@ -1084,9 +1014,6 @@ textarea:focus {
     color: #0c5460;
 }
 
-
-/* Quiz Actions */
-
 .quiz-actions {
     display: flex;
     justify-content: center;
@@ -1094,27 +1021,20 @@ textarea:focus {
     margin-top: 20px;
 }
 
-
-/* ---------------- Dynamic‐width helpers ---------------- */
-
 .progress-bar {
-    /* default if no --width is set */
     width: var(--width, 0%);
 }
 
 .gauge-fill {
-    /* default if no --width is set */
     width: var(--width, 0%);
 }
 
 .gauge-marker {
-    /* default if no --marker is set */
     left: var(--marker, 0%);
 }
 
 
-/* Settings page styles */
-
+/* -------------Settings page-------------- */
 .settings-container {
     max-width: 800px;
     margin: 30px auto;

@@ -1,4 +1,3 @@
-# web-container/app.py
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import requests
 import os
@@ -13,7 +12,6 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-web-secret-key")
 API_URL = os.environ.get("API_URL", "http://api:5001/api")
 
 
-# trigger API CI/CD test
 # Helper function to make API requests
 def api_request(endpoint, method="GET", data=None, token=None):
     url = f"{API_URL}/{endpoint}"
@@ -42,7 +40,7 @@ def index():
     return redirect(url_for("dashboard"))
 
 
-# Authentication routes
+# Route for authentication
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -66,14 +64,14 @@ def login():
 
     return render_template("login.html")
 
-
+# Route for logout
 @app.route("/logout")
 def logout():
     session.pop("token", None)
     session.pop("user", None)
     return redirect(url_for("login"))
 
-
+# Route for register
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -82,7 +80,7 @@ def register():
         password = request.form["password"]
         partner_email = request.form.get(
             "partner_email", ""
-        )  # Get partner email if provided
+        )
 
         # Prepare request data
         request_data = {"name": name, "email": email, "password": password}
@@ -107,7 +105,7 @@ def register():
     return render_template("register.html")
 
 
-# Settings route for email notifications
+# Route for email notifications
 @app.route("/settings", methods=["GET", "POST"])
 def settings():
     if "token" not in session:
@@ -116,7 +114,7 @@ def settings():
     user = session.get("user", {})
 
     if request.method == "POST":
-        # Handle email notification toggle
+        # Handle email notification
         email_notifications = "email_notifications" in request.form
 
         try:
@@ -142,8 +140,7 @@ def settings():
     return render_template("settings.html", user=user)
 
 
-# Dashboard route
-# In web-container/app.py
+# Route for dashboard route
 @app.route("/dashboard")
 def dashboard():
     if "token" not in session:
@@ -152,7 +149,7 @@ def dashboard():
     user = session.get("user", {})
     events = []
     messages = []
-    daily_question = "What made you smile today?"  # Default fallback
+    daily_question = "What made you smile today?"
     daily_answers = []
 
     # Fetch events
@@ -171,7 +168,7 @@ def dashboard():
     except Exception as e:
         flash(f"Error fetching messages: {str(e)}", "error")
 
-    # Fetch daily question - Fixed URL
+    # Fetch daily question
     try:
         response = api_request("daily-question", token=session["token"])
         if response.status_code == 200:
@@ -182,7 +179,7 @@ def dashboard():
         print(f"Error fetching daily question: {str(e)}")
         flash(f"Error fetching daily question: {str(e)}", "error")
 
-    # Fetch daily answers - Fixed URL
+    # Fetch daily answers
     try:
         response = api_request("daily-question/answers", token=session["token"])
         if response.status_code == 200:
@@ -203,8 +200,7 @@ def dashboard():
     )
 
 
-# Dashboard question response
-# In web-container/app.py
+# Route for ashboard question response
 @app.route("/dashboard/question", methods=["POST"])
 def answer_question():
     if "token" not in session:
@@ -217,7 +213,6 @@ def answer_question():
         return redirect(url_for("dashboard"))
 
     try:
-        # Changed to match API endpoint and parameter name
         result = api_request(
             "daily-question/answer",
             method="POST",
@@ -241,7 +236,7 @@ def answer_question():
     return redirect(url_for("dashboard"))
 
 
-# Calendar routes
+# Route for calender
 @app.route("/calendar")
 def calendar():
     if "token" not in session:
@@ -258,7 +253,7 @@ def calendar():
 
     return render_template("calendar.html", events=events)
 
-
+# Route for adding item in calender
 @app.route("/calendar/add", methods=["POST"])
 def add_event():
     if "token" not in session:
@@ -285,7 +280,7 @@ def add_event():
 
     return redirect(url_for("calendar"))
 
-
+# Route for messages
 @app.route("/messages")
 def messages():
     if "token" not in session:
@@ -323,7 +318,7 @@ def messages():
         partner_name=partner_name,
     )
 
-
+# Route for sending messeges
 @app.route("/messages/send", methods=["POST"])
 def send_message():
     if "token" not in session:
@@ -356,7 +351,7 @@ def send_message():
 
     return redirect(url_for("messages"))
 
-
+# Route for schedule messages
 @app.route("/messages/schedule", methods=["POST"])
 def schedule_message():
     if "token" not in session:
@@ -366,7 +361,6 @@ def schedule_message():
     receiver_id = request.form.get("receiver_id", "default-partner-id")
     scheduled_time = request.form.get("scheduled_time")
 
-    # Debug info
     print(f"Scheduling message: {content} to {receiver_id} at {scheduled_time}")
 
     # Skip scheduling if no content, receiver, or time
@@ -375,7 +369,6 @@ def schedule_message():
         return redirect(url_for("messages"))
 
     try:
-        # Call the new API endpoint for scheduling
         response = api_request(
             "messages/schedule",
             method="POST",
@@ -400,7 +393,7 @@ def schedule_message():
     return redirect(url_for("messages"))
 
 
-# Add a new route to view scheduled messages
+# Route for viewing scheduled messages
 @app.route("/messages/scheduled")
 def scheduled_messages():
     if "token" not in session:
@@ -420,7 +413,7 @@ def scheduled_messages():
     )
 
 
-# Add a route to cancel a scheduled message
+# Route for canceling a scheduled message
 @app.route("/messages/scheduled/<message_id>/cancel", methods=["POST"])
 def cancel_scheduled_message(message_id):
     if "token" not in session:
@@ -445,7 +438,7 @@ def cancel_scheduled_message(message_id):
     return redirect(url_for("scheduled_messages"))
 
 
-# Partner routes
+# Route for partner page
 @app.route("/partner")
 def partner():
     if "token" not in session:
@@ -467,7 +460,7 @@ def partner():
         "partner.html", partner_status=partner_status, partner=partner_data
     )
 
-
+# Route for sending patner invitation
 @app.route("/partner/send-invite", methods=["POST"])
 def send_invite():
     if "token" not in session:
@@ -497,7 +490,7 @@ def send_invite():
 
     return redirect(url_for("partner"))
 
-
+# Route for accepting partner invitation
 @app.route("/partner/accept-invite", methods=["POST"])
 def accept_invite():
     if "token" not in session:
@@ -518,7 +511,7 @@ def accept_invite():
 
     return redirect(url_for("partner"))
 
-
+# Route for rejecting partner invitation
 @app.route("/partner/reject-invite", methods=["POST"])
 def reject_invite():
     if "token" not in session:
@@ -539,13 +532,12 @@ def reject_invite():
 
     return redirect(url_for("partner"))
 
-
+# Route for canceling invitation that already sent
 @app.route("/partner/cancel-invite", methods=["POST"])
 def cancel_invite():
     if "token" not in session:
         return redirect(url_for("login"))
 
-    # This essentially does the same as reject, but from the sender's side
     try:
         response = api_request(
             "auth/partner/reject", method="POST", token=session["token"]
@@ -561,14 +553,13 @@ def cancel_invite():
 
     return redirect(url_for("partner"))
 
-
+# Route for disconnecting partner
 @app.route("/partner/disconnect", methods=["POST"])
 def disconnect_partner():
     if "token" not in session:
         return redirect(url_for("login"))
 
     try:
-        # We'll use the same endpoint as reject for simplicity
         response = api_request(
             "auth/partner/reject", method="POST", token=session["token"]
         )
@@ -585,7 +576,7 @@ def disconnect_partner():
 
     return redirect(url_for("partner"))
 
-
+# Route for updating user profile
 @app.route("/update_profile", methods=["POST"])
 def update_profile():
     if "token" not in session:
@@ -615,7 +606,7 @@ def update_profile():
 
     return redirect(url_for("settings"))
 
-
+# Route for changing password
 @app.route("/change_password", methods=["POST"])
 def change_password():
     if "token" not in session:
@@ -652,7 +643,7 @@ def change_password():
     return redirect(url_for("settings"))
 
 
-# ──────────── Quiz Page ────────────
+# Route for the quiz page
 @app.route("/quiz")
 def quiz_page():
     if "token" not in session:
@@ -660,8 +651,7 @@ def quiz_page():
     return render_template("quiz.html")
 
 
-# ──────────── Quiz Proxy Endpoints ────────────
-# These proxy routes handle all quiz API calls and forward them to the backend
+# Routes that handles quiz api calls
 @app.route("/api/quiz/<path:subpath>", methods=["GET", "POST"])
 def quiz_api_proxy(subpath):
     if "token" not in session:
@@ -671,7 +661,7 @@ def quiz_api_proxy(subpath):
             {"Content-Type": "application/json"},
         )
 
-    # Forward the request to the API server
+    # Forward the request to the API
     url = f"{API_URL}/quiz/{subpath}"
     headers = {
         "Authorization": f"Bearer {session['token']}",
@@ -680,15 +670,14 @@ def quiz_api_proxy(subpath):
 
     try:
         if request.method == "GET":
-            # Forward any query parameters
             params = request.args.to_dict()
             response = requests.get(url, headers=headers, params=params)
-        else:  # POST
+        else: 
             response = requests.post(
                 url, headers=headers, data=request.data if request.data else None
             )
 
-        # Return the API response directly to the client
+        # Return the API response
         return (
             response.content,
             response.status_code,

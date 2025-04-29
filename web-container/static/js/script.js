@@ -1,8 +1,5 @@
-// web-container/static/js/script.js
-// Simple script file for general functionality
-
 document.addEventListener('DOMContentLoaded', function () {
-    // Flash messages auto-hide after 5 seconds
+    // Flash messages hide automatically after 5 seconds
     const flashMessages = document.querySelectorAll('.flash-message');
     flashMessages.forEach(message => {
         setTimeout(() => {
@@ -23,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // ✅ Convert all UTC times to user's local time
+    // Convert all UTC times to user's local time
     const utcElements = document.querySelectorAll('.utc-time');
     utcElements.forEach(span => {
         const utc = span.dataset.utc;
