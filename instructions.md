@@ -1,28 +1,239 @@
-# Final Project
+# Together - A Relationship Communication App
 
-An exercise to put to practice software development teamwork, database integration, containers, deployment, and CI/CD pipelines.
+![Web Container CI](https://github.com/user/together/workflows/Web%20CI/badge.svg)
+![API Container CI](https://github.com/user/together/workflows/API%20CI/badge.svg)
+![AI Container CI](https://github.com/user/together/workflows/AI%20CI/badge.svg)
+![DB Container CI](https://github.com/user/together/workflows/DB%20CI/badge.svg)
 
-## Requirements
+Together is a full-stack web application designed to help couples maintain and strengthen their relationships through structured communication tools and shared activities. The application uses a multi-container microservice architecture with Flask backends and MongoDB database.
 
-This is an open-ended exercise for you to show your mastery of software engineering, with some specific requirements:
+## 🚀 Features
 
-- Your software must be composed of at least 2 different subsystems.
-- One of those subsystems must be a MongoDB database.
-- The other subsystem(s) can be anything of your choosing, but code must be primarily written in Python.
-- If you build more than one custom subsystem, each subsystem's code must reside within its own subdirectory within this "monorepo". If building only one subsystem, you can place the code in the project's main directory.
-- Each custom subsystem must be a containerized application, each having its own `Dockerfile` with the image hosted on [Docker Hub](https://hub.docker.com/).
-- Each custom subsystem must have its own CI/CD pipeline using [GitHub Actions](https://docs.github.com/en/actions), with a separate workflow files for each subsystem. These workflows must be triggered by any code change, whether via `push` or merged `pull request`, to the `main` or `master` branch. The workflows must build, test, deliver the images to Docker Hub, and deploy any subsystems that are designed to run online (i.e. any web apps or other online services) to [Digital Ocean](https://m.do.co/c/4d1066078eb0).
-- Each custom subsystem must contain unit tests that provide at least 80% code coverage.
-- You are welcome to use computing platforms such as [Raspberry Pi](https://www.raspberrypi.com/) or other embedded or mobile devices you have available, if they make sense for your project.
+- **Dashboard**: Personalized home page with upcoming events and recent messages
+- **Secure Messaging**: Send real-time and scheduled messages to your partner
+- **Shared Calendar**: Coordinate events and activities together
+- **Partner Connection**: Simple system to connect with your significant other
+- **Relationship Insights**: AI-powered analysis of communication patterns
+- **Daily Questions**: Answer daily prompts to share with your partner
+- **Settings Management**: Customize notifications and account preferences
 
-## Documentation
+## 🐳 Container Images
 
-Replace the contents of the [README.md](./README.md) file with a beautifully-formatted Markdown file including:
+- Web Frontend: [docker.io/togetherapp/web-container](https://hub.docker.com/r/togetherapp/web-container)
+- API Service: [docker.io/togetherapp/api-container](https://hub.docker.com/r/togetherapp/api-container)
+- AI Container: [docker.io/togetherapp/ai-container](https://hub.docker.com/r/togetherapp/ai-container)
+- MongoDB Database: [docker.io/togetherapp/db-container](https://hub.docker.com/r/togetherapp/db-container)
 
-- a plain-language **description** of your project, including:
-- [badges](https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge) at the top of the `README.md` file showing the result of the latest CI/CD of each subsystem.
-- links to the container images for each custom subsystem, hosted on [DockerHub](https://hub.docker.com).
-- the names of all teammates as links to their GitHub profiles.
-- instructions for how to configure and run all parts of your project for any developer on any platform - these instructions must work!
-- instructions for how to set up any environment variables and import any starter data into the database, as necessary, for the system to operate correctly when run.
-- if there are any "secret" configuration files, such as `.env` or similar files, that are not included in the version control repository, examples of these files, such as `env.example`, with dummy data must be included in the repository and exact instructions for how to create the proper configuration files and what their contents should be must be supplied to the course admins by the due date.
+## 👨‍💻 Team
+
+- [ChenJun Hsu](https://github.com/Junpapadiamond)
+- [Eric Zhao](https://github.com/Ericzzy675)
+- [Jiangbo Shen](https://github.com/js-montgomery)
+- [Jess Liang](https://github.com/jess-liang322)
+
+## 🏗️ Architecture
+
+The application is composed of four main services:
+
+1. **Web Container** (Port 3000): Flask frontend that serves the UI and communicates with the API
+2. **API Container** (Port 5001): Core service handling authentication, messages, calendar, etc.
+3. **AI Container** (Port 5002): Service for relationship analytics and insights
+4. **Database Container** (Port 27017): MongoDB database storing all application data
+
+## 📋 Prerequisites
+
+- Docker and Docker Compose
+- Git
+
+## 🚀 Quick Start
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/user/together.git
+   cd together
+   ```
+
+2. Create environment files (see Configuration section)
+
+3. Start the application using Docker Compose
+   ```bash
+   docker-compose up -d
+   ```
+
+4. Access the application at `http://localhost:3000`
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Before starting the application, you need to set up the following environment variables. Create a `.env` file in the project root directory:
+
+```
+# General settings
+SECRET_KEY=dev-secret-key
+JWT_SECRET_KEY=jwt-secret-key
+
+# MongoDB connection
+MONGO_URI=mongodb://db:27017/together
+
+# Email settings (required for notifications)
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USE_TLS=True
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
+MAIL_DEFAULT_SENDER=together-app@example.com
+
+# Service URLs
+API_URL=http://api:5001/api
+AI_URL=http://ai-service:5002/api/ai
+```
+
+### Example Configuration Files
+
+Samples of all required configuration files are included in the repository as `.example` files. Simply copy these files and remove the `.example` extension:
+
+```bash
+cp .env.example .env
+```
+
+## 🗄️ Database Setup
+
+The MongoDB database is automatically initialized when the container starts. Sample users are created:
+
+- Email: test@example.com, Password: password123
+- Email: partner@example.com, Password: password123
+
+You can modify the initial database setup by editing `db-container/init-mongo.js`.
+
+## 🛠️ Manual Setup (Without Docker)
+
+If you prefer to run the services without Docker:
+
+### Web Container
+```bash
+cd web-container
+pip install -r requirements.txt
+python app.py
+```
+
+### API Container
+```bash
+cd api-container
+pip install -r requirements.txt
+python run.py
+```
+
+### AI Container
+```bash
+cd ai-container
+pip install -r requirements.txt
+python run.py
+```
+
+### Database
+Install MongoDB and run:
+```bash
+mongod --dbpath=/path/to/data
+```
+Then initialize the database with:
+```bash
+mongo < db-container/init-mongo.js
+```
+
+## 📁 Project Structure
+
+```
+SWE5/
+├── web-container/           # Frontend Flask application
+│   ├── app.py               # Main application file
+│   ├── requirements.txt     # Python dependencies
+│   ├── static/              # CSS, JS, and images
+│   └── templates/           # HTML templates
+├── api-container/           # API service
+│   ├── app/                 # Application modules
+│   │   ├── routes/          # API endpoints
+│   │   └── email_utils.py   # Email functions
+│   ├── workers/             # Background workers
+│   │   └── message_worker.py # Handles scheduled messages
+│   ├── requirements.txt     # Python dependencies
+│   └── run.py               # Entry point
+├── ai-container/            # AI analytics service
+│   ├── app/                 # Application modules
+│   │   ├── models/          # Analytics models
+│   │   ├── routes.py        # API endpoints
+│   │   └── utils/           # Utility functions
+│   ├── requirements.txt     # Python dependencies
+│   └── run.py               # Entry point
+├── db-container/            # Database service
+│   ├── init-mongo.js        # DB initialization script
+│   └── Dockerfile           # MongoDB container setup
+└── docker-compose.yml       # Docker Compose configuration
+```
+
+## 🔑 Key Features Explained
+
+### Scheduled Messages
+Send messages to your partner that will be delivered at a specific time. Perfect for anniversaries, birthdays, or just to surprise your partner.
+
+### Relationship Insights
+The AI container analyzes your communication patterns and provides insights to help strengthen your relationship. View metrics like message frequency, response times, and sentiment analysis.
+
+### Real-time Updates
+The application uses Socket.IO to provide real-time updates for communication analytics.
+
+## 🐞 Troubleshooting
+
+### Container Communication Issues
+
+If containers cannot communicate:
+1. Check network settings in `docker-compose.yml`
+2. Ensure all containers are on the same network (`app-network`)
+3. Verify service names match the hostnames used in configuration
+
+### Database Connection Issues
+
+If the application cannot connect to the database:
+1. Make sure MongoDB is running
+2. Check the MongoDB connection string
+3. Verify database initialization completed successfully
+
+### Email Notification Issues
+
+If email notifications are not working:
+1. Make sure email credentials are correct
+2. For Gmail, use an App Password instead of regular password
+3. Check SMTP server settings and port
+
+## 📱 API Documentation
+
+The API endpoints are organized into several categories:
+
+- `/api/auth/*` - Authentication and user management
+- `/api/messages/*` - Message sending and retrieval
+- `/api/calendar/*` - Calendar event management
+- `/api/ai/*` - AI insights and analytics
+
+For detailed API documentation, refer to the API documentation in the project wiki.
+
+## 🧪 Testing
+
+To run tests for the various containers:
+
+```bash
+# Web container tests
+cd web-container
+pytest
+
+# API container tests
+cd api-container
+pytest
+
+# AI container tests
+cd ai-container
+pytest
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
