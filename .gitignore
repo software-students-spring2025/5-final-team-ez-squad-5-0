@@ -1,5 +1,6 @@
 # mac junk
 .DS_Store
+.identifier
 
 # visual studio code junk
 .vscode/
