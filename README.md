@@ -26,7 +26,6 @@ Together is a full-stack web application designed to help couples maintain and s
 
 - [Web Frontend](https://hub.docker.com/r/ericzzy/together-web)
 - [API Service](https://hub.docker.com/r/ericzzy/together-api)
-- [MongoDB Database](https://hub.docker.com/r/ericzzy/together-db)
 
 ## Team
 
