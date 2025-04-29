@@ -7,7 +7,6 @@ from .. import mongo
 
 quiz_bp = Blueprint("quiz", __name__)
 
-# Get questions from existing list (simplified version for clarity)
 QUIZ_QUESTIONS = [
     {
         "text": "Would you rather have a cat or a dog?",
@@ -1588,7 +1587,6 @@ def get_score():
         return jsonify({"score": 0, "error": str(e)}), 200
 
 
-# Status endpoint - get current quiz status
 @quiz_bp.route("/status", methods=["GET"])
 @jwt_required()
 def get_status():
@@ -1657,7 +1655,6 @@ def get_status():
         return jsonify({"error": str(e)}), 500
 
 
-# Batch endpoints
 @quiz_bp.route("/batch", methods=["GET"])
 @jwt_required()
 def get_batch():
@@ -1729,7 +1726,6 @@ def create_new_batch():
         return jsonify({"error": str(e)}), 500
 
 
-# Get current question
 @quiz_bp.route("/question", methods=["GET"])
 @jwt_required()
 def get_question():
