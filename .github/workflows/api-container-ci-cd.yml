@@ -76,14 +76,21 @@ jobs:
         run: |
           docker push ericzzy/together-api:latest
           
-      - name: Deploy to Digital Ocean
+      # Deploy to DigitalOcean using docker-compose
+      - name: Deploy to DigitalOcean
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
-            docker pull ericzzy/together-api:latest
-            docker stop api || true
-            docker rm api || true
-            docker run -d --name api -p 5000:5000 ericzzy/together-api:latest
+            # Change to project directory
+            cd /opt/together/5-final-team-ez-squad-5-0
+            
+            # Pull latest images
+            docker compose pull
+            
+            # Restart only the api container
+            docker compose stop api
+            docker compose rm -f api
+            docker compose up -d api
