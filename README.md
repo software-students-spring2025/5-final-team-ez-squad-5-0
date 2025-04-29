@@ -146,31 +146,31 @@ mongo < db-container/init-mongo.js
 ## 📁 Project Structure
 
 ```
-SWE5/
-├── web-container/           # Frontend Flask application
-│   ├── app.py               # Main application file
-│   ├── requirements.txt     # Python dependencies
-│   ├── static/              # CSS, JS, and images
-│   └── templates/           # HTML templates
-├── api-container/           # API service
-│   ├── app/                 # Application modules
-│   │   ├── routes/          # API endpoints
-│   │   └── email_utils.py   # Email functions
-│   ├── workers/             # Background workers
+5-final-team-ez-squad-5-0/
+├── web-container/            # Frontend Flask application
+│   ├── app.py                # Main application file
+│   ├── requirements.txt      # Python dependencies
+│   ├── Dockerfile            # Web container setup
+│   ├── tests/                # Tests for the flask routes
+│   ├── static/               # CSS, JS, and images
+│   └── templates/            # HTML templates
+├── api-container/            # API service
+│   ├── app/                  # Application modules
+│   │   ├── routes/           # API endpoints
+│   │   ├── __init__.py       # Initialize the package
+│   │   └── email_utils.py    # Email functions
+│   ├── workers/              # Background workers
 │   │   └── message_worker.py # Handles scheduled messages
-│   ├── requirements.txt     # Python dependencies
-│   └── run.py               # Entry point
-├── ai-container/            # AI analytics service
-│   ├── app/                 # Application modules
-│   │   ├── models/          # Analytics models
-│   │   ├── routes.py        # API endpoints
-│   │   └── utils/           # Utility functions
-│   ├── requirements.txt     # Python dependencies
-│   └── run.py               # Entry point
-├── db-container/            # Database service
-│   ├── init-mongo.js        # DB initialization script
-│   └── Dockerfile           # MongoDB container setup
-└── docker-compose.yml       # Docker Compose configuration
+│   ├── tests/                # Tests for API endpoints
+│   ├── requirements.txt      # Python dependencies
+│   ├── Dockerfile            # API container setup
+│   ├── Dockerfile.worker     # Worker API setup
+│   └── run.py                # Entry point
+├── db-container/             # Database service
+│   ├── init-mongo.js         # DB initialization script
+│   ├── mongo-setup.sh        # Setup MongoDB
+│   └── Dockerfile            # MongoDB container setup
+└── docker-compose.yml        # Docker Compose configuration
 ```
 
 ## 🔑 Key Features Explained
@@ -184,40 +184,6 @@ The AI container analyzes your communication patterns and provides insights to h
 ### Real-time Updates
 The application uses Socket.IO to provide real-time updates for communication analytics.
 
-## 🐞 Troubleshooting
-
-### Container Communication Issues
-
-If containers cannot communicate:
-1. Check network settings in `docker-compose.yml`
-2. Ensure all containers are on the same network (`app-network`)
-3. Verify service names match the hostnames used in configuration
-
-### Database Connection Issues
-
-If the application cannot connect to the database:
-1. Make sure MongoDB is running
-2. Check the MongoDB connection string
-3. Verify database initialization completed successfully
-
-### Email Notification Issues
-
-If email notifications are not working:
-1. Make sure email credentials are correct
-2. For Gmail, use an App Password instead of regular password
-3. Check SMTP server settings and port
-
-## 📱 API Documentation
-
-The API endpoints are organized into several categories:
-
-- `/api/auth/*` - Authentication and user management
-- `/api/messages/*` - Message sending and retrieval
-- `/api/calendar/*` - Calendar event management
-- `/api/ai/*` - AI insights and analytics
-
-For detailed API documentation, refer to the API documentation in the project wiki.
-
 ## 🧪 Testing
 
 To run tests for the various containers:
@@ -225,15 +191,11 @@ To run tests for the various containers:
 ```bash
 # Web container tests
 cd web-container
-pytest
+pytest tests/test_app.y --cov=app
 
 # API container tests
 cd api-container
-pytest
-
-# AI container tests
-cd ai-container
-pytest
+pytest tests/ --cov=app
 ```
 
 ## 📄 License
