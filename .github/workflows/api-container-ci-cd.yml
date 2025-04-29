@@ -17,56 +17,66 @@ on:
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
-
+    
+    # Set up MongoDB for tests
     services:
       mongodb:
         image: mongo:4.4
         ports:
           - 27017:27017
-
+          
     steps:
+      # Get the code
       - name: Checkout repository
         uses: actions/checkout@v3
-
+        
+      # Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
+          
+      # Install required packages
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           cd api-container
           pip install -r requirements.txt
           pip install pytest pytest-cov requests pymongo bcrypt
-
+          
+      # Run the tests
       - name: Run tests with coverage
         run: |
           cd api-container
           pytest tests/ -v --cov=app --cov-report=xml
-
+          
+      # Upload test coverage reports
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           file: ./api-container/coverage.xml
           flags: api-container
           fail_ci_if_error: false
-
+          
+      # Build the Docker image
       - name: Build Docker image
         run: |
           cd api-container
           docker build -t ericzzy/together-api:latest .
-
+          
+      # Log in to Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+          
+      # Push image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
           docker push ericzzy/together-api:latest
-
+          
+      # Deploy to DigitalOcean using docker-compose
       - name: Deploy to Digital Ocean
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -74,7 +84,13 @@ jobs:
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
-            docker pull ericzzy/together-api:latest
-            docker stop api || true
-            docker rm api || true
-            docker run -d --name api -p 5000:5000 ericzzy/together-api:latest
+            # Change to project directory
+            cd /opt/together/5-final-team-ez-squad-5-0
+            
+            # Pull latest images
+            docker compose pull
+            
+            # Restart only the API container
+            docker compose stop api
+            docker compose rm -f api
+            docker compose up -d api
