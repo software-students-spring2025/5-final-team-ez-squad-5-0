@@ -5,7 +5,6 @@
 ![Web Container CI/CD](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/web-container-ci-cd.yml/badge.svg)
 ![Lint](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/lint.yml/badge.svg)
 ![Event Logger](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/event-logger.yml/badge.svg)
-![Docker Compose](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/docker-compose.yml/badge.svg)
 
 
 
