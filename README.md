@@ -132,16 +132,7 @@ You can modify the initial database setup by editing `db-container/init-mongo.js
 └── docker-compose.yml        # Docker Compose configuration
 ```
 
-## 🔑 Key Features Explained
 
-### Scheduled Messages
-Send messages to your partner that will be delivered at a specific time. Perfect for anniversaries, birthdays, or just to surprise your partner.
-
-### Relationship Insights
-The AI container analyzes your communication patterns and provides insights to help strengthen your relationship. View metrics like message frequency, response times, and sentiment analysis.
-
-### Real-time Updates
-The application uses Socket.IO to provide real-time updates for communication analytics.
 
 ## 🧪 Testing
 
