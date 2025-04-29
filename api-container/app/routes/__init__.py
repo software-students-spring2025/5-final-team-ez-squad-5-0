@@ -6,11 +6,9 @@ from bson.objectid import ObjectId
 import random
 import pytz
 
-# Import the mongo instance and email utilities
 from .. import mongo
 from ..email_utils import send_invitation_email, send_partner_message
 
-# Create blueprints
 auth_bp = Blueprint("auth", __name__)
 calendar_bp = Blueprint("calendar", __name__)
 messages_bp = Blueprint("messages_bp", __name__)
@@ -279,8 +277,6 @@ def send_message():
 
     return jsonify({"message": "Message sent successfully", "data": message}), 201
 
-
-# NEW: Scheduled messages endpoints
 @messages_bp.route("/schedule", methods=["POST"])
 @jwt_required()
 def schedule_message():
@@ -603,9 +599,6 @@ def change_password():
 
     return jsonify({"message": "Password updated successfully"}), 200
 
-
-# In api-container/app/routes/__init__.py
-# The daily question routes need proper path definitions
 
 
 @daily_question_bp.route("/", methods=["GET"])
