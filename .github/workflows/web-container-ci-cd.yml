@@ -70,7 +70,7 @@ jobs:
           
       # Deploy to DigitalOcean using docker-compose
       - name: Deploy to DigitalOcean
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER }}

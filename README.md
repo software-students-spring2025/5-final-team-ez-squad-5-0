@@ -1,13 +1,12 @@
 # Together - A Relationship Communication App
 
 
-![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Enabled-blue?logo=docker)
-![Flask](https://img.shields.io/badge/Backend-Flask-blue?logo=flask)
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb)
-![License](https://img.shields.io/badge/License-MIT-yellow?logo=opensourceinitiative)
-![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python)
-![CI](https://img.shields.io/badge/CI%20Build-Passing-success?logo=github)
-![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen?logo=github)
+![API Container CI/CD](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/api-container-ci-cd.yml/badge.svg)
+![Web Container CI/CD](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/web-container-ci-cd.yml/badge.svg)
+![Lint](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/lint.yml/badge.svg)
+![Event Logger](https://github.com/software-students-spring2025/5-final-team-ez-squad-5-0/actions/workflows/event-logger.yml/badge.svg)
+
+
 
 
 Together is a full-stack web application designed to help couples maintain and strengthen their relationships through structured communication tools and shared activities. The application uses a multi-container microservice architecture with Flask backends and MongoDB database.
@@ -34,7 +33,7 @@ Together is a full-stack web application designed to help couples maintain and s
 - [Jiangbo Shen](https://github.com/js-montgomery)
 - [Jess Liang](https://github.com/jess-liang322)
 
-## 🏗️ Architecture
+## Architecture
 
 The application is composed of four main services:
 
@@ -42,7 +41,7 @@ The application is composed of four main services:
 2. **API Container** (Port 5001): Core service handling authentication, messages, calendar, etc.
 4. **Database Container** (Port 27017): MongoDB database storing all application data
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Docker and Docker Compose
 - Git
@@ -55,7 +54,8 @@ The application is composed of four main services:
    cd 5-final-team-ez-squad-5-0
    ```
 
-2. Create environment files (see Configuration section)
+2. Environment Setup:
+   - All necessary environment variables are already configured in `docker-compose.yml`, so no separate `.env` file is needed to run this project.
 
 3. Start the application using Docker Compose
    ```bash
@@ -64,42 +64,35 @@ The application is composed of four main services:
 
 4. Access the application at `http://localhost:3000`
 
-## ⚙️ Configuration
+## Configuration
 
-### Environment Variables
+The environment variables required for this project are already defined in the `docker-compose.yml` file for each service.  
+You do not need to create a separate `.env` file to run the system.
 
-Before starting the application, you need to set up the following environment variables. Create a `.env` file in the project root directory:
+For reference, here are the main environment variables used:
 
-```
-# General settings
-SECRET_KEY=dev-secret-key
-JWT_SECRET_KEY=jwt-secret-key
+### API Service (`together-api`) and Message Worker (`together-message-worker`)
+- `FLASK_APP=run.py`
+- `FLASK_ENV=development`
+- `MONGO_URI=mongodb://db:27017/together`
+- `SECRET_KEY=dev-secret-key`
+- `JWT_SECRET_KEY=jwt-secret-key`
+- `MAIL_SERVER=smtp.gmail.com`
+- `MAIL_PORT=587`
+- `MAIL_USE_TLS=True`
+- `MAIL_USERNAME=your-email@gmail.com`
+- `MAIL_PASSWORD=your-app-password`
+- `MAIL_DEFAULT_SENDER=together-app@example.com`
 
-# MongoDB connection
-MONGO_URI=mongodb://db:27017/together
+### Web Frontend (`together-web`)
+- `API_URL=http://api:5001/api`
+- `SECRET_KEY=web-secret-key`
+- `FLASK_ENV=development`
 
-# Email settings (required for notifications)
-MAIL_SERVER=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USE_TLS=True
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-password
-MAIL_DEFAULT_SENDER=together-app@example.com
+### Notes
+- You can modify any environment variable by editing the `docker-compose.yml` file before starting the services.
 
-# Service URLs
-API_URL=http://api:5001/api
-AI_URL=http://ai-service:5002/api/ai
-```
-
-### Example Configuration Files
-
-Samples of all required configuration files are included in the repository as `.example` files. Simply copy these files and remove the `.example` extension:
-
-```bash
-cp .env.example .env
-```
-
-## 🗄️ Database Setup
+## Database Setup
 
 The MongoDB database is automatically initialized when the container starts. Sample users are created:
 
@@ -108,42 +101,8 @@ The MongoDB database is automatically initialized when the container starts. Sam
 
 You can modify the initial database setup by editing `db-container/init-mongo.js`.
 
-## 🛠️ Manual Setup (Without Docker)
 
-If you prefer to run the services without Docker:
-
-### Web Container
-```bash
-cd web-container
-pip install -r requirements.txt
-python app.py
-```
-
-### API Container
-```bash
-cd api-container
-pip install -r requirements.txt
-python run.py
-```
-
-### AI Container
-```bash
-cd ai-container
-pip install -r requirements.txt
-python run.py
-```
-
-### Database
-Install MongoDB and run:
-```bash
-mongod --dbpath=/path/to/data
-```
-Then initialize the database with:
-```bash
-mongo < db-container/init-mongo.js
-```
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 5-final-team-ez-squad-5-0/
