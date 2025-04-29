@@ -225,6 +225,7 @@ def test_dashboard(client):
     login(client)
 
     with patch("app.api_request") as mock_api:
+
         def side_effect(endpoint, *args, **kwargs):
             mock_response = MagicMock()
 

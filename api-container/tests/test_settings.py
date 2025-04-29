@@ -49,7 +49,7 @@ def test_get_profile_success(client, app, auth_headers, valid_object_id):
         "_id": valid_object_id,
         "email": "test@example.com",
         "username": "testuser",
-        "password_hash": "hashed_password", 
+        "password_hash": "hashed_password",
         "profile": {"name": "Test User"},
     }
 

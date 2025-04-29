@@ -277,6 +277,7 @@ def send_message():
 
     return jsonify({"message": "Message sent successfully", "data": message}), 201
 
+
 @messages_bp.route("/schedule", methods=["POST"])
 @jwt_required()
 def schedule_message():
@@ -598,7 +599,6 @@ def change_password():
         return jsonify({"message": "No changes made"}), 200
 
     return jsonify({"message": "Password updated successfully"}), 200
-
 
 
 @daily_question_bp.route("/", methods=["GET"])

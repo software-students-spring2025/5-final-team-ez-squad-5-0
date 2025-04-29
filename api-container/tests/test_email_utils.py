@@ -105,7 +105,6 @@ def test_send_email(app):
         with patch("app.email_utils.Thread") as mock_thread, patch(
             "app.email_utils.current_app._get_current_object", return_value=app
         ):
-
             mock_thread_instance = MagicMock()
             mock_thread.return_value = mock_thread_instance
 
@@ -139,7 +138,6 @@ def test_send_email_html_only(app):
         with patch("app.email_utils.Thread") as mock_thread, patch(
             "app.email_utils.current_app._get_current_object", return_value=app
         ):
-
             mock_thread_instance = MagicMock()
             mock_thread.return_value = mock_thread_instance
 

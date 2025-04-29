@@ -163,7 +163,6 @@ def test_register_with_partner(client):
     with patch("app.mongo.db.users.find_one") as mock_find_one, patch(
         "app.mongo.db.users.insert_one"
     ) as mock_insert_one, patch("app.mongo.db.users.update_one") as mock_update_one:
-
         # Correct mock for user and partner
         mock_find_one.side_effect = [
             None,  # First find for user email => new user

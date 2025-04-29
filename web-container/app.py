@@ -64,12 +64,14 @@ def login():
 
     return render_template("login.html")
 
+
 # Route for logout
 @app.route("/logout")
 def logout():
     session.pop("token", None)
     session.pop("user", None)
     return redirect(url_for("login"))
+
 
 # Route for register
 @app.route("/register", methods=["GET", "POST"])
@@ -78,9 +80,7 @@ def register():
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
-        partner_email = request.form.get(
-            "partner_email", ""
-        )
+        partner_email = request.form.get("partner_email", "")
 
         # Prepare request data
         request_data = {"name": name, "email": email, "password": password}
@@ -253,6 +253,7 @@ def calendar():
 
     return render_template("calendar.html", events=events)
 
+
 # Route for adding item in calender
 @app.route("/calendar/add", methods=["POST"])
 def add_event():
@@ -279,6 +280,7 @@ def add_event():
         flash(f"Error: {str(e)}", "error")
 
     return redirect(url_for("calendar"))
+
 
 # Route for messages
 @app.route("/messages")
@@ -318,6 +320,7 @@ def messages():
         partner_name=partner_name,
     )
 
+
 # Route for sending messeges
 @app.route("/messages/send", methods=["POST"])
 def send_message():
@@ -350,6 +353,7 @@ def send_message():
         flash(f"Error: {str(e)}", "error")
 
     return redirect(url_for("messages"))
+
 
 # Route for schedule messages
 @app.route("/messages/schedule", methods=["POST"])
@@ -460,6 +464,7 @@ def partner():
         "partner.html", partner_status=partner_status, partner=partner_data
     )
 
+
 # Route for sending patner invitation
 @app.route("/partner/send-invite", methods=["POST"])
 def send_invite():
@@ -490,6 +495,7 @@ def send_invite():
 
     return redirect(url_for("partner"))
 
+
 # Route for accepting partner invitation
 @app.route("/partner/accept-invite", methods=["POST"])
 def accept_invite():
@@ -510,6 +516,7 @@ def accept_invite():
         flash(f"Error: {str(e)}", "error")
 
     return redirect(url_for("partner"))
+
 
 # Route for rejecting partner invitation
 @app.route("/partner/reject-invite", methods=["POST"])
@@ -532,6 +539,7 @@ def reject_invite():
 
     return redirect(url_for("partner"))
 
+
 # Route for canceling invitation that already sent
 @app.route("/partner/cancel-invite", methods=["POST"])
 def cancel_invite():
@@ -552,6 +560,7 @@ def cancel_invite():
         flash(f"Error: {str(e)}", "error")
 
     return redirect(url_for("partner"))
+
 
 # Route for disconnecting partner
 @app.route("/partner/disconnect", methods=["POST"])
@@ -575,6 +584,7 @@ def disconnect_partner():
         flash(f"Error: {str(e)}", "error")
 
     return redirect(url_for("partner"))
+
 
 # Route for updating user profile
 @app.route("/update_profile", methods=["POST"])
@@ -605,6 +615,7 @@ def update_profile():
         flash(f"Error: {str(e)}", "error")
 
     return redirect(url_for("settings"))
+
 
 # Route for changing password
 @app.route("/change_password", methods=["POST"])
@@ -672,7 +683,7 @@ def quiz_api_proxy(subpath):
         if request.method == "GET":
             params = request.args.to_dict()
             response = requests.get(url, headers=headers, params=params)
-        else: 
+        else:
             response = requests.post(
                 url, headers=headers, data=request.data if request.data else None
             )
