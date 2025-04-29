@@ -22,7 +22,7 @@ Together is a full-stack web application designed to help couples maintain and s
 - **Settings Management**: Customize notifications and account preferences
 
 ## Digital Ocean
--[Web Page](https://138.197.66.233.nip.io/)
+- [Web Page](https://138.197.66.233.nip.io/)
 
 ## Container Images
 
