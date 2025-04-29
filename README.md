@@ -38,7 +38,7 @@ Together is a full-stack web application designed to help couples maintain and s
 
 ## Architecture
 
-The application is composed of four main services:
+The application is composed of three main services:
 
 1. **Web Container** (Port 3000): Flask frontend that serves the UI and communicates with the API
 2. **API Container** (Port 5001): Core service handling authentication, messages, calendar, etc.
