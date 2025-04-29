@@ -1,9 +1,14 @@
 # Together - A Relationship Communication App
 
-![Web Container CI](https://github.com/user/together/workflows/Web%20CI/badge.svg)
-![API Container CI](https://github.com/user/together/workflows/API%20CI/badge.svg)
-![AI Container CI](https://github.com/user/together/workflows/AI%20CI/badge.svg)
-![DB Container CI](https://github.com/user/together/workflows/DB%20CI/badge.svg)
+
+![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Enabled-blue?logo=docker)
+![Flask](https://img.shields.io/badge/Backend-Flask-blue)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-green)
+![License](https://img.shields.io/github/license/software-students-spring2025/5-final-team-ez-squad-5-0)
+![Python](https://img.shields.io/badge/Python-3.9+-blue)
+![CI](https://img.shields.io/github/actions/workflow/status/software-students-spring2025/5-final-team-ez-squad-5-0/docker-image.yml?label=CI%20Build&logo=github)
+![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
+
 
 Together is a full-stack web application designed to help couples maintain and strengthen their relationships through structured communication tools and shared activities. The application uses a multi-container microservice architecture with Flask backends and MongoDB database.
 
