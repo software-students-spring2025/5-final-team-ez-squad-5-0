@@ -21,7 +21,6 @@ Together is a full-stack web application designed to help couples maintain and s
 
 - Web Frontend: [docker.io/togetherapp/web-container](https://hub.docker.com/r/togetherapp/web-container)
 - API Service: [docker.io/togetherapp/api-container](https://hub.docker.com/r/togetherapp/api-container)
-- AI Container: [docker.io/togetherapp/ai-container](https://hub.docker.com/r/togetherapp/ai-container)
 - MongoDB Database: [docker.io/togetherapp/db-container](https://hub.docker.com/r/togetherapp/db-container)
 
 ## Team
@@ -37,7 +36,6 @@ The application is composed of four main services:
 
 1. **Web Container** (Port 3000): Flask frontend that serves the UI and communicates with the API
 2. **API Container** (Port 5001): Core service handling authentication, messages, calendar, etc.
-3. **AI Container** (Port 5002): Service for relationship analytics and insights
 4. **Database Container** (Port 27017): MongoDB database storing all application data
 
 ## 📋 Prerequisites
